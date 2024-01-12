@@ -9,3 +9,6 @@ springdoc:
     path: /
     operations-sorter: alpha
     display-request-duration: true
+jwt:
+  secret:
+    key: 2ca1c95b1166c97c5278ad81fdba453868a4ef27a3f2f01dekelqdm293945beff605a6781e6be34b466b5da3d11db5384218c407e99e6dcecf336

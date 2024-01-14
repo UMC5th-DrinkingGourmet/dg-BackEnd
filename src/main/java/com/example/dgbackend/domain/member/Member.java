@@ -54,6 +54,7 @@ public class Member extends BaseTimeEntity {
 
     private String profileImageUrl;
 
+    @Builder.Default
     private boolean state = true; //true: 존재, false: 탈퇴
 
     private Integer drinkingWeeks;
@@ -62,6 +63,6 @@ public class Member extends BaseTimeEntity {
 
     private String preferredAlcoholDgree; // 선호 도수
 
-    private String limit; //주량
+    private String drinkLimit; //주량
 
 }

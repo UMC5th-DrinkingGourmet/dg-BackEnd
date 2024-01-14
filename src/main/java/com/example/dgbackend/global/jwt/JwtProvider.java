@@ -95,7 +95,7 @@ public class JwtProvider {
     private Member getEmail(String token) {
         String email = getUserIdFromToken(token);
 
-        return memberRepository.findByEmail(email)
+        return memberRepository.findByEmail(email).get();
 //                .orElseThrow(() -> new ApiException())
     }
 

@@ -4,14 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "OAuth2.0", description = "소셜 로그인 API")
 @RestController
-@RequestMapping("/oauth/authorize")
+@RequestMapping("/login")
 public class OAuth2Controller {
 
     @Operation(summary = "카카오 로그인 API")
@@ -34,8 +33,7 @@ public class OAuth2Controller {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "소셜 로그인 성공")
     })
-
-    @GetMapping("/naver")
+    @GetMapping("/apple")
     public void appleLogin() {
     }
 }

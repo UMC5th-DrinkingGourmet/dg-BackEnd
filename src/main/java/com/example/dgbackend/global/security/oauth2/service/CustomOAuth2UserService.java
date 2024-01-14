@@ -1,5 +1,6 @@
 package com.example.dgbackend.global.security.oauth2.service;
 
+import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
 import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
@@ -43,12 +44,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 회원이 아닌 경우 회원가입
         if (member.isEmpty()) {
+
+            Gender gender = Gender.valueOf(oAuth2UserInfo.getGender().toUpperCase());
+
             Member newMember = Member.builder()
-                    .nickName(oAuth2UserInfo.getNickname())
+                    .name(oAuth2UserInfo.getName())
                     .email(oAuth2UserInfo.getEmail())
+                    .birthDate(oAuth2UserInfo.getBirthDate())
+                    .phoneNumber(oAuth2UserInfo.getPhoneNumber())
+                    .nickName(oAuth2UserInfo.getNickname())
+                    .gender(gender)
                     .role(Role.MEMBER)
                     .profileImageUrl(oAuth2UserInfo.getProfile())
-                    .state(true)
                     .socialType(socialType)
                     .build();
 

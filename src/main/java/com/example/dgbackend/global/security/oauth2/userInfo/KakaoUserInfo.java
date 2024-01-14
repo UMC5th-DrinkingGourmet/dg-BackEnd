@@ -34,4 +34,39 @@ public class KakaoUserInfo implements OAuth2UserInfo{
 
         return (String) kakaoProfile.get("nickname");
     }
+
+    @Override
+    public String getBirthDate() {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+
+        String birthYear = (String) kakaoAccount.get("birthyear");
+        String birthDay = (String) kakaoAccount.get("birthday");
+        return birthYear+birthDay;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        String phoneNumber = (String) kakaoAccount.get("phone_number");
+
+        return formatPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public String getGender() {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+
+        return (String) kakaoAccount.get("gender");
+    }
+
+    public String formatPhoneNumber(String phoneNumber) {
+        String cleanedPhoneNumber = phoneNumber.replaceAll("[^0-9]", "");
+
+        if (cleanedPhoneNumber.startsWith("82")) {
+            cleanedPhoneNumber = "0" + cleanedPhoneNumber.substring(2);
+        }
+
+        return cleanedPhoneNumber.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+
+    }
 }

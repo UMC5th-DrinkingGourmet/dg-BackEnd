@@ -23,10 +23,10 @@ import java.nio.charset.StandardCharsets;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     // TODO: 추후 프론트 주소로 변경
-    private final String frontendRedirectUrl = "https://localhost:8080";
+    private final String frontendRedirectUrl = "http://localhost:8080/myPage";
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
 
@@ -52,7 +52,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 인증이 성공했을 때, Access Token과 Refresh Token 발급
         registerHeaderToken(response, loginMember.getEmail());
 
-        // 리프레시 토큰을 Redis에 저장
+        // TODO : 리프레시 토큰을 Redis에 저장 -
 
         AuthResponse authResponse = AuthResponse.builder()
                 .memberId(loginMember.getId())

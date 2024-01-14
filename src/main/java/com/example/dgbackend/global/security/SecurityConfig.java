@@ -35,8 +35,8 @@ public class SecurityConfig {
                     CorsConfiguration cors = new CorsConfiguration();
                     cors.setAllowedOrigins(List.of("*", "http://localhost:3000", "http://localhost:8080")); // 추후 수정
                     cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE"));
-                    // cookie 비활성화 (추후에 Refresh Token 저장)
-                    cors.setAllowCredentials(false);
+                    // cookie 활성화
+                    cors.setAllowCredentials(true);
                     // Authorization Header 노출
                     cors.addExposedHeader("Authorization");
                     return cors;
@@ -50,6 +50,7 @@ public class SecurityConfig {
                                         ,"/oauth/**"
                                         ,"/favicon.ico"
                                         , "/**"
+                                        ,"/auth/logout"
                                 ).permitAll() // 추후에 hasRole() 설정
                                 .anyRequest().permitAll());
         http

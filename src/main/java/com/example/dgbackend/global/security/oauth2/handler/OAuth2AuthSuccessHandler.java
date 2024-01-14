@@ -7,6 +7,8 @@ import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.security.oauth2.dto.response.AuthResponse;
 import com.example.dgbackend.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.dgbackend.global.security.oauth2.userInfo.KakaoUserInfo;
+import com.example.dgbackend.global.util.CookieUtil;
+import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +31,8 @@ public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private final String frontendRedirectUrl = "http://localhost:8080/myPage";
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
+    private final RedisUtil redisUtil;
+    private final CookieUtil cookieUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -49,14 +53,23 @@ public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         log.info(frontendRedirectUrl + "----------------------------- frontendRedirectUrl");
 
         Member loginMember = memberRepository.findByEmailAndSocialType(email, socialType).get();
-        // 인증이 성공했을 때, Access Token과 Refresh Token 발급
-        registerHeaderToken(response, loginMember.getEmail());
+        String loginMemberEmail = loginMember.getEmail();
 
-        // TODO : 리프레시 토큰을 Redis에 저장 -
+        // 인증이 성공했을 때, Access Token은 Header에 저장
+        registerHeaderToken(response, loginMemberEmail);
+
+        // Refresh Token 토큰을 Redis에 저장
+        if (redisUtil.getData(loginMemberEmail) == null) {
+            String refreshToken = jwtProvider.generateRefreshToken(loginMemberEmail);
+
+            // refresh token 쿠키에 담아서 전달
+            cookieUtil.create(refreshToken, response);
+            log.info("-------------------- cookie에 refresh Token 저장 : {}", refreshToken);
+        }
 
         AuthResponse authResponse = AuthResponse.builder()
                 .memberId(loginMember.getId())
-                .email(email)
+                .email(loginMemberEmail)
                 .nickName(loginMember.getNickName())
                 .profileImageUrl(loginMember.getProfileImageUrl())
                 .socialType(String.valueOf(loginMember.getSocialType()))

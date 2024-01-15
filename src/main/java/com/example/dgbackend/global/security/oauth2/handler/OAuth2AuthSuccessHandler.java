@@ -67,6 +67,7 @@ public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             log.info("-------------------- cookie에 refresh Token 저장 : {}", refreshToken);
         }
 
+        // TODO: 프론트와 상의 후 수정
         AuthResponse authResponse = AuthResponse.builder()
                 .memberId(loginMember.getId())
                 .email(loginMemberEmail)

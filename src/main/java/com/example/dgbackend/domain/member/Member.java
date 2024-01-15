@@ -63,6 +63,6 @@ public class Member extends BaseTimeEntity {
 
     private String preferredAlcoholDgree; // 선호 도수
 
-    private String drinkLimit; //주량
+    private String drinkingLimit; //주량
 
 }

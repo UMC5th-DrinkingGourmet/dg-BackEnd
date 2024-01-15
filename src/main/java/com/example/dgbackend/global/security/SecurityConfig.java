@@ -50,7 +50,7 @@ public class SecurityConfig {
                                         ,"/oauth/**"
                                         ,"/favicon.ico"
                                         , "/**"
-                                        ,"/auth/logout"
+                                        ,"/auth/**"
                                 ).permitAll() // 추후에 hasRole() 설정
                                 .anyRequest().permitAll());
         http

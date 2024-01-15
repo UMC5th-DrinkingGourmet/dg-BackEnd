@@ -34,7 +34,6 @@ public class JwtProvider {
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
     public static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;
-    public static final long REFRESH_TOKEN_VALID_TIME = 25 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;

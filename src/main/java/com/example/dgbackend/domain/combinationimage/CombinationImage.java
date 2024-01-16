@@ -32,4 +32,7 @@ public class CombinationImage extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    public void setCombination(Combination combination) {
+        this.combination = combination;
+    }
 }

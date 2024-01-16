@@ -33,4 +33,8 @@ public class HashTagOption extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    //== 연관관계 관련 ==//
+    public void setHashTag(HashTag hashTag) {
+        this.hashTag = hashTag;
+    }
 }

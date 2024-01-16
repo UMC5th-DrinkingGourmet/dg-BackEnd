@@ -18,6 +18,12 @@ public enum ErrorStatus implements BaseErrorCode {
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
 
+    //오늘의 조합 관련
+    _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
+
+    //Recommend 관련
+    _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
+
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다.");

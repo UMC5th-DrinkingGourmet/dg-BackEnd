@@ -1,10 +1,13 @@
 package com.example.dgbackend.global.s3;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.dto.S3Result;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,6 +71,21 @@ public class S3Service {
     }
 
     public void deleteFile(String fileName) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        try {
+            String s3File = extractKeyFromUrl(fileName);
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, s3File));
+        } catch (AmazonServiceException e) {
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
+        }
     }
+
+    private String extractKeyFromUrl(String imageUrl) {
+        String bucketPrefix = "https://" + bucket + ".s3." + region +".amazonaws.com/";
+        if (imageUrl.startsWith(bucketPrefix)) {
+            return imageUrl.substring(bucketPrefix.length());
+        } else {
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
+        }
+    }
+
 }

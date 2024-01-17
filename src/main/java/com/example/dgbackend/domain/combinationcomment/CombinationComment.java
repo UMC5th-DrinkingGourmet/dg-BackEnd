@@ -43,4 +43,8 @@ public class CombinationComment extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    //== 연관관계 관련 메서드 ==//
+    public void setCombination(Combination combination) {
+        this.combination = combination;
+    }
 }

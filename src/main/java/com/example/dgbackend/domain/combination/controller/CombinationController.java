@@ -77,9 +77,8 @@ public class CombinationController {
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @PatchMapping("/{combinationId}")
     public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(@PathVariable(name = "combinationId") Long combinationId,
-                                                                                      @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request,
-                                                                                      @RequestPart(name = "imageUrls", required = false) List<MultipartFile> multipartFiles) throws IOException {
-        return ApiResponse.onSuccess(combinationCommandService.editCombination(combinationId, request, multipartFiles));
+                                                                                      @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request) throws IOException {
+        return ApiResponse.onSuccess(combinationCommandService.editCombination(combinationId, request));
     }
 
     @Operation(summary = "오늘의 조합 삭제", description = "특정 오늘의 조합을 삭제합니다.")

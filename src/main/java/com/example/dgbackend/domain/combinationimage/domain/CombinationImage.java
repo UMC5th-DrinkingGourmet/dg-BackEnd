@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.combinationimage;
+package com.example.dgbackend.domain.combinationimage.domain;
 
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.global.common.BaseTimeEntity;

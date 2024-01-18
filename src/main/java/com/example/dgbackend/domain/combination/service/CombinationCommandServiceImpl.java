@@ -4,7 +4,8 @@ import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.service.CombinationImageCommandService;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
@@ -35,6 +36,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
     private final HashTagOptionCommandService hashTagOptionCommandService;
     private final CombinationLikeCommandService combinationLikeCommandService;
     private final CombinationImageQueryService combinationImageQueryService;
+    private final CombinationImageCommandService combinationImageCommandService;
 
     /**
      * 오늘의 조합 작성
@@ -119,7 +121,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
      * 오늘의 조합 수정
      */
     @Override
-    public CombinationResponse.CombinationProcResult editCombination(Long combinationId, CombinationRequest.WriteCombination request, List<MultipartFile> multipartFiles) {
+    public CombinationResponse.CombinationProcResult editCombination(Long combinationId, CombinationRequest.WriteCombination request) {
 
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
                 () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
@@ -128,12 +130,11 @@ public class CombinationCommandServiceImpl implements CombinationCommandService{
         // Combination - title, content 수정
         combination.updateCombination(request.getTitle(), request.getContent());
 
-        // HashTagOption, HashTag - 오늘의 조합에 해시태그를 변경할 경우
-        // 0. hashTagName을 조회하여 존재하는 해시태그인지 확인하기
-        // 1. 새로운 해시태그인 경우 새로운 HashTag 생성 후 HashTagOption 변경
-        // 2. 기존의 존재하는 해시태그인 경우 HashTag 조회 후 HashTagOption 변경
-
+        // HashTagOption, HashTag - name 수정
         hashTagOptionCommandService.updateHashTagOption(combination, request.getHashTagNameList());
+
+        // CombinationImage - imageUrl 수정
+        combinationImageCommandService.updateCombinationImage(combination, request.getCombinationImageList());
 
         return CombinationResponse.toCombinationProcResult(combinationId);
     }

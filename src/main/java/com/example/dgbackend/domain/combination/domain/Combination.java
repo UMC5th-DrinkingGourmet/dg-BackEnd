@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.combination.domain;
 
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
 import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
-import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.domain.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -52,7 +52,6 @@ public class Combination extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "combination", cascade = CascadeType.ALL)
     private List<CombinationComment> combinationComments = new ArrayList<>();
-
 
     /**
      * 연관관계 편의 메소드

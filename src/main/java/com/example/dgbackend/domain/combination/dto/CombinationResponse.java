@@ -2,9 +2,11 @@ package com.example.dgbackend.domain.combination.dto;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
-import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,8 +26,8 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationPreviewDTOList {
-        List<CombinationPreviewDTO> combinationList;
+    public static class CombinationPreviewResultList {
+        List<CombinationPreviewResult> combinationList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -37,7 +39,7 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationPreviewDTO {
+    public static class CombinationPreviewResult {
         String title;
         String combinationImageUrl;
         Long likeCount;
@@ -46,15 +48,15 @@ public class CombinationResponse {
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
-    public static CombinationPreviewDTOList toCombinationPreviewDTOList(Page<Combination> combinations,
+    public static CombinationPreviewResultList toCombinationPreviewResultList(Page<Combination> combinations,
                                                                         List<List<HashTagOption>> hashTagOptions) {
 
-        List<CombinationPreviewDTO> combinationPreviewDTOS = combinations.getContent()
+        List<CombinationPreviewResult> combinationPreviewDTOS = combinations.getContent()
                 .stream()
-                .map(cb -> toCombinationPreviewDTO(cb, hashTagOptions))
+                .map(cb -> toCombinationPreviewResult(cb, hashTagOptions))
                 .collect(Collectors.toList());
 
-        return CombinationPreviewDTOList.builder()
+        return CombinationPreviewResultList.builder()
                 .combinationList(combinationPreviewDTOS)
                 .listSize(combinationPreviewDTOS.size())
                 .totalPage(combinations.getTotalPages())
@@ -65,7 +67,7 @@ public class CombinationResponse {
     }
 
     // Combination -> CombinationPreviewDTO로 변환
-    public static CombinationPreviewDTO toCombinationPreviewDTO(Combination combination,
+    public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
                                                                 List<List<HashTagOption>> hashTagOptions) {
         // TODO: 대표 이지미 정하기
         String imageUrl = combination.getCombinationImages()
@@ -82,7 +84,7 @@ public class CombinationResponse {
                         .map(hto -> hto.getHashTag().getName()))
                 .toList();
 
-        return CombinationPreviewDTO.builder()
+        return CombinationPreviewResult.builder()
                 .title(combination.getTitle())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
@@ -98,16 +100,16 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationDetailDTO {
+    public static class CombinationDetailResult {
         CombinationResult combinationResult;
-        MemberResult memberResult;
-        CombinationCommentResult combinationCommentResult;
+        MemberResponse.MemberResult memberResult;
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
     }
 
-    public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
-                                                              MemberResult memberResult,
-                                                              CombinationCommentResult combinationCommentResult) {
-        return CombinationDetailDTO.builder()
+    public static CombinationDetailResult toCombinationDetailResult(CombinationResult combinationResult,
+                                                              MemberResponse.MemberResult memberResult,
+                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
+        return CombinationDetailResult.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
                 .combinationCommentResult(combinationCommentResult)
@@ -139,71 +141,6 @@ public class CombinationResponse {
                 .build();
     }
 
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class MemberResult {
-        Long memberId;
-        String name;
-        String profileImageUrl;
-    }
-
-    public static MemberResult toMemberResult(Member member) {
-        return MemberResult.builder()
-                .memberId(member.getId())
-                .name(member.getName())
-                .profileImageUrl(member.getProfileImageUrl())
-                .build();
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentResult {
-        List<CombinationCommentPreviewDTO> combinationCommentList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentPreviewDTO {
-        Long combinationCommentId;
-        String content;
-        Long parentId;
-    }
-
-    public static CombinationCommentPreviewDTO toCommentPreviewDTO(CombinationComment comment) {
-        return CombinationCommentPreviewDTO.builder()
-                .combinationCommentId(comment.getId())
-                .content(comment.getContent())
-                .parentId(comment.getParentId())
-                .build();
-    }
-
-    public static CombinationCommentResult toCombinationCommentResult(Page<CombinationComment> comments) {
-
-        List<CombinationCommentPreviewDTO> commentPreviewDTOS = comments.stream()
-                .map(CombinationResponse::toCommentPreviewDTO)
-                .toList();
-
-        return CombinationCommentResult.builder()
-                .combinationCommentList(commentPreviewDTOS)
-                .listSize(commentPreviewDTOS.size())
-                .totalPage(comments.getTotalPages())
-                .totalElements(comments.getTotalElements())
-                .isFirst(comments.isFirst())
-                .isLast(comments.isLast())
-                .build();
-    }
-
     /**
      * 오늘의 조합 수정 정보 조회
      */
@@ -211,14 +148,14 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class CombinationEditDTO {
+    public static class CombinationEditResult {
         String title;
         String content;
         List<String> hashTagList;
         List<String> combinationImageUrlList;
     }
 
-    public static CombinationEditDTO toCombinationEditDTO(Combination combination,
+    public static CombinationEditResult toCombinationEditResult(Combination combination,
                                                           List<HashTagOption> hashTagOptions,
                                                           List<CombinationImage> combinationImages) {
 
@@ -230,7 +167,7 @@ public class CombinationResponse {
                 .map(CombinationImage::getImageUrl)
                 .toList();
 
-        return CombinationEditDTO.builder()
+        return CombinationEditResult.builder()
                 .title(combination.getTitle())
                 .content(combination.getContent())
                 .hashTagList(hashTagList)

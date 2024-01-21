@@ -3,7 +3,7 @@ package com.example.dgbackend.domain.combination.dto;
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
-import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +36,6 @@ public class CombinationResponse {
     @Getter
     public static class CombinationPreviewDTO {
         String title;
-        String info;
         String combinationImageUrl;
         Long likeCount;
         Long commentCount;
@@ -70,7 +69,6 @@ public class CombinationResponse {
 
         return CombinationPreviewDTO.builder()
                 .title(combination.getTitle())
-                .info(combination.getInfo())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
                 .commentCount(combination.getCommentCount())
@@ -86,12 +84,12 @@ public class CombinationResponse {
     @Getter
     public static class CombinationDetailDTO {
         CombinationResult combinationResult;
-        MemberResult memberResult;
+        MemberResponse.MemberResult memberResult;
         CombinationCommentResult combinationCommentResult;
     }
 
     public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
-                                                              MemberResult memberResult,
+                                                              MemberResponse.MemberResult memberResult,
                                                               CombinationCommentResult combinationCommentResult) {
         return CombinationDetailDTO.builder()
                 .combinationResult(combinationResult)
@@ -115,26 +113,7 @@ public class CombinationResponse {
         return CombinationResult.builder()
                 .combinationId(combination.getId())
                 .title(combination.getTitle())
-                .info(combination.getInfo())
                 .content(combination.getContent())
-                .build();
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class MemberResult {
-        Long memberId;
-        String name;
-        String profileImageUrl;
-    }
-
-    public static MemberResult toMemberResult(Member member) {
-        return MemberResult.builder()
-                .memberId(member.getId())
-                .name(member.getName())
-                .profileImageUrl(member.getProfileImageUrl())
                 .build();
     }
 

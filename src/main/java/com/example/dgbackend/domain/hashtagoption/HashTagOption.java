@@ -1,6 +1,7 @@
-package com.example.dgbackend.domain.combinationimage.domain;
+package com.example.dgbackend.domain.hashtagoption;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -17,17 +17,22 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CombinationImage extends BaseTimeEntity {
+public class HashTagOption extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private String imageUrl;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hash_tag_id")
+    private HashTag hashTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    //== 연관관계 관련 ==//
+    public void setHashTag(HashTag hashTag) {
+        this.hashTag = hashTag;
+    }
 }

@@ -1,15 +1,15 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandService;
-import com.example.dgbackend.domain.recommend.domain.Recommend;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;

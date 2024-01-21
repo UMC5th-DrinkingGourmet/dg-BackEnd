@@ -1,10 +1,10 @@
 package com.example.dgbackend.domain.combination.dto;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
-import com.example.dgbackend.domain.hashtagoption.domain.HashTagOption;
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.hashtagoption.HashTagOption;
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -100,13 +100,13 @@ public class CombinationResponse {
     @Getter
     public static class CombinationDetailDTO {
         CombinationResult combinationResult;
-        MemberResult memberResult;
-        CombinationCommentResult combinationCommentResult;
+        MemberResponse.MemberResult memberResult;
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
     }
 
     public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
-                                                              MemberResult memberResult,
-                                                              CombinationCommentResult combinationCommentResult) {
+                                                              MemberResponse.MemberResult memberResult,
+                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
         return CombinationDetailDTO.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
@@ -139,70 +139,6 @@ public class CombinationResponse {
                 .build();
     }
 
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class MemberResult {
-        Long memberId;
-        String name;
-        String profileImageUrl;
-    }
-
-    public static MemberResult toMemberResult(Member member) {
-        return MemberResult.builder()
-                .memberId(member.getId())
-                .name(member.getName())
-                .profileImageUrl(member.getProfileImageUrl())
-                .build();
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentResult {
-        List<CombinationCommentPreviewDTO> combinationCommentList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentPreviewDTO {
-        Long combinationCommentId;
-        String content;
-        Long parentId;
-    }
-
-    public static CombinationCommentPreviewDTO toCommentPreviewDTO(CombinationComment comment) {
-        return CombinationCommentPreviewDTO.builder()
-                .combinationCommentId(comment.getId())
-                .content(comment.getContent())
-                .parentId(comment.getParentId())
-                .build();
-    }
-
-    public static CombinationCommentResult toCombinationCommentResult(Page<CombinationComment> comments) {
-
-        List<CombinationCommentPreviewDTO> commentPreviewDTOS = comments.stream()
-                .map(CombinationResponse::toCommentPreviewDTO)
-                .toList();
-
-        return CombinationCommentResult.builder()
-                .combinationCommentList(commentPreviewDTOS)
-                .listSize(commentPreviewDTOS.size())
-                .totalPage(comments.getTotalPages())
-                .totalElements(comments.getTotalElements())
-                .isFirst(comments.isFirst())
-                .isLast(comments.isLast())
-                .build();
-    }
 
     /**
      * 오늘의 조합 수정 정보 조회

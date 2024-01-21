@@ -7,6 +7,7 @@ import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.security.oauth2.dto.response.AuthResponse;
 import com.example.dgbackend.global.security.oauth2.principal.CustomOAuth2User;
 import com.example.dgbackend.global.security.oauth2.userInfo.KakaoUserInfo;
+import com.example.dgbackend.global.security.oauth2.userInfo.NaverUserInfo;
 import com.example.dgbackend.global.util.CookieUtil;
 import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.ServletException;
@@ -36,6 +37,7 @@ public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         SocialType socialType = customOAuth2User.getMember().getSocialType();
@@ -45,7 +47,8 @@ public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(customOAuth2User.getAttributes());
             email = kakaoUserInfo.getEmail();
         } else if (socialType.equals(SocialType.NAVER)) {
-            return;
+            NaverUserInfo naverUserInfo = new NaverUserInfo(customOAuth2User.getAttributes());
+            email = naverUserInfo.getEmail();
         } else if (socialType.equals(SocialType.APPLE)) {
             return;
         }

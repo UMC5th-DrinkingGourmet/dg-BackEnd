@@ -44,6 +44,10 @@ public class CustomOAuth2User implements OAuth2User {
             return ((Map<?, ?>) attributes.get("properties")).get("nickname").toString();
         }
 
+        if(member.getSocialType().equals(SocialType.NAVER)) {
+            return ((Map<?, ?>) attributes.get("response")).get("nickname").toString();
+        }
+
         return null;
     }
 }

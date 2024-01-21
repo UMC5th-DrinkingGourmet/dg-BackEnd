@@ -13,7 +13,7 @@ public class OAuth2UserInfoFactory {
             return new KakaoUserInfo(attributes);
         } else if (provider.equals("naver")) {
             log.info("----------------------------- 네이버 로그인 요청");
-//            return new NaverUserInfo(attributes);
+            return new NaverUserInfo(attributes);
         } else if (provider.equals("apple")) {
             log.info("----------------------------- 애플 로그인 요청");
 //            return new AppleUserInfo(attributes);

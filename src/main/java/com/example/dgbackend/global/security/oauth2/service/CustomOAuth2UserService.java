@@ -44,8 +44,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 회원이 아닌 경우 회원가입
         if (member.isEmpty()) {
+            Gender gender;
 
-            Gender gender = Gender.valueOf(oAuth2UserInfo.getGender().toUpperCase());
+            if (oAuth2UserInfo.getGender().equals("F")) {
+                gender= Gender.valueOf("FEMALE");
+            } else if (oAuth2UserInfo.getGender().equals("M")) {
+                gender = Gender.valueOf("MALE");
+            } else {
+                gender = Gender.valueOf(oAuth2UserInfo.getGender().toUpperCase());
+            }
 
             Member newMember = Member.builder()
                     .name(oAuth2UserInfo.getName())

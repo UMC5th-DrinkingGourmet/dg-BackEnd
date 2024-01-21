@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.combinationcomment.dto;
 
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

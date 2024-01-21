@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.combinationcomment.domain;
+package com.example.dgbackend.domain.combinationcomment;
 
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;

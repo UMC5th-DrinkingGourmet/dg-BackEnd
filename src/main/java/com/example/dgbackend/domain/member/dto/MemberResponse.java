@@ -25,4 +25,21 @@ public class MemberResponse {
                 .profileImageUrl(member.getProfileImageUrl())
                 .build();
     }
+
+    public static class RecommendInfoDTO {
+        // 주류 추천 정보 입력 DTO
+        private String preferredAlcoholType;  //선호 주종
+        private String preferredAlcoholDegree; // 선호 도수
+        private String drinkingLimit; //주량
+        private String drinkingTimes; // 음주 횟수
+    }
+
+    public static MemberResponse.RecommendInfoDTO toRecommendInfoDTO(Member member) {
+        return MemberResponse.RecommendInfoDTO.builder()
+                .preferredAlcoholType(member.getPreferredAlcoholType())
+                .preferredAlcoholDegree(member.getPreferredAlcoholDegree())
+                .drinkingTimes(member.getDrinkingTimes())
+                .drinkingLimit(member.getDrinkingLimit())
+                .build();
+    }
 }

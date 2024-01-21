@@ -10,7 +10,7 @@ import com.example.dgbackend.domain.combinationimage.service.CombinationImageQue
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandService;
-import com.example.dgbackend.domain.recommend.domain.Recommend;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;

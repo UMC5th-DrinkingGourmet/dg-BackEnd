@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.combinationimage.service;
 
-import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

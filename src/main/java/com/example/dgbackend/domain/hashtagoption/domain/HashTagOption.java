@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.hashtagoption;
+package com.example.dgbackend.domain.hashtagoption.domain;
 
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.hashtag.HashTag;

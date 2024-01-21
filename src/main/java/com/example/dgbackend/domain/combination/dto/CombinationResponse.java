@@ -5,6 +5,7 @@ import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

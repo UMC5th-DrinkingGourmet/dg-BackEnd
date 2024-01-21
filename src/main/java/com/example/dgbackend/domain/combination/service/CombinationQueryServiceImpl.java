@@ -1,12 +1,8 @@
 package com.example.dgbackend.domain.combination.service;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
-import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
-import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
-import com.example.dgbackend.domain.member.domain.Member;
-import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

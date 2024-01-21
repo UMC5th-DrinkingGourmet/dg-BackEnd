@@ -37,5 +37,4 @@ public class CombinationController {
     public ApiResponse<CombinationResponse.CombinationDetailDTO> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailDTO(combinationId));
     }
-
 }

@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.hashtagoption.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.hashtag.repository.HashTagRepository;
 import com.example.dgbackend.domain.hashtag.service.HashTagQueryService;
@@ -42,7 +42,7 @@ public class HashTagOptionCommandServiceImpl implements HashTagOptionCommandServ
 
     private void removeCancelledHashTagOption(Combination combination, List<String> requestHashTagNames, List<HashTagOption> existHashTagOptions) {
 
-        // 수정하면서 지워진 HashTag Name 파싱
+        // 수정하면서 지워진 HashTag 파싱
         List<String> delNameToHashTagOption = existHashTagOptions.stream()
                 .map(hto -> hto.getHashTag().getName())
                 .filter(name -> !requestHashTagNames.contains(name))

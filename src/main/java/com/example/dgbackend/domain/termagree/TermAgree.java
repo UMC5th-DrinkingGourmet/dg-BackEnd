@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.termagree;
 
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.term.Term;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;

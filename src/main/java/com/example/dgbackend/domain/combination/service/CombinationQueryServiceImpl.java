@@ -1,15 +1,15 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;

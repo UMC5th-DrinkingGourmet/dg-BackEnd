@@ -18,7 +18,7 @@ import java.util.List;
 
 @Tag(name = "오늘의 조합 API")
 @RestController
-@RequestMapping("/api/combinations")
+@RequestMapping("/combinations")
 @RequiredArgsConstructor
 public class CombinationController {
 

@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.member.dto;
 
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.dgbackend.domain.memberdrinktype;
 
 import com.example.dgbackend.domain.drinktype.DrinkType;
-import com.example.dgbackend.domain.member.domain.Member;
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

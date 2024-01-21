@@ -1,7 +1,7 @@
 package com.example.dgbackend.domain.combinationimage.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.global.s3.S3Service;
 import lombok.RequiredArgsConstructor;

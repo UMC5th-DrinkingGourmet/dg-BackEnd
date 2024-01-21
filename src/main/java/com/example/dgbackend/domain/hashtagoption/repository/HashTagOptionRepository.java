@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.hashtagoption.repository;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import org.springframework.data.jpa.repository.JpaRepository;

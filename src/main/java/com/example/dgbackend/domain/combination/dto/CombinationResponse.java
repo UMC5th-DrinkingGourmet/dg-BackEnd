@@ -1,11 +1,9 @@
 package com.example.dgbackend.domain.combination.dto;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
-import com.example.dgbackend.domain.member.domain.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

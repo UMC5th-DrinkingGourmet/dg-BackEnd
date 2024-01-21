@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.hashtagoption.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.hashtag.repository.HashTagRepository;
 import com.example.dgbackend.domain.hashtag.service.HashTagQueryService;

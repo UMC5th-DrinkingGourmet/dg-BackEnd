@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.recommend;
+package com.example.dgbackend.domain.recommend.domain;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;

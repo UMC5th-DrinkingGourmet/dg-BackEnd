@@ -4,7 +4,7 @@ import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
 import com.example.dgbackend.domain.recommend.domain.Recommend;

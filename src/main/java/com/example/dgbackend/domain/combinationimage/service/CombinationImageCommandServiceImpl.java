@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.combinationimage.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
-import com.example.dgbackend.domain.combinationimage.domain.CombinationImage;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combinationimage.dto.CombinationImageResponse;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.global.s3.S3Service;
@@ -24,8 +23,7 @@ public class CombinationImageCommandServiceImpl implements CombinationImageComma
     @Override
     public CombinationImageResponse.CombinationImageResult uploadImage(List<MultipartFile> multipartFiles) {
 
-        // 업로드 이미지가 없는 경우, GPT가 추천해준 이미지 사용
-        // 실제 텍스트와 업로드시 GPT 추천 이미지 사용
+        // S3에 이미지 업로드
         List<String> imageUrls = s3Service.uploadFile(multipartFiles)
                 .stream()
                 .map(S3Result::getImgUrl)

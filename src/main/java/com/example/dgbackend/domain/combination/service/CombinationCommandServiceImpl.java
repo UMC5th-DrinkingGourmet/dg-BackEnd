@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.domain.Combination;
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;

@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.combination.dto;
 
 import com.example.dgbackend.domain.combination.domain.Combination;
 import com.example.dgbackend.domain.combinationcomment.domain.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import lombok.AllArgsConstructor;
@@ -85,12 +86,12 @@ public class CombinationResponse {
     public static class CombinationDetailDTO {
         CombinationResult combinationResult;
         MemberResponse.MemberResult memberResult;
-        CombinationCommentResult combinationCommentResult;
+        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
     }
 
     public static CombinationDetailDTO toCombinationDetailDTO(CombinationResult combinationResult,
                                                               MemberResponse.MemberResult memberResult,
-                                                              CombinationCommentResult combinationCommentResult) {
+                                                              CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
         return CombinationDetailDTO.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)
@@ -114,53 +115,6 @@ public class CombinationResponse {
                 .combinationId(combination.getId())
                 .title(combination.getTitle())
                 .content(combination.getContent())
-                .build();
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentResult {
-        List<CombinationCommentPreviewDTO> combinationCommentList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
-
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class CombinationCommentPreviewDTO {
-        Long combinationCommentId;
-        String content;
-        Long parentId;
-    }
-
-    public static CombinationCommentPreviewDTO toCommentPreviewDTO(CombinationComment comment) {
-        return CombinationCommentPreviewDTO.builder()
-                .combinationCommentId(comment.getId())
-                .content(comment.getContent())
-                .parentId(comment.getParentId())
-                .build();
-    }
-
-    public static CombinationCommentResult toCombinationCommentResult(Page<CombinationComment> comments) {
-
-        List<CombinationCommentPreviewDTO> commentPreviewDTOS = comments.stream()
-                .map(CombinationResponse::toCommentPreviewDTO)
-                .toList();
-
-        return CombinationCommentResult.builder()
-                .combinationCommentList(commentPreviewDTOS)
-                .listSize(commentPreviewDTOS.size())
-                .totalPage(comments.getTotalPages())
-                .totalElements(comments.getTotalElements())
-                .isFirst(comments.isFirst())
-                .isLast(comments.isLast())
                 .build();
     }
 

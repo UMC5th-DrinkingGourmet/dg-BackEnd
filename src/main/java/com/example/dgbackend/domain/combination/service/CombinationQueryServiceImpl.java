@@ -8,7 +8,7 @@ import com.example.dgbackend.domain.combinationcomment.service.CombinationCommen
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
-import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.domain.Member;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;

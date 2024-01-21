@@ -1,4 +1,4 @@
-package com.example.dgbackend.domain.member;
+package com.example.dgbackend.domain.member.domain;
 
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.SocialType;

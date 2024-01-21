@@ -1,25 +1,25 @@
-package com.example.dgbackend.domain.qna;
+package com.example.dgbackend.domain.combination.domain;
 
+
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.domain.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class QnA extends BaseTimeEntity {
+public class Combination extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +31,18 @@ public class QnA extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    @NotNull
-    private boolean isConfirmed; //true : 읽음, false: 안읽음
+    @ColumnDefault("0")
+    private Long likeCount;
+
+    @ColumnDefault("0")
+    private Long commentCount;
+
+    private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "combination", cascade = CascadeType.ALL)
+    private List<CombinationImage> combinationImages = new ArrayList<>();
 }

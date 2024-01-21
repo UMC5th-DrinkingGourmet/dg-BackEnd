@@ -26,8 +26,6 @@ public class Combination extends BaseTimeEntity {
     @NotNull
     private String title;
 
-    private String info; // 연한 글씨
-
     @NotNull
     private String content;
 

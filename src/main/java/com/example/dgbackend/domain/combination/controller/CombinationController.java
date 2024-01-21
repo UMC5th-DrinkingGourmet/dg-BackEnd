@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "오늘의 조합 API")
 @RestController
-@RequestMapping("/api/combinations")
+@RequestMapping("/combinations")
 @RequiredArgsConstructor
 public class CombinationController {
 
@@ -28,47 +28,4 @@ public class CombinationController {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewDTOList(page));
     }
 
-//    @Operation(summary = "오늘의 조합 상세정보 조회", description = "특정 오늘의 조합 정보를 조회합니다.")
-//    @ApiResponses(value = {
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 상세정보 조회 성공")
-//    })
-//    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
-//    @GetMapping("/{combinationId}")
-//    public ApiResponse<> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
-//
-//        return null;
-//    }
-//
-//    @Operation(summary = "오늘의 조합 작성", description = "오늘의 조합 작성합니다.")
-//    @ApiResponses(value = {
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 작성 성공")
-//    })
-//    @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
-//    @PostMapping("/recommends/{recommendId}")
-//    public ApiResponse<> writeCombination(@PathVariable(name = "recommendId") Long recommendId) {
-//
-//        return null;
-//    }
-//
-//    @Operation(summary = "오늘의 조합 수정", description = "특정 오늘의 조합을 수정합니다.")
-//    @ApiResponses(value = {
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 수정 성공")
-//    })
-//    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
-//    @PatchMapping("/{combinationId}")
-//    public ApiResponse<> editCombination(@PathVariable(name = "combinationId") Long combinationId) {
-//
-//        return null;
-//    }
-//
-//    @Operation(summary = "오늘의 조합 삭제", description = "특정 오늘의 조합을 삭제합니다.")
-//    @ApiResponses(value = {
-//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 삭제 성공")
-//    })
-//    @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
-//    @DeleteMapping("/{combinationId}")
-//    public ApiResponse<> deleteCombination(@PathVariable(name = "combinationId") Long combinationId) {
-//
-//        return null;
-//    }
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "추천 받은 조합 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class RecommendController {
 
     private final RecommendQueryService recommendQueryService;
@@ -26,7 +25,7 @@ public class RecommendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 조회 성공")
     })
     @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
-    @PostMapping("/combinations/recommends/{recommendId}")
+    @PostMapping("/recommends/{recommendId}")
     public ApiResponse<RecommendResponse.RecommendResult> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.getRecommendResult(recommendId));

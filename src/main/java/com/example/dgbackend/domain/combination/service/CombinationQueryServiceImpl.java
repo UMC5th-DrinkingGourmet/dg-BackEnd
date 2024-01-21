@@ -24,7 +24,7 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CombinationQueryServiceImpl implements CombinationQueryService{
+public class CombinationQueryServiceImpl {
 
     private final CombinationRepository combinationRepository;
     private final HashTagOptionRepository hashTagOptionRepository;

@@ -60,6 +60,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
                 () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
+        // HashTagOption
         List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
         CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions);
 

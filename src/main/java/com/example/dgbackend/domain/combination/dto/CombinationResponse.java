@@ -123,6 +123,7 @@ public class CombinationResponse {
         String title;
         String content;
         List<String> hashTagList;
+        List<String> combinationImageList;
     }
 
     public static CombinationResult toCombinationResult(Combination combination,
@@ -131,11 +132,16 @@ public class CombinationResponse {
                 .map(hto -> hto.getHashTag().getName())
                 .toList();
 
+        List<String> imageList = combination.getCombinationImages().stream()
+                .map(CombinationImage::getImageUrl)
+                .toList();
+
         return CombinationResult.builder()
                 .combinationId(combination.getId())
                 .title(combination.getTitle())
                 .content(combination.getContent())
                 .hashTagList(hashTagList)
+                .combinationImageList(imageList)
                 .build();
     }
 

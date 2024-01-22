@@ -9,11 +9,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.dto.S3Result;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -21,6 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @PropertySource("classpath:application.yml")
@@ -40,7 +41,7 @@ public class S3Service {
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "잘못된 형식의 파일(" + fileName + ") 입니다.");
+                    "잘못된 형식의 파일(" + fileName + ") 입니다.");
         }
     }
 
@@ -60,10 +61,10 @@ public class S3Service {
 
             try (InputStream inputStream = file.getInputStream()) {
                 amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream,
-                    objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
+                        objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "파일 업로드에 실패했습니다.");
+                        "파일 업로드에 실패했습니다.");
             }
             fileList.add(new S3Result(amazonS3Client.getUrl(bucket, fileName).toString()));
         });
@@ -71,7 +72,21 @@ public class S3Service {
     }
 
     public void deleteFile(String fileName) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        try {
+            String s3File = extractKeyFromUrl(fileName);
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, s3File));
+        } catch (AmazonServiceException e) {
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
+        }
+    }
+
+    private String extractKeyFromUrl(String imageUrl) {
+        String bucketPrefix = "https://" + bucket + ".s3." + region + ".amazonaws.com/";
+        if (imageUrl.startsWith(bucketPrefix)) {
+            return imageUrl.substring(bucketPrefix.length());
+        } else {
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
+        }
     }
 
 }

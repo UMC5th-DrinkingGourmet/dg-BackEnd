@@ -17,7 +17,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService{
     RecommendRepository recommendRepository;
 
     @Override
-    public void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo) {
+    public void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl) {
         Recommend recommend = Recommend.builder()
                 .desireLevel(recommendRequestDTO.getDesireLevel())
                 .foodName(recommendRequestDTO.getFoodName())

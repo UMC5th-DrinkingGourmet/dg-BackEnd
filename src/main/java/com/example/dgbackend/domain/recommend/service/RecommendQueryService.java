@@ -5,5 +5,5 @@ import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 
 public interface RecommendQueryService {
 
-    void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo);
+    void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
 }

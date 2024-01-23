@@ -24,9 +24,11 @@ public class RecommendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "주류 추천 성공"),
     })
     @PostMapping("/request")
-    public ApiResponse<RecommendResponse.RecommendResponseDTO> patchRecommendInfo(@RequestParam(name = "Member ID") Long memberID, @RequestBody RecommendRequest.RecommendRequestDTO recommendDTO){
+    public ApiResponse<RecommendResponse.RecommendResponseDTO> patchRecommendInfo(@RequestParam(name = "MemberID") Long memberID, @RequestBody RecommendRequest.RecommendRequestDTO recommendDTO){
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
+        RecommendResponse.RecommendResponseDTO response = recommendCommandService.requestRecommend(memberID, recommendDTO);
 
-        return ApiResponse.onSuccess(recommendCommandService.requestRecommend(memberID, recommendDTO));
+        return ApiResponse.onSuccess(response);
     }
+
 }

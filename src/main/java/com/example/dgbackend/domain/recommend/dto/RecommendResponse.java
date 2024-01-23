@@ -15,20 +15,10 @@ public class RecommendResponse {
     @NoArgsConstructor
     @Getter
     public static class RecommendResponseDTO {
-        String foodName;
-        String drinkName;
-        String recommendReason;
-    }
-
-    /*
-    주류 추천 응답 이미지 DTO
-     */
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class RecommendImageResponseDTO {
-        String imageUrl;
+        String foodName;            //음식 이름
+        String drinkName;           //술 이름
+        String recommendReason;     //추천 이유
+        String imageUrl;            //이미지 S3 URL
     }
 
     @Builder

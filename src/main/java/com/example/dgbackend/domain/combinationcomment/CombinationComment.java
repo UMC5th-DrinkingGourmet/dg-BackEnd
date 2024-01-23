@@ -8,6 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Getter
 @AllArgsConstructor
@@ -22,9 +25,11 @@ public class CombinationComment extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    @ColumnDefault("0")
-    private Long parentId; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private CombinationComment parentComment; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
+    @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +39,9 @@ public class CombinationComment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "combination_id")
     private Combination combination;
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<CombinationComment> childComments = new ArrayList<>();
 
     //== 연관관계 관련 메서드 ==//
     public void setCombination(Combination combination) {

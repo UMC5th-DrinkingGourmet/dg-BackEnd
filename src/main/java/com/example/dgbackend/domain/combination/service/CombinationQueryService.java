@@ -1,5 +1,7 @@
 package com.example.dgbackend.domain.combination.service;
 
+import com.example.dgbackend.domain.combination.Combination;
+
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
 
 public interface CombinationQueryService {
@@ -9,4 +11,6 @@ public interface CombinationQueryService {
     CombinationDetailResult getCombinationDetailResult(Long combinationId);
 
     CombinationEditResult getCombinationEditResult(Long combinationId);
+
+    Combination getCombination(Long combinationId);
 }

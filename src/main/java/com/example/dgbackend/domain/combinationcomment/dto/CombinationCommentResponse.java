@@ -65,7 +65,7 @@ public class CombinationCommentResponse {
     }
 
     /**
-     * 오늘의 조합 댓글 처리 DTO
+     * 오늘의 조합 댓글 DTO
      */
     @Builder
     @AllArgsConstructor
@@ -87,16 +87,16 @@ public class CombinationCommentResponse {
                 .content(combinationComment.getContent())
                 .memberName(combinationComment.getMember().getName())
                 .updatedAt(combinationComment.getUpdatedAt())
-                .childComments(getComments(combinationComment))
+                .childComments(getChildComments(combinationComment))
                 .build();
     }
 
-    private static List<CommentResult> getComments(CombinationComment combinationComment) {
+    private static List<CommentResult> getChildComments(CombinationComment combinationComment) {
 
         return Optional.ofNullable(combinationComment.getChildComments())
-                .orElse(new ArrayList<>())
+                .orElse(new ArrayList<>()) // 자식 댓글 없는 경우
                 .stream()
-                .filter(CombinationComment::isState)
+                .filter(CombinationComment::isState) // 존재하는 댓글만 필터링
                 .map(CombinationCommentResponse::toCommentResult)
                 .toList();
     }

@@ -92,4 +92,14 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return CombinationResponse.toCombinationEditResult(combination, hashTagOptions, combinationImages);
     }
+
+    /*
+     * Combination 조회
+     */
+    @Override
+    public Combination getCombination(Long combinationId) {
+        return combinationRepository.findById(combinationId).orElseThrow(
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        );
+    }
 }

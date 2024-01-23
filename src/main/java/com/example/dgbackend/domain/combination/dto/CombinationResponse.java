@@ -67,7 +67,7 @@ public class CombinationResponse {
     // Combination -> CombinationPreviewDTO로 변환
     public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
                                                                       List<List<HashTagOption>> hashTagOptions) {
-        // TODO: 대표 이지미 정하기
+        // TODO: 대표 이미지 정하기
         String imageUrl = combination.getCombinationImages()
                 .stream()
                 .findFirst()
@@ -124,10 +124,12 @@ public class CombinationResponse {
         String content;
         List<String> hashTagList;
         List<String> combinationImageList;
+        Boolean isCombinationLike;
     }
 
     public static CombinationResult toCombinationResult(Combination combination,
-                                                        List<HashTagOption> hashTagOptions) {
+                                                        List<HashTagOption> hashTagOptions,
+                                                        boolean isCombinationLike) {
         List<String> hashTagList = hashTagOptions.stream()
                 .map(hto -> hto.getHashTag().getName())
                 .toList();
@@ -142,6 +144,7 @@ public class CombinationResponse {
                 .content(combination.getContent())
                 .hashTagList(hashTagList)
                 .combinationImageList(imageList)
+                .isCombinationLike(isCombinationLike)
                 .build();
     }
 

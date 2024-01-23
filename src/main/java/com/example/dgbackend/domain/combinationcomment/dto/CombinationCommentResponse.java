@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CombinationCommentResponse {
 
@@ -41,7 +44,7 @@ public class CombinationCommentResponse {
         return CombinationCommentPreviewResult.builder()
                 .combinationCommentId(comment.getId())
                 .content(comment.getContent())
-                .parentId(comment.getParentId())
+//                .parentId(comment.getParentId())
                 .build();
     }
 
@@ -60,4 +63,42 @@ public class CombinationCommentResponse {
                 .isLast(comments.isLast())
                 .build();
     }
+
+    /**
+     * 오늘의 조합 댓글 처리 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CommentResult {
+
+        private Long id;
+        private String content;
+        private String memberName;
+        private LocalDateTime updatedAt; // 댓글 생성 및 수정 시간
+        private List<CommentResult> childComments = new ArrayList<>();
+    }
+
+    public static CommentResult toCommentResult(CombinationComment combinationComment) {
+
+        return CommentResult.builder()
+                .id(combinationComment.getId())
+                .content(combinationComment.getContent())
+                .memberName(combinationComment.getMember().getName())
+                .updatedAt(combinationComment.getUpdatedAt())
+                .childComments(getComments(combinationComment))
+                .build();
+    }
+
+    private static List<CommentResult> getComments(CombinationComment combinationComment) {
+
+        return Optional.ofNullable(combinationComment.getChildComments())
+                .orElse(new ArrayList<>())
+                .stream()
+                .filter(CombinationComment::isState)
+                .map(CombinationCommentResponse::toCommentResult)
+                .toList();
+    }
+
 }

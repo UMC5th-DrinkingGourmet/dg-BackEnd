@@ -30,6 +30,9 @@ public enum ErrorStatus implements BaseErrorCode {
     //S3 관련
     _S3_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "S3_001", "S3에 존재하지 않는 이미지입니다"),
 
+    //Paging 관련
+    _PAGE_RANGE_ERROR(HttpStatus.BAD_REQUEST, "PAGE_001", "적절한 페이지 번호가 아닙니다."),
+
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),

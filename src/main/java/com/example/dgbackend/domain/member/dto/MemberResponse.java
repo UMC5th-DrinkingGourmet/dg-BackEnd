@@ -7,6 +7,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class MemberResponse {
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class MemberResult {
+        Long memberId;
+        String name;
+        String profileImageUrl;
+    }
+
+    public static MemberResult toMemberResult(Member member) {
+        return MemberResult.builder()
+                .memberId(member.getId())
+                .name(member.getName())
+                .profileImageUrl(member.getProfileImageUrl())
+                .build();
+    }
+
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor

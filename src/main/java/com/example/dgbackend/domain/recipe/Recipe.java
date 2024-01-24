@@ -1,24 +1,17 @@
 package com.example.dgbackend.domain.recipe;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Builder
 public class Recipe extends BaseTimeEntity {
 
     @Id
@@ -51,10 +44,27 @@ public class Recipe extends BaseTimeEntity {
 
     private String recommendCombination; //추천받은 조합
 
+    @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Recipe update(RecipeRequest recipeResponseDto) {
+        this.name = recipeResponseDto.getName();
+        this.info = recipeResponseDto.getInfo();
+        this.cookingTime = recipeResponseDto.getCookingTime();
+        this.calorie = recipeResponseDto.getCalorie();
+        this.ingredient = recipeResponseDto.getIngredient();
+        this.recipeInstruction = recipeResponseDto.getRecipeInstruction();
+        this.recommendCombination = recipeResponseDto.getRecommendCombination();
+        return this;
+    }
+
+    public Recipe delete() {
+        this.state = false;
+        return this;
+    }
 
 }

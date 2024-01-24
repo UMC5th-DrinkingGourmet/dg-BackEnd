@@ -18,13 +18,35 @@ public enum ErrorStatus implements BaseErrorCode {
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
 
+    //오늘의 조합 관련
+    _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
+
+    //Recommend 관련
+    _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
+
+    //CombinationImage 관련
+    _COMBINATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_IMAGE_001", "존재하지 않는 이미지입니다."),
+
+    //S3 관련
+    _S3_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "S3_001", "S3에 존재하지 않는 이미지입니다"),
+
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
 
     //주류 추천 관련
     _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_001", "취하고 싶은 정도를 입력해주세요."),
-    _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "음식 이름을 입력해주세요.");
+    _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "음식 이름을 입력해주세요."),
+  
+    //레시피
+    _EMPTY_RECIPE(HttpStatus.CONFLICT, "RECIPE_001", "존재하지 않는 레시피입니다."),
+    _DELETE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_002", "삭제된 레시피입니다."),
+    _ALREADY_CREATE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_003", "이미 존재하는 레시피입니다."),
+
+    //레시피 댓글
+    _EMPTY_RECIPE_COMMENT(HttpStatus.CONFLICT, "RECIPE_COMMENT_001", "존재하지 않는 레시피 댓글입니다."),
+    _OVER_DEPTH_RECIPE_COMMENT(HttpStatus.BAD_REQUEST, "RECIPE_COMMENT_003", "대댓글까지만 가능합니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;
@@ -33,20 +55,20 @@ public enum ErrorStatus implements BaseErrorCode {
     @Override
     public ErrorReasonDto getReason() {
         return ErrorReasonDto.builder()
-            .message(message)
-            .code(code)
-            .isSuccess(false)
-            .build();
+                .message(message)
+                .code(code)
+                .isSuccess(false)
+                .build();
     }
 
     @Override
     public ErrorReasonDto getReasonHttpStatus() {
         return ErrorReasonDto.builder()
-            .message(message)
-            .code(code)
-            .isSuccess(false)
-            .httpStatus(httpStatus)
-            .build()
-            ;
+                .message(message)
+                .code(code)
+                .isSuccess(false)
+                .httpStatus(httpStatus)
+                .build()
+                ;
     }
 }

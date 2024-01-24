@@ -14,9 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberCommandServiceImpl implements MemberCommandService{
+public class MemberCommandServiceImpl implements MemberCommandService {
     @Autowired
     MemberRepository memberRepository;
+
     @Override
     public MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID, MemberRequest.RecommendInfoDTO requestInfoDTO) {
         Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));

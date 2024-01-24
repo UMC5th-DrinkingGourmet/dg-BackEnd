@@ -38,5 +38,18 @@ public class RecommendController {
 
         return ApiResponse.onSuccess(response);
     }
+  
 
-}
+
+    @Operation(summary = "오늘의 조합 - 추천 받은 조합의 정보 조회", description = "추천 받은 조합을 선택하여 오늘의 조합을 작성합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 조회 성공")
+    })
+    @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
+    @PostMapping("/{recommendId}")
+    public ApiResponse<RecommendResponse.RecommendResult> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
+
+        return ApiResponse.onSuccess(recommendQueryService.getRecommendResult(recommendId));
+    }
+
+

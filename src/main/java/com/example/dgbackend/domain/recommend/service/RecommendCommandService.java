@@ -8,4 +8,5 @@ public interface RecommendCommandService {
 
     RecommendResponse.RecommendResponseDTO requestRecommend(Long memberID, RecommendRequest.RecommendRequestDTO recommendRequestDTO);
     String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO);
+
 }

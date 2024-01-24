@@ -260,5 +260,4 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
         return userInfo;
     }
 
-
 }

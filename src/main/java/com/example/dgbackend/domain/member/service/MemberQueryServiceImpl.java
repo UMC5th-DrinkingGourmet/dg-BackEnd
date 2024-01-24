@@ -7,5 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
-public class MemberQueryServiceImpl implements MemberQueryService{
+public class MemberQueryServiceImpl implements MemberQueryService {
 }

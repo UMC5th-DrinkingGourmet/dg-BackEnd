@@ -9,6 +9,10 @@ import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
 import com.example.dgbackend.global.s3.dto.S3Result;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -76,8 +80,20 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
         String content = message.get("content").toString();
 
         //GPT API 응답에서 주종, 이유 추출
-        String drinkType = content.split("\n")[0];
-        String reason = content.split("\n")[1];
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> gptResult = new HashMap<String, String>();
+        try {
+            gptResult = mapper.readValue(content, new TypeReference<Map<String, String>>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        String drinkType = gptResult.get("Alcohol");
+        String reason = gptResult.get("Reason");
+
+//        String drinkType = content.split("\n")[0];
+//        String reason = content.split("\n")[1];
 
         //추천 결과 이미지 생성
         String imageUrl = makeCombinationImage(memberID, drinkType, recommendRequestDTO);
@@ -97,7 +113,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
     주류 추천 요청에 사용할 프롬프트 생성 메소드
     member : 추천 요청을 보내는 사용자의 Member 객체
     recommendRequestDTO : 추천 요청 정보
-    temperature : GPT API temperature parameter. 높을수록 수록 다양한 문장 생성. 높을수록 생성 속도 저하 (0.0 ~ 1.0)
+    temperature : GPT API temperature parameter. 높을수록 수록 다양한 문장 생성. 높을수록 생성 속도 저하 (0.0 ~ 2.0)
     max_token : GPT API max_token parameter. 생성할 최대 문장 길이
      */
     private Map<String, Object> generateChatPrompt(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, float temperature, int max_token) {
@@ -113,32 +129,35 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
                 .role("system")
                 .content(roleExplain)
                 .build());
-
+        //GPT에 답변 형식 제공 (Form)
+        messages.add(RecommendRequest.GPTMessage.builder()
+                .role("system")
+                .content("\"You are tasked with recommending the type of alcohol that best pairs with the user's chosen food. " +
+                        "When making the recommendation, you consider the preferred type of alcohol, " +
+                        "preferred alcohol strength, drinking capacity, frequency of drinking, " +
+                        "desired level of intoxication, \"name of the food\", mood, and weather. " +
+                        "The result is produced in JSON format with two components: \"Alcohol\" and \"Reason\". " +
+                        "In \"Alcohol\", only the name of the alcohol is written. The \"Reason\" consists of a 3-4 line explanation. " +
+                        "Please respond only values in Korean.\"")
+                .build());
         //GPT에 유저 정보 제공 (Context)
         String userInfo = generateUserInfo(member, recommendRequestDTO);
         messages.add(RecommendRequest.GPTMessage.builder()
-                .role("assistant")
+                .role("system")
                 .content(userInfo)
-                .build());
-        //GPT에 답변 형식 제공 (Form)
-        messages.add(RecommendRequest.GPTMessage.builder()
-                .role("assistant")
-                .content("The response format has two sections, each sections are separated by \"\\n\". The first is <Type of Alcohol>, " +
-                        "and the second is <Reason for Recommendation>. In the <Type of Alcohol> section, " +
-                        "please write only the recommended type of alcohol, without any additional words. " +
-                        "In the <Reason for Recommendation> section, please write about 3-4 lines explaining why you recommend it. " +
-                        "All responses should be in Korean.")
                 .build());
         //GPT에 질문 (작업)
         messages.add(RecommendRequest.GPTMessage.builder()
                 .role("user")
-                .content( "Please recommend one type of alcohol that pairs best with the dish they will be eating and provide a 3~4 sentence explanation."+
-                        "You should response in Korean.")
+                .content("Please recommend one type of alcohol that pairs best with the dish they will be eating and provide a 3~4 sentence explanation.")
                 .build());
 
         Map<String, Object> prompt = new HashMap<>();
         prompt.put("model", API_CHAT_MODEL);
         prompt.put("messages",messages);
+//        Map<String, String> formatType = new HashMap<>();
+//        formatType.put("type", "json_object");
+//        prompt.put("response_format", formatType);
         prompt.put("temperature", temperature);
         prompt.put("max_tokens", max_token);
 
@@ -222,18 +241,18 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
     private String generateUserInfo(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO) {
         // 필수 정보
         //순서: 선호 주종, 선호 도수, 주량, 음주 횟수, 취하고 싶은 정도, 음식 이름
-        String userInfo = String.format("The preferred type of alcohol for the person you are recommending is \"%s\". " +
-                "Their preferred alcohol content is \"%s\". " +
-                "Their drinking capacity is \"%s\". " +
-                "The frequency of their drinking is \"%s\". " +
-                "They wish to be intoxicated to a level \"%s\" out of 5. " +
-                "The dish they will be eating is \"%s\". ", member.getPreferredAlcoholType(), member.getPreferredAlcoholDegree()
+        String userInfo = String.format("The user's preferred type of alcohol: \"%s\". " +
+                        "The degree of intoxication the user desires: \"%s\". " +
+                        "The user's drinking capacity: \"%s\". " +
+                        "The user's frequency of drinking: \"%s\". " +
+                        "The degree of intoxication the user wants to achieve (1~5): \"%s\". " +
+                        "The food the user will eat: \"%s\". ", member.getPreferredAlcoholType(), member.getPreferredAlcoholDegree()
         , member.getDrinkingLimit(), member.getDrinkingTimes(), recommendRequestDTO.getDesireLevel(), recommendRequestDTO.getFoodName());
 
         //선택 정보 입력
         //기분
         if(recommendRequestDTO.getFeeling() != null)
-            userInfo += String.format("Their mood is \"%s\". ", recommendRequestDTO.getFeeling());
+            userInfo += String.format("The user's mood is \"%s\". ", recommendRequestDTO.getFeeling());
         //날씨
         if(recommendRequestDTO.getWeather() != null)
             userInfo += String.format("The current weather is \"%s\". ", recommendRequestDTO.getWeather());

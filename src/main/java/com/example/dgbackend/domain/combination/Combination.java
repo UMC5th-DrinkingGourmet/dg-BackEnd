@@ -64,6 +64,7 @@ public class Combination extends BaseTimeEntity {
 
     public void addCombinationComment(CombinationComment combinationComment) {
         combinationComments.add(combinationComment);
+        commentCount += 1;
         combinationComment.setCombination(this);
     }
 

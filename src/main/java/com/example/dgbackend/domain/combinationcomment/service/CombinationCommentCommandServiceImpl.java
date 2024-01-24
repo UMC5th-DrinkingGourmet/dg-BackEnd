@@ -39,7 +39,10 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         Member loginMember = memberRepository.findById(1L).get();
 
         // Comment 생성
-        return toCommentResult(createComment(combination, loginMember, request));
+        CombinationComment newComment = createComment(combination, loginMember, request);
+
+        combination.addCombinationComment(newComment);
+        return toCommentResult(newComment);
     }
 
     @Override

@@ -101,12 +101,12 @@ public class CombinationResponse {
     public static class CombinationDetailResult {
         CombinationResult combinationResult;
         MemberResponse.MemberResult memberResult;
-        CombinationCommentResponse.CombinationCommentResult combinationCommentResult;
+        CombinationCommentResponse.CommentPreViewResult combinationCommentResult;
     }
 
     public static CombinationDetailResult toCombinationDetailResult(CombinationResult combinationResult,
                                                                     MemberResponse.MemberResult memberResult,
-                                                                    CombinationCommentResponse.CombinationCommentResult combinationCommentResult) {
+                                                                    CombinationCommentResponse.CommentPreViewResult combinationCommentResult) {
         return CombinationDetailResult.builder()
                 .combinationResult(combinationResult)
                 .memberResult(memberResult)

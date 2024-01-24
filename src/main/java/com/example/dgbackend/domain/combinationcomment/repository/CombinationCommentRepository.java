@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CombinationCommentRepository extends JpaRepository<CombinationComment, Long> {
 
-    Page<CombinationComment> findAllByCombination(Combination combination, Pageable pageable);
+    Page<CombinationComment> findAllByCombinationId(Long combinationId, Pageable pageable);
 }

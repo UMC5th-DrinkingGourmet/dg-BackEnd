@@ -3,8 +3,6 @@ package com.example.dgbackend.domain.combination.service;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
-import com.example.dgbackend.domain.combinationcomment.CombinationComment;
-import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
@@ -22,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCombinationCommentResult;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
 import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
 @Service
@@ -68,10 +66,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         MemberResponse.MemberResult memberResult = toMemberResult(member);
 
         // CombinationComment
-        Page<CombinationComment> combinationComments =
-                combinationCommentQueryService.getCombinationCommentFromCombination(combination, PageRequest.of(0, 10));
-
-        CombinationCommentResponse.CombinationCommentResult combinationCommentResult = toCombinationCommentResult(combinationComments);
+        CommentPreViewResult combinationCommentResult = combinationCommentQueryService.getCommentsFromCombination(combinationId, 0);
 
         return toCombinationDetailResult(combinationResult, memberResult, combinationCommentResult);
     }

@@ -1,11 +1,8 @@
 package com.example.dgbackend.domain.combinationcomment.service;
 
-import com.example.dgbackend.domain.combination.Combination;
-import com.example.dgbackend.domain.combinationcomment.CombinationComment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
 
 public interface CombinationCommentQueryService {
 
-    Page<CombinationComment> getCombinationCommentFromCombination(Combination combination, PageRequest pageRequest);
+    CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page);
 }

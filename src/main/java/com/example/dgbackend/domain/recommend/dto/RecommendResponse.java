@@ -31,6 +31,8 @@ public class RecommendResponse {
         private RecommendRequest.GPTMessage message;
     }
 
+    @Builder
+    @Getter
     public static class RecommendResult {
         String drinkName;
         String drinkInfo;

@@ -9,4 +9,6 @@ public interface CombinationQueryService {
     CombinationDetailResult getCombinationDetailResult(Long combinationId);
 
     CombinationEditResult getCombinationEditResult(Long combinationId);
+
+    boolean existCombination(Long combinationId);
 }

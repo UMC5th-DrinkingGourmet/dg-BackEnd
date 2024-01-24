@@ -5,17 +5,21 @@ import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.service.CombinationCommandService;
 import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.validation.annotation.CheckPage;
+import com.example.dgbackend.global.validation.annotation.ExistCombination;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @Tag(name = "오늘의 조합 API")
 @RestController
+@Validated
 @RequestMapping("/combinations")
 @RequiredArgsConstructor
 public class CombinationController {
@@ -29,7 +33,7 @@ public class CombinationController {
     })
     @Parameter(name = "page", description = "오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("")
-    public ApiResponse<CombinationResponse.CombinationPreviewResultList> getCombinations(@RequestParam(name = "page") Integer page) {
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> getCombinations(@CheckPage @RequestParam(name = "page") Integer page) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewResultList(page));
     }
 
@@ -39,7 +43,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}")
-    public ApiResponse<CombinationResponse.CombinationDetailResult> getDetailCombination(@PathVariable(name = "combinationId") Long combinationId) {
+    public ApiResponse<CombinationResponse.CombinationDetailResult> getDetailCombination(@ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationDetailResult(combinationId));
     }
 
@@ -63,7 +67,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}/edit")
-    public ApiResponse<CombinationResponse.CombinationEditResult> editCombination(@PathVariable(name = "combinationId") Long combinationId) {
+    public ApiResponse<CombinationResponse.CombinationEditResult> editCombination(@ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationEditResult(combinationId));
     }
 
@@ -73,7 +77,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @PatchMapping("/{combinationId}")
-    public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(@PathVariable(name = "combinationId") Long combinationId,
+    public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(@ExistCombination @PathVariable(name = "combinationId") Long combinationId,
                                                                                       @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request) throws IOException {
         return ApiResponse.onSuccess(combinationCommandService.editCombination(combinationId, request));
     }
@@ -84,7 +88,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @DeleteMapping("/{combinationId}")
-    public ApiResponse<CombinationResponse.CombinationProcResult> deleteCombination(@PathVariable(name = "combinationId") Long combinationId) {
+    public ApiResponse<CombinationResponse.CombinationProcResult> deleteCombination(@ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
 
         return ApiResponse.onSuccess(combinationCommandService.deleteCombination(combinationId));
     }

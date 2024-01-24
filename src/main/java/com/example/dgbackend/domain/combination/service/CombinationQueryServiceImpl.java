@@ -87,4 +87,9 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return CombinationResponse.toCombinationEditResult(combination, hashTagOptions, combinationImages);
     }
+
+    @Override
+    public boolean existCombination(Long combinationId) {
+        return combinationRepository.existsById(combinationId);
+    }
 }

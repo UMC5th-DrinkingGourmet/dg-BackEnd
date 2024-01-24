@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.combinationcomment.controller;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.validation.annotation.CheckPage;
+import com.example.dgbackend.global.validation.annotation.ExistCombination;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -32,7 +33,7 @@ public class CombinationCommentController {
             @Parameter(name = "page", description = "특정 오늘의 조합의  댓글 목록 페이지 번호, query string 입니다.")
     })
     @GetMapping("/{combinationId}")
-    public ApiResponse<CommentPreViewResult> getCombinationComments(@PathVariable(name = "combinationId") Long combinationId,
+    public ApiResponse<CommentPreViewResult> getCombinationComments(@ExistCombination @PathVariable(name = "combinationId") Long combinationId,
                                                                     @CheckPage @RequestParam(name = "page") Integer page) {
 
         return ApiResponse.onSuccess(combinationCommentQueryService.getCommentsFromCombination(combinationId, page));

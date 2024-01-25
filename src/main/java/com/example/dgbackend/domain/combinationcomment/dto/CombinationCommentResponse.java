@@ -73,7 +73,8 @@ public class CombinationCommentResponse {
                 .updatedAt(combinationComment.getUpdatedAt())
                 .childCount(getChildCount(combinationComment))
                 .childComments(getChildComments(combinationComment))
-   }
+                .build();
+    }
 
 
     private static List<CommentResult> getChildComments(CombinationComment combinationComment) {

@@ -29,15 +29,7 @@ public class RecommendController {
     @PostMapping("/request")
     public ApiResponse<RecommendResponse.RecommendResponseDTO> patchRecommendInfo(@RequestParam(name = "MemberID") Long memberID, @RequestBody RecommendRequest.RecommendRequestDTO recommendDTO) {
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
-
-        if (recommendDTO.getDesireLevel() == null)
-            throw new ApiException(ErrorStatus._NULL_DESIRE_LEVEL);
-        if (recommendDTO.getFoodName() == null)
-            throw new ApiException(ErrorStatus._NULL_FOOD_NAME);
-
-        RecommendResponse.RecommendResponseDTO response = recommendCommandService.requestRecommend(memberID, recommendDTO);
-
-        return ApiResponse.onSuccess(response);
+        return ApiResponse.onSuccess(recommendCommandService.requestRecommend(memberID, recommendDTO));
     }
 
 

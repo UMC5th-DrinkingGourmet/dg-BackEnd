@@ -56,6 +56,11 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
      */
     @Override
     public RecommendResponse.RecommendResponseDTO requestRecommend(Long memberID, RecommendRequest.RecommendRequestDTO recommendRequestDTO) {
+        if (recommendRequestDTO.getDesireLevel() == null)
+            throw new ApiException(ErrorStatus._NULL_DESIRE_LEVEL);
+        if (recommendRequestDTO.getFoodName() == null)
+            throw new ApiException(ErrorStatus._NULL_FOOD_NAME);
+
         // 사용자 선호 정보 추출을 위한 Member 객체 생성
         Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
@@ -91,9 +96,6 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
 
         String drinkType = gptResult.get("Alcohol");
         String reason = gptResult.get("Reason");
-
-//        String drinkType = content.split("\n")[0];
-//        String reason = content.split("\n")[1];
 
         //추천 결과 이미지 생성
         String imageUrl = makeCombinationImage(memberID, drinkType, recommendRequestDTO);

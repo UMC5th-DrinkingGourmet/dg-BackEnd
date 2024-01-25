@@ -91,5 +91,14 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public boolean existCombination(Long combinationId) {
         return combinationRepository.existsById(combinationId);
+
+    /*
+     * Combination 조회
+     */
+    @Override
+    public Combination getCombination(Long combinationId) {
+        return combinationRepository.findById(combinationId).orElseThrow(
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        );
     }
 }

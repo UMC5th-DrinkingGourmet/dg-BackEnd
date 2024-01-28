@@ -72,7 +72,7 @@ public class CombinationCommentResponse {
                 .memberName(combinationComment.getMember().getName())
                 .updatedAt(combinationComment.getUpdatedAt())
                 .childCount(getChildCount(combinationComment))
-                .childComments(getChildComments(combinationComment))
+                .childComments(getChildComments(combinationComment)).build();
    }
 
 

@@ -8,4 +8,5 @@ public interface RecommendQueryService {
 
     void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
     RecommendResult getRecommendResult(Long recommendId);
+    RecommendResult deleteRecommend(Long recommendId);          //추천 삭제
 }

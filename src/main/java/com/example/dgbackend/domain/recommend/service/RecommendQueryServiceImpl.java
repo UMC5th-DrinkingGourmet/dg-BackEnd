@@ -2,6 +2,8 @@ package com.example.dgbackend.domain.recommend.service;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
+import com.example.dgbackend.global.s3.S3Service;
+import com.example.dgbackend.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.dgbackend.domain.recommend.Recommend;
@@ -18,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RecommendQueryServiceImpl implements RecommendQueryService{
     @Autowired
-    RecommendRepository recommendRepository;
+    private final RecommendRepository recommendRepository;
+    private final S3Service s3Service;
 
     @Override
     public void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl) {
@@ -29,7 +32,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService{
                 .weather(recommendRequestDTO.getWeather())
                 .drinkName(drinkName)
                 .drinkInfo(drinkInfo)
-                .imageUrl("temp")
+                .imageUrl(imageUrl)
                 .member(member)
                 .build();
         recommendRepository.save(recommend);
@@ -45,5 +48,17 @@ public class RecommendQueryServiceImpl implements RecommendQueryService{
 
         return RecommendResponse.toRecommendResult(recommend);
 
+    }
+
+    @Override
+    public RecommendResponse.RecommendResult deleteRecommend(Long recommendId) {
+        Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
+                () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
+        );
+
+        s3Service.deleteFile(recommend.getImageUrl());
+        recommendRepository.delete(recommend);
+
+        return RecommendResponse.toRecommendResult(recommend);
     }
 }

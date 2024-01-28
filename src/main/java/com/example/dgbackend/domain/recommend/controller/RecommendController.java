@@ -51,7 +51,7 @@ public class RecommendController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 리스트 조회 성공")
     })
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@RequestParam(name = "MemberID") Long memberID, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
         Member member = memberRepository.findById(memberID).orElseThrow(

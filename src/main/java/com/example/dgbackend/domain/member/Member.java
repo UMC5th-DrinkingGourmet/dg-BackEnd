@@ -13,7 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Builder
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -85,5 +84,20 @@ public class Member extends BaseTimeEntity {
      */
     public void setDrinkingLimit(String drinkingLimit) {
         this.drinkingLimit = drinkingLimit;
+    }
+
+    public Member update (String name, String nickName, String birthDate, String phoneNumber, String profileImageUrl, Gender gender) {
+        this.name = name;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+        this.profileImageUrl = profileImageUrl;
+        this.gender = gender;
+
+        return this;
+    }
+
+    public void signout() {
+        this.state = false;
     }
 }

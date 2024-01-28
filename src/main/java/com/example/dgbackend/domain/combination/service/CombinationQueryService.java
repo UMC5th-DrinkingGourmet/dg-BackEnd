@@ -16,4 +16,6 @@ public interface CombinationQueryService {
 
     Combination getCombination(Long combinationId);
 
+    CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
+
 }

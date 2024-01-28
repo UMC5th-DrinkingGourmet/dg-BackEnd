@@ -92,4 +92,13 @@ public class CombinationController {
 
         return ApiResponse.onSuccess(combinationCommandService.deleteCombination(combinationId));
     }
+
+    @Operation(summary = "내가 작성한 오늘의 조합 조회", description = "작성한 오늘의 조합 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내가 작성한 오늘의 조합 목록 조회 성공")
+    })
+    @GetMapping("/my-page")
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getMyPageCombinations(@RequestParam(name="Member Id") Long memberId, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationMyPageList(memberId, page));
+    }
 }

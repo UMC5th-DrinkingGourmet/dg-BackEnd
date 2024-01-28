@@ -92,6 +92,63 @@ public class CombinationResponse {
     }
 
     /**
+     * 오늘의 조합 마이페이지 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationMyPageList {
+        List<CombinationMyPage> combinationList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationMyPage {
+        String title;
+        String combinationImageUrl;
+    }
+
+    public static CombinationMyPageList toCombinationMyPageList(Page<Combination> combinations) {
+
+        List<CombinationMyPage> combinationMyPages = combinations.getContent()
+                .stream()
+                .map(combo -> toCombinationMyPage(combo))
+                .collect(Collectors.toList());
+
+        return CombinationMyPageList.builder()
+                .combinationList(combinationMyPages)
+                .listSize(combinationMyPages.size())
+                .totalPage(combinations.getTotalPages())
+                .totalElements(combinations.getTotalElements())
+                .isFirst(combinations.isFirst())
+                .isLast(combinations.isLast())
+                .build();
+    }
+
+    public static CombinationMyPage toCombinationMyPage(Combination combination) {
+        // TODO: 대표 이미지 정하기
+        String imageUrl = combination.getCombinationImages()
+                .stream()
+                .findFirst()
+                .map(CombinationImage::getImageUrl)
+                .orElse(null);
+
+        return CombinationMyPage.builder()
+                .title(combination.getTitle())
+                .combinationImageUrl(imageUrl)
+                .build();
+    }
+
+
+    /**
      * 오늘의 조합 상세 정보 DTO
      */
     @Builder

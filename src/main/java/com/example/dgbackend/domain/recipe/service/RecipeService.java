@@ -4,6 +4,7 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.List;
 
@@ -27,4 +28,5 @@ public interface RecipeService {
 
     void isAlreadyCreate(String RecipeName, String memberName);
 
+    RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer Page);
 }

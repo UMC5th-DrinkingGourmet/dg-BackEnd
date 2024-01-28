@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.member.dto;
 
+import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,33 @@ public class MemberResponse {
                 .profileImageUrl(member.getProfileImageUrl())
                 .build();
     }
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class GetMember {
+        Long memberId;
+        String name;
+        String nickName;
+        Gender gender;
+        String birthDate;
+        String phoneNumber;
+        String profileImageUrl;
+    }
+
+    public static GetMember toGetMember(Member member) {
+        return GetMember.builder()
+                .memberId(member.getId())
+                .name(member.getName())
+                .nickName(member.getNickName())
+                .gender(member.getGender())
+                .birthDate(member.getBirthDate())
+                .phoneNumber(member.getPhoneNumber())
+                .profileImageUrl(member.getProfileImageUrl())
+                .build();
+    }
+
 
     @Builder
     @AllArgsConstructor

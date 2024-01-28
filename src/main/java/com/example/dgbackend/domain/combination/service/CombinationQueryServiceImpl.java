@@ -91,6 +91,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public boolean existCombination(Long combinationId) {
         return combinationRepository.existsById(combinationId);
+    }
 
     /*
      * Combination 조회
@@ -101,4 +102,15 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
                 () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
     }
+
+    /*
+     * 내가 작성한 오늘의 조합 조회
+     */
+    @Override
+    public CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page) {
+        Page<Combination> combinations = combinationRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toCombinationMyPageList(combinations);
+    }
 }
+

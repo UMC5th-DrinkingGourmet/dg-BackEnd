@@ -11,9 +11,13 @@ import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
 
 @Service
 @RequiredArgsConstructor
@@ -85,6 +89,14 @@ public class RecipeServiceImpl implements RecipeService {
                 .ifPresent(recipe -> {
                     throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
                 });
+    }
+
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+
+
+        return toRecipeMyPageList(recipePage);
     }
 
 }

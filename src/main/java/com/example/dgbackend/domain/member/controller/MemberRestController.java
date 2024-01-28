@@ -30,4 +30,26 @@ public class MemberRestController {
 
         return ApiResponse.onSuccess(memberCommandService.patchRecommendInfo(memberID, recommendInfoDTO));
     }
+
+    @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 수정 성공"),
+    })
+    @PatchMapping
+    public ApiResponse<MemberResponse.GetMember> patchMember(@RequestParam(name = "Member ID") Long memberID, @RequestBody MemberRequest.PatchMember patchMember) {
+        // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
+
+        return ApiResponse.onSuccess(memberCommandService.patchMember(memberID, patchMember));
+    }
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴를 진행합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 탈퇴 성공"),
+    })
+    @PatchMapping("/sign-out")
+    public ApiResponse<String> patchSignOut(@RequestParam(name = "Member ID") Long memberID) {
+        // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
+
+        return ApiResponse.onSuccess(memberCommandService.patchSignOut(memberID));
+    }
 }

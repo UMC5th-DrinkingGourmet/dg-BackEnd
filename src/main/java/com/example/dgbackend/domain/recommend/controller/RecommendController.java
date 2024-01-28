@@ -1,5 +1,7 @@
 package com.example.dgbackend.domain.recommend.controller;
 
+import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.service.RecommendCommandService;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class RecommendController {
     private final RecommendCommandService recommendCommandService;
     private final RecommendQueryService recommendQueryService;
+    private final MemberRepository memberRepository;
 
     @Operation(summary = "주류 추천 요청", description = "GPT API에 추류 추천 요청을 보내고 응답을 받아옵니다.")
     @ApiResponses(value = {
@@ -42,6 +45,20 @@ public class RecommendController {
     public ApiResponse<RecommendResponse.RecommendResult> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.getRecommendResult(recommendId));
+    }
+
+    @Operation(summary = "추천 받은 조합 리스트 조회", description = "유저의 추천 받은 조합을 리스트로 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 리스트 조회 성공")
+    })
+    @PostMapping("/list")
+    public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@RequestParam(name = "MemberID") Long memberID, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
+        // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
+        Member member = memberRepository.findById(memberID).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+
+        return ApiResponse.onSuccess(recommendQueryService.getRecommendListResult(member, page, size));
     }
 }
 

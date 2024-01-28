@@ -33,4 +33,14 @@ public class RecommendRequest {
         private String role;
         private String content;
     }
+
+    /*
+    Recommend List 요청 DTO
+     */
+    @Builder
+    @Getter
+    public static class RecommendListDTO{
+        private Integer page;
+        private Integer size;
+    }
 }

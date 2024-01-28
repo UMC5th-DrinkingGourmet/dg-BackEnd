@@ -10,8 +10,12 @@ import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -45,5 +49,20 @@ public class RecommendQueryServiceImpl implements RecommendQueryService{
 
         return RecommendResponse.toRecommendResult(recommend);
 
+    }
+
+    @Override
+    public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        Page<Recommend> pageList = recommendRepository.findAllByMemberId(member.getId(), pageable);
+
+        return RecommendResponse.RecommendListResult.builder()
+                .recommendResponseDTOList(pageList.map(RecommendResponse::toRecommendResult).toList())
+                .listSize(pageList.getSize())
+                .totalPage(pageList.getTotalPages())
+                .totalElements(pageList.getTotalElements())
+                .isFirst(pageList.isFirst())
+                .isLast(pageList.isLast())
+                .build();
     }
 }

@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class RecommendResponse {
   
     /*
     주류 추천 응답 DTO
      */
-
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -31,12 +32,24 @@ public class RecommendResponse {
         private RecommendRequest.GPTMessage message;
     }
 
+    //TODO :RecommendResponseDTO와 통합할 예정
     @Builder
     @Getter
     public static class RecommendResult {
         String drinkName;
         String drinkInfo;
         String imageUrl;
+    }
+
+    @Getter
+    @Builder
+    public static class RecommendListResult {
+        List<RecommendResult> recommendResponseDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
     }
 
     public static RecommendResult toRecommendResult(Recommend recommend) {

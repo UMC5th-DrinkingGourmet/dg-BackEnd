@@ -9,7 +9,11 @@ public interface CombinationLikeQueryService {
 
     boolean isCombinationLike(Combination combination, Member member);
 
-    Boolean changeCombinationLike(Member member, Long combinationId);
+    Boolean changeCombinationLike(Long memberId, Long combinationId);
 
     Optional<CombinationLike> getCombinationLikeEntity(Member member, Long combinationId);
+
+    Combination getCombinationEntity(Long combinationId);
+
+    CombinationLike createCombinationLike(Long combinationId, Member member);
 }

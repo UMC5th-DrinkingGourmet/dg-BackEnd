@@ -75,4 +75,14 @@ public class Combination extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
+
+    /**
+     * CombinationLike 관련 메서드
+     */
+    public void increaseLikeCount() {
+        this.likeCount ++;
+    }
+    public void decreaseLikeCount() {
+        this.likeCount --;
+    }
 }

@@ -116,7 +116,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     public CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            10L, pageRequest);
+            30L, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()

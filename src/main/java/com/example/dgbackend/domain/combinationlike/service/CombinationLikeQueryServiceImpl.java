@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.combinationlike.service;
 
 import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combinationlike.CombinationLike;
 import com.example.dgbackend.domain.combinationlike.repository.CombinationLikeRepository;
 import com.example.dgbackend.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,12 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
     public boolean isCombinationLike(Combination combination, Member member) {
 
         return combinationLikeRepository.existsByCombinationAndMember(combination, member);
+    }
+
+    @Override
+    @Transactional
+    public Boolean changeCombinationLike(Member member, Long combinationId) {
+
+        return true;
     }
 }

@@ -10,5 +10,5 @@ public interface RecommendQueryService {
 
     void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
     RecommendResult getRecommendResult(Long recommendId);
-    RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size);
+    RecommendResponse.RecommendListResult getRecommendListResult(Long memberID, Integer page, Integer size);
 }

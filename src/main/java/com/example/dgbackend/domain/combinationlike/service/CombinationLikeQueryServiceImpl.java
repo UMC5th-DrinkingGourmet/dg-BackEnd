@@ -36,29 +36,18 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
 
         Optional<CombinationLike> combinationLike = getCombinationLikeEntity(member, combinationId);
 
-        CombinationLike savedCombinationLike = combinationLike.map(CombinationLike::changeState)
-            .orElseGet(() -> createCombinationLike(combinationId, member));
-
-        return savedCombinationLike.nowCombinationLikeState();
-    }
-
-    public Combination getCombinationEntity(Long combinationId) {
-        return combinationRepository.findById(combinationId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND));
-    }
-
-    public CombinationLike createCombinationLike(Long combinationId, Member member) {
-        return combinationLikeRepository.save(
-            new CombinationLike(getCombinationEntity(combinationId), member));
+        return true;
     }
 
     //조합 id와 멤버 이름으로 조합 좋아요 엔티티를 조회
     @Override
     public Optional<CombinationLike> getCombinationLikeEntity(Member member, Long combinationId) {
+        Combination combination = combinationRepository.findById(combinationId)
+            .orElseThrow(() -> new ApiException(
+                ErrorStatus._COMBINATION_NOT_FOUND));
 
         Member memberByName = memberService.findMemberByName(member.getName());
 
-        return combinationLikeRepository.findByCombinationAndMember(
-            getCombinationEntity(combinationId), memberByName);
+        return combinationLikeRepository.findByCombinationAndMember(combination, memberByName);
     }
 }

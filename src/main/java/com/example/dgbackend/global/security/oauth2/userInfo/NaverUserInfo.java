@@ -3,7 +3,6 @@ package com.example.dgbackend.global.security.oauth2.userInfo;
 import lombok.AllArgsConstructor;
 
 import java.util.Map;
-import java.util.Objects;
 
 @AllArgsConstructor
 public class NaverUserInfo implements OAuth2UserInfo {
@@ -59,7 +58,7 @@ public class NaverUserInfo implements OAuth2UserInfo {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
         String gender = (String) response.get("gender");
 
-        if(gender.equals("F")) {
+        if (gender.equals("F")) {
             return "FEMALE";
         } else
             return "MALE";

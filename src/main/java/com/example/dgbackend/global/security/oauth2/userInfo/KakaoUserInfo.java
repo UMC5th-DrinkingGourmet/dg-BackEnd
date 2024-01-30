@@ -5,26 +5,26 @@ import lombok.AllArgsConstructor;
 import java.util.Map;
 
 @AllArgsConstructor
-public class KakaoUserInfo implements OAuth2UserInfo{
+public class KakaoUserInfo implements OAuth2UserInfo {
 
     private Map<String, Object> attributes;
 
     @Override
     public String getProfile() {
-        Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
-        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
 
         return (String) kakaoProfile.get("profile_image_url");
     }
 
     @Override
     public String getEmail() {
-        return (String) ((Map)attributes.get("kakao_account")).get("email");
+        return (String) ((Map) attributes.get("kakao_account")).get("email");
     }
 
     @Override
     public String getName() {
-        return (String) ((Map)attributes.get("kakao_account")).get("name");
+        return (String) ((Map) attributes.get("kakao_account")).get("name");
     }
 
     @Override
@@ -41,7 +41,7 @@ public class KakaoUserInfo implements OAuth2UserInfo{
 
         String birthYear = (String) kakaoAccount.get("birthyear");
         String birthDay = (String) kakaoAccount.get("birthday");
-        return birthYear+birthDay;
+        return birthYear + birthDay;
     }
 
     @Override

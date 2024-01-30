@@ -1,6 +1,5 @@
 package com.example.dgbackend.global.security.oauth2.controller;
 
-import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.security.oauth2.service.CustomOAuth2UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

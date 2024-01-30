@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     // TODO: 추후 프론트 주소로 변경
-    private final String frontendRedirectUrl = "http://localhost:8080/myPage";
+    private final String frontendRedirectUrl = "https://drink-gourmet.kro.kr/myPage";
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
     private final RedisUtil redisUtil;

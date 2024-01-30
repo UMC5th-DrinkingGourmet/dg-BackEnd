@@ -47,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Gender gender;
 
             if (oAuth2UserInfo.getGender().equals("F")) {
-                gender= Gender.valueOf("FEMALE");
+                gender = Gender.valueOf("FEMALE");
             } else if (oAuth2UserInfo.getGender().equals("M")) {
                 gender = Gender.valueOf("MALE");
             } else {

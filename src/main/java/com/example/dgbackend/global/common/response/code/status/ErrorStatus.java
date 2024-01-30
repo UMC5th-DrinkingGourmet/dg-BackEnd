@@ -20,7 +20,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
-    _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다.");
+    _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
+    _REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_003", "Refresh Token이 존재하지 않습니다."),
+
+    //Redis 관련
+    _REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_001", "Redis에 존재하지 않는 Key 입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -1,10 +1,15 @@
 package com.example.dgbackend.global.util;
 
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class CookieUtil {
@@ -37,21 +42,19 @@ public class CookieUtil {
 
     // Cookie에서 Refresh Token 얻기
     public Cookie getRefreshTokenFromCookie(HttpServletRequest request) {
-        return getCookie(request, "refreshToken");
+        return getCookie(request, "refreshToken").orElseThrow(
+                () -> new ApiException(ErrorStatus._REFRESH_TOKEN_NOT_FOUND)
+        );
     }
 
     // 특정 이름의 Cookie 얻기
-    public Cookie getCookie(HttpServletRequest request, String cookieName) {
+    public Optional<Cookie> getCookie(HttpServletRequest request, String cookieName) {
+
         Cookie[] cookies = request.getCookies();
 
-        if (cookies == null) {
-            return null;
-        }
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(cookieName)) {
-                return cookie;
-            }
-        }
-        return null;
+        return Optional.ofNullable(cookies)
+                .flatMap(cookieArray -> Arrays.stream(cookieArray)
+                        .filter(cookie -> cookie.getName().equals(cookieName))
+                        .findFirst());
     }
 }

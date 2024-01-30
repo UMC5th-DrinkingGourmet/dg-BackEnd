@@ -49,12 +49,9 @@ public class AuthService {
      */
     public ResponseEntity<?> reIssueAccessToken(HttpServletRequest request) {
 
-        Cookie refreshTokenCookie = cookieUtil.getCookie(request, "refreshToken");
-
-        // Cookie에 refresh Token이 없는 경우
-        if (refreshTokenCookie == null) {
-            throw new ApiException(ErrorStatus._REFRESH_TOKEN_NOT_FOUND);
-        }
+        Cookie refreshTokenCookie = cookieUtil.getCookie(request, "refreshToken").orElseThrow(
+                () -> new ApiException(ErrorStatus._REFRESH_TOKEN_NOT_FOUND)
+        );
 
         String refreshToken = refreshTokenCookie.getValue();
         String memberEmail = jwtProvider.getMemberEmailFromToken(refreshToken);

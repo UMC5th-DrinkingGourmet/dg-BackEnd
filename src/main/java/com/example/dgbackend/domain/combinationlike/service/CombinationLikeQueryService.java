@@ -6,6 +6,4 @@ import com.example.dgbackend.domain.member.Member;
 public interface CombinationLikeQueryService {
 
     boolean isCombinationLike(Combination combination, Member member);
-
-    Boolean changeCombinationLike(Member member, Long combinationId);
 }

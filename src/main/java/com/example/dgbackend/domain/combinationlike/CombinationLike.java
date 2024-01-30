@@ -3,7 +3,13 @@ package com.example.dgbackend.domain.combinationlike;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +35,23 @@ public class CombinationLike extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    public CombinationLike(Combination combination, Member member) {
+        this.combination = combination;
+        this.member = member;
+        this.combination.increaseLikeCount();
+    }
+
+    public CombinationLike changeState() {
+        this.state = !this.state;
+        if (!this.state) {
+            this.combination.decreaseLikeCount();
+        } else {
+            this.combination.increaseLikeCount();
+        }
+        return this;
+    }
+
+    public Boolean nowCombinationLikeState() {
+        return this.state;
+    }
 }

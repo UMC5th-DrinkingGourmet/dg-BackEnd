@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class RecommendResponse {
-  
+
     /*
     주류 추천 응답 DTO
      */
@@ -27,7 +27,7 @@ public class RecommendResponse {
 
     @Builder
     @Getter
-    public static class GPTResponse{
+    public static class GPTResponse {
         private int index;
         private RecommendRequest.GPTMessage message;
     }

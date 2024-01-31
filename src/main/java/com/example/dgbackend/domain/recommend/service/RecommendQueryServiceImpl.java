@@ -2,28 +2,23 @@ package com.example.dgbackend.domain.recommend.service;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
-import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
-import com.example.dgbackend.global.s3.S3Service;
-import com.example.dgbackend.global.s3.dto.S3Result;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.example.dgbackend.domain.recommend.Recommend;
+import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+import com.example.dgbackend.global.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RecommendQueryServiceImpl implements RecommendQueryService{
+public class RecommendQueryServiceImpl implements RecommendQueryService {
     private final RecommendRepository recommendRepository;
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
@@ -42,8 +37,8 @@ public class RecommendQueryServiceImpl implements RecommendQueryService{
                 .build();
         recommendRepository.save(recommend);
     }
-        
-        
+
+
     @Override
     public RecommendResponse.RecommendResult getRecommendResult(Long recommendId) {
 

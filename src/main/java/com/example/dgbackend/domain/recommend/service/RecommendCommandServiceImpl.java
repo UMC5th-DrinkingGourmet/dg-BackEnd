@@ -12,7 +12,6 @@ import com.example.dgbackend.global.s3.dto.S3Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,13 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RecommendCommandServiceImpl implements RecommendCommandService{
+public class RecommendCommandServiceImpl implements RecommendCommandService {
     private final RecommendRepository recommendRepository;
     private final MemberRepository memberRepository;
     private final RecommendQueryService recommendQueryService;
@@ -156,7 +153,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
 
         Map<String, Object> prompt = new HashMap<>();
         prompt.put("model", API_CHAT_MODEL);
-        prompt.put("messages",messages);
+        prompt.put("messages", messages);
 //        Map<String, String> formatType = new HashMap<>();
 //        formatType.put("type", "json_object");
 //        prompt.put("response_format", formatType);
@@ -172,7 +169,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
     drinkType : 추천된 주종
     requestDTO : 추천 요청 정보
      */
-    public String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO){
+    public String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO) {
         // 사용자 선호 정보 추출을 위한 Member 객체 생성
         Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
@@ -186,7 +183,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
 
         Map<String, Object> body = new HashMap<>();
         body.put("model", API_IMAGE_MODEL);
-        body.put("prompt",prompt);
+        body.put("prompt", prompt);
         body.put("n", 1);
         body.put("size", API_IMAGE_SIZE);
         body.put("response_format", "b64_json");
@@ -220,8 +217,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
     mood : 유저 기분
     weather : 현재 날씨
      */
-    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather)
-    {
+    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather) {
         String prompt = "You create the right images based on food and alcohol pairings, " +
                 "considering the given combination, the user's mood, " +
                 "and the current weather. The images should prominently feature both the food and the alcohol. " +
@@ -229,9 +225,9 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
                 "The images you create are used to recommend alcohol based on the food, stimulate appetite, " +
                 "and gain empathy. When creating the images, make sure no text is visible.";
 
-        if(mood != null)
+        if (mood != null)
             prompt += String.format("The user's mood is \"%s\". ", mood);
-        if(weather != null)
+        if (weather != null)
             prompt += String.format("The current weather is \"%s\". ", weather);
 
         prompt += String.format("The combination is \"%s과(와) %s\". Make an image please.", foodName, drinkyType);
@@ -249,14 +245,14 @@ public class RecommendCommandServiceImpl implements RecommendCommandService{
                         "The user's frequency of drinking: \"%s\". " +
                         "The degree of intoxication the user wants to achieve (1~5): \"%s\". " +
                         "The food the user will eat: \"%s\". ", member.getPreferredAlcoholType(), member.getPreferredAlcoholDegree()
-        , member.getDrinkingLimit(), member.getDrinkingTimes(), recommendRequestDTO.getDesireLevel(), recommendRequestDTO.getFoodName());
+                , member.getDrinkingLimit(), member.getDrinkingTimes(), recommendRequestDTO.getDesireLevel(), recommendRequestDTO.getFoodName());
 
         //선택 정보 입력
         //기분
-        if(recommendRequestDTO.getFeeling() != null)
+        if (recommendRequestDTO.getFeeling() != null)
             userInfo += String.format("The user's mood is \"%s\". ", recommendRequestDTO.getFeeling());
         //날씨
-        if(recommendRequestDTO.getWeather() != null)
+        if (recommendRequestDTO.getWeather() != null)
             userInfo += String.format("The current weather is \"%s\". ", recommendRequestDTO.getWeather());
 
         return userInfo;

@@ -1,14 +1,11 @@
 package com.example.dgbackend.domain.recommend.controller;
 
-import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.service.RecommendCommandService;
 import com.example.dgbackend.domain.recommend.service.RecommendQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
-import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
-import com.example.dgbackend.global.exception.ApiException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -54,9 +51,9 @@ public class RecommendController {
     @GetMapping("/list/{MemberID}")
     public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@PathVariable(name = "MemberID") Long memberID, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
         return ApiResponse.onSuccess(recommendQueryService.getRecommendListResult(memberID, page, size));
-      
+
     }
-  
+
     @Operation(summary = "오늘의 조합 - 추천 받은 조합 삭제", description = "추천 받은 조합을 선택하여 오늘의 조합을 작성합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 삭제 성공")
@@ -66,7 +63,7 @@ public class RecommendController {
     public ApiResponse<RecommendResponse.RecommendResult> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.deleteRecommend(recommendId));
-      
+
     }
 }
 

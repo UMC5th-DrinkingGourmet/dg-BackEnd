@@ -3,20 +3,14 @@ package com.example.dgbackend.domain.combinationcomment;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,9 +24,11 @@ public class CombinationComment extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    @ColumnDefault("0")
-    private Long parentId; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private CombinationComment parentComment; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
+    @Builder.Default
     private boolean state = true; //true : 존재, false : 삭제
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,4 +39,20 @@ public class CombinationComment extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    @OneToMany(mappedBy = "parentComment")
+    private List<CombinationComment> childComments = new ArrayList<>();
+
+    //== 연관관계 관련 메서드 ==//
+    public void setCombination(Combination combination) {
+        this.combination = combination;
+    }
+
+    public void deleteComment() {
+        this.state = false;
+    }
+  
+
+    public void updateComment(String content) {
+        this.content = content;
+    }
 }

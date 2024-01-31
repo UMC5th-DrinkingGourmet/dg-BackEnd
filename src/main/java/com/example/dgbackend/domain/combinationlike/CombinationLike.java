@@ -35,4 +35,23 @@ public class CombinationLike extends BaseTimeEntity {
     @JoinColumn(name = "combination_id")
     private Combination combination;
 
+    public CombinationLike(Combination combination, Member member) {
+        this.combination = combination;
+        this.member = member;
+        this.combination.increaseLikeCount();
+    }
+
+    public CombinationLike changeState() {
+        this.state = !this.state;
+        if (!this.state) {
+            this.combination.decreaseLikeCount();
+        } else {
+            this.combination.increaseLikeCount();
+        }
+        return this;
+    }
+
+    public Boolean nowCombinationLikeState() {
+        return this.state;
+    }
 }

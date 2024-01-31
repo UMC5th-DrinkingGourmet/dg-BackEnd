@@ -18,6 +18,25 @@ public enum ErrorStatus implements BaseErrorCode {
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
 
+    //오늘의 조합 관련
+    _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
+
+    //오늘의 조합 댓글
+    _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001", "존재하지 않는 오늘의 조합 댓글입니다."),
+    _OVER_DEPTH_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_002", "대댓글까지만 가능합니다."),
+
+    //Recommend 관련
+    _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
+
+    //CombinationImage 관련
+    _COMBINATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_IMAGE_001", "존재하지 않는 이미지입니다."),
+
+    //S3 관련
+    _S3_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "S3_001", "S3에 존재하지 않는 이미지입니다"),
+
+    //Paging 관련
+    _PAGE_RANGE_ERROR(HttpStatus.BAD_REQUEST, "PAGE_001", "적절한 페이지 번호가 아닙니다."),
+
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
@@ -25,7 +44,24 @@ public enum ErrorStatus implements BaseErrorCode {
     _EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "만료된 Token입니다."),
 
     //Redis 관련
-    _REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_001", "Redis에 존재하지 않는 Key 입니다.");
+    _REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_001", "Redis에 존재하지 않는 Key 입니다."),
+
+    //주류 추천 관련
+    _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_001", "취하고 싶은 정도를 입력해주세요."),
+    _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "음식 이름을 입력해주세요."),
+  
+    //레시피
+    _EMPTY_RECIPE(HttpStatus.CONFLICT, "RECIPE_001", "존재하지 않는 레시피입니다."),
+    _DELETE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_002", "삭제된 레시피입니다."),
+    _ALREADY_CREATE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_003", "이미 존재하는 레시피입니다."),
+
+    //레시피 댓글
+    _EMPTY_RECIPE_COMMENT(HttpStatus.CONFLICT, "RECIPE_COMMENT_001", "존재하지 않는 레시피 댓글입니다."),
+    _OVER_DEPTH_RECIPE_COMMENT(HttpStatus.BAD_REQUEST, "RECIPE_COMMENT_003", "대댓글까지만 가능합니다."),
+
+    //레시피 이미지
+    _EMPTY_RECIPE_IMAGE(HttpStatus.CONFLICT, "RECIPE_IMAGE_001", "존재하지 않는 레시피 이미지입니다."),
+    _NOTHING_RECIPE_IMAGE(HttpStatus.BAD_REQUEST, "RECIPE_IMAGE_001", "레시피 이미지가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

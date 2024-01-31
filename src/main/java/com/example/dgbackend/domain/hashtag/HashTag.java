@@ -1,16 +1,15 @@
 package com.example.dgbackend.domain.hashtag;
 
+import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,4 +23,16 @@ public class HashTag extends BaseTimeEntity {
     @NotNull
     private String name;
 
+    @OneToMany(mappedBy = "hashTag", cascade = CascadeType.ALL)
+    List<HashTagOption> hashTagOptionList = new ArrayList<>();
+
+    /**
+     * 연관관계 편의 메소드
+     */
+    public void addHashTagOption(HashTagOption hashTagOption) {
+        hashTagOptionList.add(hashTagOption);
+        if (hashTagOption.getHashTag() != this) {
+            hashTagOption.setHashTag(this);
+        }
+    }
 }

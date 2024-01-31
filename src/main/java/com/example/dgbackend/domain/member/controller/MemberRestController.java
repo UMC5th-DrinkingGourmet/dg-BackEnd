@@ -24,6 +24,7 @@ public class MemberRestController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 추천 정보 저장 성공"),
     })
     @PatchMapping("/recommend-info")
+
     public ApiResponse<MemberResponse.RecommendInfoDTO> patchRecommendInfo(@RequestParam(name = "Member ID") Long memberID, @RequestBody MemberRequest.RecommendInfoDTO recommendInfoDTO) {
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
 

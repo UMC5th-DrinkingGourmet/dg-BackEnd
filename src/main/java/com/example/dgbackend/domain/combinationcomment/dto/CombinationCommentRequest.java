@@ -26,4 +26,12 @@ public class CombinationCommentRequest {
                 .combination(combination)
                 .build();
     }
+
+    @Getter
+    @Schema(name = "오늘의 조합 댓글 수정 요청 DTO")
+    public static class UpdateComment {
+
+        private String content;
+    }
+
 }

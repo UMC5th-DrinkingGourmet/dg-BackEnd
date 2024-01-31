@@ -47,10 +47,12 @@ public class CombinationComment extends BaseTimeEntity {
         this.combination = combination;
     }
 
-    /**
-     * Comment delete
-     */
     public void deleteComment() {
         this.state = false;
+    }
+  
+
+    public void updateComment(String content) {
+        this.content = content;
     }
 }

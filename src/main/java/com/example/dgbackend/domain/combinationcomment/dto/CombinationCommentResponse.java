@@ -109,6 +109,7 @@ public class CombinationCommentResponse {
     }
 
     public static CombinationCommentResponse.CommentProcResult toCommentProcResult(Long commentId) {
+
         return CommentProcResult.builder()
                 .commentId(commentId)
                 .createdAt(LocalDateTime.now())

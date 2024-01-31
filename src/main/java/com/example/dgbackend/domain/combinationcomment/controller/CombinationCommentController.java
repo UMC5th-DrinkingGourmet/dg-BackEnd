@@ -58,6 +58,7 @@ public class CombinationCommentController {
         return ApiResponse.onSuccess(combinationCommentCommandService.saveCombinationComment(combinationId, request));
     }
 
+
     @Operation(summary = "오늘의 조합 댓글 삭제", description = "오늘의 조합에 댓글을 삭제합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 댓글 삭제 성공")
@@ -67,5 +68,17 @@ public class CombinationCommentController {
     public ApiResponse<CombinationCommentResponse.CommentProcResult> deleteCombinationComment(@PathVariable(name = "commentId") Long commentId) {
 
         return ApiResponse.onSuccess(combinationCommentCommandService.deleteComment(commentId));
+    }
+      
+    @Operation(summary = "오늘의 조합 댓글 수정", description = "오늘의 조합의 댓글을 수정합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 댓글 수정 성공")
+    })
+    @Parameter(name = "commentId", description = "수정하는 댓글 Id, Path Variable 입니다.")
+    @PatchMapping("/{commentId}")
+    public ApiResponse<CombinationCommentResponse.CommentProcResult> updateCombinationComment(@PathVariable(name = "commentId") Long commentId,
+                                                                                              @RequestBody CombinationCommentRequest.UpdateComment request) {
+
+        return ApiResponse.onSuccess(combinationCommentCommandService.updateComment(commentId, request));
     }
 }

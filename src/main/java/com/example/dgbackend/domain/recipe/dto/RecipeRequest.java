@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,23 +16,30 @@ import lombok.NoArgsConstructor;
 public class RecipeRequest {
 
     @NotNull
+    @Schema(description = "레시피 이름", example = "김치찌개")
     private String name;
 
     @NotNull
+    @Schema(description = "레시피 소개", example = "맛있는 김치찌개")
     private String info;
 
     @NotNull
+    @Schema(description = "조리시간", example = "30분")
     private String cookingTime;
 
     @NotNull
+    @Schema(description = "칼로리", example = "500kcal")
     private String calorie;
 
     @NotNull
+    @Schema(description = "재료", example = "김치, 돼지고기, 두부")
     private String ingredient;
 
     @NotNull
+    @Schema(description = "레시피 순서", example = "1. 김치를 넣는다. 2. 물을 넣는다.")
     private String recipeInstruction;
 
+    @Schema(description = "추천 조합", example = "김치찌개와 참이슬")
     private String recommendCombination;
 
     public static Recipe toEntity(RecipeRequest recipeRequest, Member member) {

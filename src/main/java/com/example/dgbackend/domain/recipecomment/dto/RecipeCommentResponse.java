@@ -1,6 +1,8 @@
 package com.example.dgbackend.domain.recipecomment.dto;
 
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,14 +20,18 @@ import java.util.Optional;
 public class RecipeCommentResponse {
 
     @NotNull
+    @Schema(description = "댓글 Id", example = "1")
     private Long id;
 
     @NotNull
+    @Schema(description = "댓글 내용", example = "맛있어요")
     private String content;
 
+    @Schema(description = "작성자", example = "김동규")
     private String MemberName;
 
     @Builder.Default
+    @Schema(description = "자식 댓글 목록", example = "[]")
     private List<RecipeCommentResponse> childCommentList = new ArrayList<>();
 
     public static RecipeCommentResponse toResponse(RecipeComment recipeComment) {

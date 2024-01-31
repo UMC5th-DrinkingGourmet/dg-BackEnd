@@ -1,8 +1,10 @@
 package com.example.dgbackend.domain.combination.service;
 
-import com.example.dgbackend.domain.combination.Combination;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
+import com.example.dgbackend.domain.combination.Combination;
 
 public interface CombinationQueryService {
 
@@ -15,5 +17,7 @@ public interface CombinationQueryService {
     boolean existCombination(Long combinationId);
 
     Combination getCombination(Long combinationId);
+
+    CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
 
 }

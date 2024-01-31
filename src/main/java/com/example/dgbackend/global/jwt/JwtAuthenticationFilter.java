@@ -45,10 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean isPublicUri(String requestURI) {
         return
                 requestURI.startsWith("/swagger-ui/**") ||
-                requestURI.startsWith("/**") ||
-                requestURI.startsWith("/favicon.ico") ||
-                requestURI.startsWith("/login/**") ||
-                requestURI.startsWith("/auth/logout");
+                        requestURI.startsWith("/**") ||
+                        requestURI.startsWith("/favicon.ico") ||
+                        requestURI.startsWith("/login/**") ||
+                        requestURI.startsWith("/auth/logout");
     }
 
     // "Bearer "로 시작하는지 확인

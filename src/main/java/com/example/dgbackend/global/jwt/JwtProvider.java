@@ -3,6 +3,8 @@ package com.example.dgbackend.global.jwt;
 import com.example.dgbackend.domain.enums.Role;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.util.RedisUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -101,9 +103,9 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-//            throw new ApiException()
+            throw new ApiException(ErrorStatus._INVALID_JWT);
         } catch (Exception e) {
-//            throw new ApiException()
+            throw new ApiException(ErrorStatus._INVALID_JWT);
         }
     }
 

@@ -15,10 +15,12 @@ import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationlike.service.CombinationLikeQueryService;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import java.util.List;
@@ -36,6 +38,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     private final CombinationRepository combinationRepository;
     private final HashTagOptionRepository hashTagOptionRepository;
     private final CombinationCommentQueryService combinationCommentQueryService;
+    private final MemberRepository memberRepository;
+    private final CombinationLikeQueryService combinationLikeQueryService;
 
     /*
     오늘의 조합 홈 조회(페이징)
@@ -63,11 +67,19 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
             () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
-        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
-            combination);
-        CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions);
 
-        // Member
+        // TODO : Login Member 추후에 Token을 통해 정보 얻기
+        Member loginMember = memberRepository.findById(1L).get();
+
+        // CombinationLike
+        boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination, loginMember);
+
+        // HashTagOption
+        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
+        CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions, isCombinationLike);
+
+
+        // Member - 작성자
         Member member = combination.getMember();
         MemberResponse.MemberResult memberResult = toMemberResult(member);
 

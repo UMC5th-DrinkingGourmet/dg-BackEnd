@@ -6,8 +6,6 @@ import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +45,12 @@ public class CombinationComment extends BaseTimeEntity {
     //== 연관관계 관련 메서드 ==//
     public void setCombination(Combination combination) {
         this.combination = combination;
+    }
+
+    /**
+     * Comment Update
+     */
+    public void updateComment(String content) {
+        this.content = content;
     }
 }

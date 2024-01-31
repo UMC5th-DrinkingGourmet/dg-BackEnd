@@ -3,6 +3,8 @@ package com.example.dgbackend.domain.combinationcomment.service;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest;
+import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
@@ -16,8 +18,7 @@ import java.util.Optional;
 
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.WriteComment;
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.toCombinationComment;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentResult;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCommentResult;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.*;
 
 @Service
 @Transactional
@@ -74,5 +75,15 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         return combinationCommentRepository.findById(commentId).orElseThrow(
                 () -> new ApiException(ErrorStatus._COMBINATION_COMMENT_NOT_FOUND)
         );
+    }
+
+    @Override
+    public CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request) {
+
+        CombinationComment combinationComment = getComment(commentId);
+
+        combinationComment.updateComment(request.getContent());
+
+        return toCommentProcResult(commentId);
     }
 }

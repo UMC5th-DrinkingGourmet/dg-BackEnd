@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Builder
 @Getter
 @Builder
 @AllArgsConstructor
@@ -42,8 +41,10 @@ public class Member extends BaseTimeEntity {
     private Gender gender;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private String provider;
+
+    @NotNull
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     private Role role;

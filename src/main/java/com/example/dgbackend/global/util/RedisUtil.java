@@ -20,9 +20,9 @@ public class RedisUtil {
     }
 
     // Key: Value 저장 시 만료기한 설정
-    public void setDataExpire(String key, String value, Duration duration) {
+    public void setDataExpire(String key, String value, long validTime) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
-        valueOperations.set(key, value, duration);
+        valueOperations.set(key, value, Duration.ofMillis(validTime));
     }
 
     // Redis에서 특정 Key를 가진 Value 삭제

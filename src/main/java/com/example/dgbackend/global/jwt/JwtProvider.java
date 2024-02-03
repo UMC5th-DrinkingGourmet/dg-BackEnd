@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,10 +34,13 @@ public class JwtProvider {
 
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
-    public static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
+    @Value("${jwt.token.access-expiration-time}")
+    private long ACCESS_TOKEN_VALID_TIME;
+    @Value("${jwt.token.refresh-expiration-time}")
+    private long REFRESH_TOKEN_VALID_TIME;
 
     /**
      * ACCESS TOKEN 발급
@@ -72,7 +74,7 @@ public class JwtProvider {
                 .compact();
 
         // Redis에 저장
-        redisUtil.setDataExpire(id, refreshToken, Duration.ofDays(7));
+        redisUtil.setDataExpire(id, refreshToken, REFRESH_TOKEN_VALID_TIME);
 
         return refreshToken;
     }
@@ -118,13 +120,14 @@ public class JwtProvider {
     }
 
     private Member getMemberFromToken(String token) {
-        String email = getMemberEmailFromToken(token);
 
-        return memberRepository.findByEmail(email).get();
-//                .orElseThrow(() -> new ApiException())
+        String[] providers = getMemberIdFromToken(token).split("_");
+        return memberRepository.findByProviderAndProviderId(providers[0], providers[1]).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
     }
 
-    public String getMemberEmailFromToken(String token) {
+    public String getMemberIdFromToken(String token) {
         SecretKey secretKey = generateKey();
 
         // parsing 해서 body값 가져오기
@@ -161,10 +164,10 @@ public class JwtProvider {
 
     // Access Token 재발급
     public String refreshAccessToken(String refreshToken) {
-        String userEmail = getMemberEmailFromToken(refreshToken);
+        String id = getMemberIdFromToken(refreshToken);
 
         // Refresh Token의 사용자 정보를 기반으로 새로운 Access Token 발급
-        return generateAccessToken(userEmail);
+        return generateAccessToken(id);
     }
 
     // Access Token을 Header에서 추출

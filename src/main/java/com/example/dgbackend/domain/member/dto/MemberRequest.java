@@ -1,5 +1,9 @@
 package com.example.dgbackend.domain.member.dto;
 
+import com.example.dgbackend.domain.enums.Gender;
+import com.example.dgbackend.domain.enums.Role;
+import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.global.jwt.dto.AuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,5 +20,20 @@ public class MemberRequest {
         private String preferredAlcoholDegree; // 선호 도수
         private String drinkingLimit; //주량
         private String drinkingTimes; // 음주 횟수
+    }
+
+    public static Member toEntity(AuthRequest authRequest) {
+        return Member.builder()
+                .name(authRequest.getName())
+                .nickName(authRequest.getNickName())
+                .email(authRequest.getEmail())
+                .profileImageUrl(authRequest.getProfileImage())
+                .birthDate(authRequest.getBirthDate())
+                .gender(Gender.valueOf(authRequest.getGender().toUpperCase()))
+                .phoneNumber(authRequest.getPhoneNumber())
+                .role(Role.MEMBER)
+                .provider(authRequest.getProvider())
+                .providerId(authRequest.getProviderId())
+                .build();
     }
 }

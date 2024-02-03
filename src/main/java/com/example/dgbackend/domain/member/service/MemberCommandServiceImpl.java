@@ -30,4 +30,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         return MemberResponse.toRecommendInfoDTO(member);
     }
+
+    @Override
+    public void saveMember(Member member) {
+        memberRepository.save(member);
+    }
 }

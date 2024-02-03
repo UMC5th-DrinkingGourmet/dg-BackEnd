@@ -2,7 +2,6 @@ package com.example.dgbackend.domain.member;
 
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
-import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

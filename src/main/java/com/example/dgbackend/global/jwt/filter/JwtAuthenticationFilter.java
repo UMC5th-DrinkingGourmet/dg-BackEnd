@@ -1,5 +1,6 @@
-package com.example.dgbackend.global.jwt;
+package com.example.dgbackend.global.jwt.filter;
 
+import com.example.dgbackend.global.jwt.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,8 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 requestURI.startsWith("/swagger-ui/**") ||
                         requestURI.startsWith("/**") ||
                         requestURI.startsWith("/favicon.ico") ||
-                        requestURI.startsWith("/login/**") ||
-                        requestURI.startsWith("/auth/logout");
+                        requestURI.startsWith("/auth/**");
     }
 
     // "Bearer "로 시작하는지 확인

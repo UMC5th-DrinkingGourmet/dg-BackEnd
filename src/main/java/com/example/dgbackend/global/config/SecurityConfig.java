@@ -1,9 +1,7 @@
-package com.example.dgbackend.global.security;
+package com.example.dgbackend.global.config;
 
-import com.example.dgbackend.global.jwt.JwtAuthenticationFilter;
-import com.example.dgbackend.global.security.oauth2.handler.CustomLogoutHandler;
-import com.example.dgbackend.global.security.oauth2.handler.OAuth2AuthSuccessHandler;
-import com.example.dgbackend.global.security.oauth2.service.CustomOAuth2UserService;
+import com.example.dgbackend.global.jwt.filter.JwtAuthenticationFilter;
+import com.example.dgbackend.global.jwt.handler.CustomLogoutHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2AuthSuccessHandler oAuth2AuthSuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomLogoutHandler customLogoutHandler;
 
@@ -48,8 +44,6 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(
                                         "/swagger-ui/**"
-                                        , "/login/**"
-                                        , "/oauth/**"
                                         , "/favicon.ico"
                                         , "/**"
                                         , "/auth/**"
@@ -57,22 +51,6 @@ public class SecurityConfig {
                                 ).permitAll() // 추후에 hasRole() 설정
                                 .anyRequest().permitAll());
         http
-                .oauth2Login((oauth2Login) ->
-                        oauth2Login
-                                .authorizationEndpoint(authorizationEndpoint ->
-                                        authorizationEndpoint
-                                                .baseUri("/login")
-                                )
-                                .redirectionEndpoint(redirectEndPoint ->
-                                        redirectEndPoint
-                                                .baseUri("/login/oauth2/code/*")
-                                )
-                                .userInfoEndpoint(userInfoEndPoint ->
-                                        userInfoEndPoint
-                                                .userService(customOAuth2UserService)
-                                )
-                                .successHandler(oAuth2AuthSuccessHandler)
-                )
                 .logout((logout) ->
                         logout
                                 .logoutUrl("/logout")

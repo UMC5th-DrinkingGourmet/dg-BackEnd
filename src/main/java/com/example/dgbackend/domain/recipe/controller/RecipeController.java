@@ -34,7 +34,7 @@ public class RecipeController {
     private final MemberRepository memberRepository;
     private Member member = Member.builder()
             .name("김동규").email("email@email.com").birthDate("birthDate")
-            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
+            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE)
             .build();
 
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")

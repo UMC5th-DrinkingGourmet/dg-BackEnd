@@ -3,9 +3,7 @@ package com.example.dgbackend.domain.combinationcomment.service;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
-
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest;
-
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
 import com.example.dgbackend.domain.member.Member;
@@ -87,6 +85,8 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
 
         Optional.ofNullable(combinationComment.getChildComments())
                 .ifPresent(child -> child.forEach(CombinationComment::deleteComment));
+
+        return toCommentProcResult(commentId);
     }
   
     @Override

@@ -29,7 +29,7 @@ public class RecommendRequest {
      */
     @Builder
     @Getter
-    public static class GPTMessage{
+    public static class GPTMessage {
         private String role;
         private String content;
     }

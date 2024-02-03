@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.member;
 
 import com.example.dgbackend.domain.enums.Gender;
+import com.example.dgbackend.domain.enums.Role;
 import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -8,8 +9,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -43,8 +44,12 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String profileImageUrl;
 
+    @Builder.Default
     private boolean state = true; //true: 존재, false: 탈퇴
 
     //주류 추천 정보 입력 내용 변경됨

@@ -15,4 +15,9 @@ public interface CombinationCommentCommandService {
     CombinationComment getParentComment(Long parentId);
 
     CombinationComment getComment(Long commentId);
+
+    CombinationCommentResponse.CommentProcResult deleteComment(Long commentId);
+
+    CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request);
+
 }

@@ -74,7 +74,7 @@ public class CombinationCommentResponse {
                 .childCount(getChildCount(combinationComment))
                 .childComments(getChildComments(combinationComment))
                 .build();
-   }
+    }
 
 
     private static List<CommentResult> getChildComments(CombinationComment combinationComment) {
@@ -96,4 +96,23 @@ public class CombinationCommentResponse {
                 .orElse(null);
     }
 
+    /**
+     * 작성, 수정, 삭제시 응답 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CommentProcResult {
+        Long commentId;
+        LocalDateTime createdAt;
+    }
+
+    public static CombinationCommentResponse.CommentProcResult toCommentProcResult(Long commentId) {
+
+        return CommentProcResult.builder()
+                .commentId(commentId)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 }

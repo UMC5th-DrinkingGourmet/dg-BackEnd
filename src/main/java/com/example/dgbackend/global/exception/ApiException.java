@@ -4,7 +4,7 @@ import com.example.dgbackend.global.common.response.code.ErrorReasonDto;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 
 
-public class ApiException extends RuntimeException{
+public class ApiException extends RuntimeException {
 
     private final ErrorStatus errorStatus;
 

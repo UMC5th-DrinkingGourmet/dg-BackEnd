@@ -99,6 +99,7 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeMyPage {
+        private Long id;
         private String name;
         private String recipeImageUrl;
     }
@@ -130,6 +131,7 @@ public class RecipeResponse {
                 .orElse(null);
 
         return RecipeMyPage.builder()
+                .id(recipe.getId())
                 .name(recipe.getName())
                 .recipeImageUrl(imageUrl)
                 .build();

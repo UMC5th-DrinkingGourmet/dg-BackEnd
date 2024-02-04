@@ -4,7 +4,6 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.List;
 

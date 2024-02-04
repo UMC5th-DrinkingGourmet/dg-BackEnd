@@ -67,4 +67,10 @@ public class RecipeController {
         return ApiResponse.onSuccess("삭제 완료");
     }
 
+    @Operation(summary = "내가 작성한 레시피북 조회", description = "특정 회원의 레시피북 목록을 조회합니다.")
+    @GetMapping("/my-page")
+    public ApiResponse<RecipeResponse.RecipeMyPageList> getMyPageList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(memberId, page));
+    }
+
 }

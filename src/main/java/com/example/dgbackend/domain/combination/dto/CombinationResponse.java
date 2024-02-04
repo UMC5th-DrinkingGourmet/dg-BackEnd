@@ -112,6 +112,7 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationMyPage {
+        Long id;
         String title;
         String combinationImageUrl;
     }
@@ -142,6 +143,7 @@ public class CombinationResponse {
                 .orElse(null);
 
         return CombinationMyPage.builder()
+                .id(combination.getId())
                 .title(combination.getTitle())
                 .combinationImageUrl(imageUrl)
                 .build();

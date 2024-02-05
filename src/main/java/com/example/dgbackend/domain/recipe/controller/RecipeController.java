@@ -73,4 +73,10 @@ public class RecipeController {
         return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(memberId, page));
     }
 
+    @Operation(summary = "내가 좋아요한 레시피북 조회", description = "좋아요를 누른 레시피북 목록을 조회합니다.")
+    @GetMapping("/likes")
+    public ApiResponse<RecipeResponse.RecipeMyPageList> getLikeList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeLikeList(memberId, page));
+    }
+
 }

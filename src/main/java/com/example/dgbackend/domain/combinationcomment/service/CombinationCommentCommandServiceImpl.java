@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.WriteComment;
@@ -97,5 +98,16 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         combinationComment.updateComment(request.getContent());
 
         return toCommentProcResult(commentId);
+    }
+
+    @Override
+    public boolean deleteAllComment(Long memberId) {
+        List<CombinationComment> combinationComments = combinationCommentRepository.findAllByMemberId(memberId);
+
+        for (CombinationComment combinationComment : combinationComments) {
+            combinationComment.deleteComment();
+        }
+
+        return true;
     }
 }

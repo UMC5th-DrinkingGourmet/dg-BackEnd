@@ -10,6 +10,8 @@ import com.example.dgbackend.domain.combinationimage.service.CombinationImageQue
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandService;
+import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
@@ -35,6 +37,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     private final CombinationLikeCommandService combinationLikeCommandService;
     private final CombinationImageQueryService combinationImageQueryService;
     private final CombinationImageCommandService combinationImageCommandService;
+    private final MemberRepository memberRepository;
 
     /**
      * 오늘의 조합 작성
@@ -128,5 +131,17 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
         combinationImageCommandService.updateCombinationImage(combination, request.getCombinationImageList());
 
         return CombinationResponse.toCombinationProcResult(combinationId);
+    }
+
+    @Override
+    public boolean deleteAllCombination(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+        List<Combination> combinationList = combinationRepository.findAllByMember(member);
+        for (Combination combination : combinationList) {
+            deleteCombination(combination.getId());
+        }
+        return true;
     }
 }

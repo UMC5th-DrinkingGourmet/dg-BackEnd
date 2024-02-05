@@ -37,8 +37,8 @@ public class MemberResponse {
         String nickName;
         Gender gender;
         String birthDate;
-        String phoneNumber;
         String profileImageUrl;
+        String phoneNumber;
     }
 
     public static GetMember toGetMember(Member member) {
@@ -48,8 +48,8 @@ public class MemberResponse {
                 .nickName(member.getNickName())
                 .gender(member.getGender())
                 .birthDate(member.getBirthDate())
-                .phoneNumber(member.getPhoneNumber())
                 .profileImageUrl(member.getProfileImageUrl())
+                .phoneNumber(member.getPhoneNumber())
                 .build();
     }
 

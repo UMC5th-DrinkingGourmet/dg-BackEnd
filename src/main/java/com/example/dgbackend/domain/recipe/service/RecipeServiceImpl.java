@@ -99,4 +99,18 @@ public class RecipeServiceImpl implements RecipeService {
         return toRecipeMyPageList(recipePage);
     }
 
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeLikeList(Long memberId, Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toRecipeMyPageList(recipePage);
+    }
+
+    @Override
+    public boolean deleteAllRecipe(Long memberId) {
+        recipeRepository.deleteAllByMemberId(memberId);
+
+        return true;
+    }
+
 }

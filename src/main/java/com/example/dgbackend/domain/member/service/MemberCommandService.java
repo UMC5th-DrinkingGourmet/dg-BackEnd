@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.member.service;
 
 import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberCommandService {
     MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID, MemberRequest.RecommendInfoDTO recommendInfoDTO);
@@ -9,6 +10,8 @@ public interface MemberCommandService {
     MemberResponse.GetMember patchMember(Long memberID, MemberRequest.PatchMember patchMember);
 
     String patchSignOut(Long memberID);
+
+    MemberResponse.GetMember patchProfileImage(Long memberId, MultipartFile multipartFile);
 
 
 }

@@ -141,5 +141,12 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
+
+    @Override
+    public CombinationMyPageList getCombinationLikeList(Long memberId, Integer page) {
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(memberId, PageRequest.of(page, 9));
+
+        return toCombinationMyPageList(combinations);
+    }
 }
 

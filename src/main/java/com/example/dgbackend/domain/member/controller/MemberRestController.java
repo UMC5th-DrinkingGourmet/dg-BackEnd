@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Member", description = "회원 관련 API")
 @RestController
@@ -42,14 +43,25 @@ public class MemberRestController {
         return ApiResponse.onSuccess(memberCommandService.patchMember(memberID, patchMember));
     }
 
-    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴를 진행합니다.")
+    @Operation(summary = "회원 프로필 이미지 수정", description = "회원 프로필 이미지를 수정합니다.")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 탈퇴 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 프로필 이미지 수정 성공"),
     })
-    @PatchMapping("/sign-out")
-    public ApiResponse<String> patchSignOut(@RequestParam(name = "Member ID") Long memberID) {
+    @PostMapping("/profile-image")
+    public ApiResponse<MemberResponse.GetMember> patchProfileImage(@RequestParam(name = "Member ID") Long memberID, @RequestParam(name = "profileImage") MultipartFile patchProfileImage) {
         // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
 
-        return ApiResponse.onSuccess(memberCommandService.patchSignOut(memberID));
+        return ApiResponse.onSuccess(memberCommandService.patchProfileImage(memberID, patchProfileImage));
     }
+
+//    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴를 진행합니다.")
+//    @ApiResponses(value = {
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 탈퇴 성공"),
+//    })
+//    @PatchMapping("/sign-out")
+//    public ApiResponse<String> patchSignOut(@RequestParam(name = "Member ID") Long memberID) {
+//        // TODO : 소셜로그인 통합시 MemberID를 Token에서 추출
+//
+//        return ApiResponse.onSuccess(memberCommandService.patchSignOut(memberID));
+//    }
 }

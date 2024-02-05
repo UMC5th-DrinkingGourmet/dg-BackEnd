@@ -95,4 +95,9 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
         return RecipeCommentResponse.toResponse(recipeComment);
     }
 
+    @Override
+    public boolean deleteAllRecipeComment(Long memberId) {
+        recipeCommentRepository.deleteAllByMemberId(memberId);
+        return true;
+    }
 }

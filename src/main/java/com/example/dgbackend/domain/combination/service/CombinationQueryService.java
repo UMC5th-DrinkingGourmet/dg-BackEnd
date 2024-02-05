@@ -22,4 +22,6 @@ public interface CombinationQueryService {
     CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
+
+    CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
 }

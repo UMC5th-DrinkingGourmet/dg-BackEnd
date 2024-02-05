@@ -63,4 +63,10 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
         return recipeLikeRepository.findByRecipeAndMember(recipe, memberByName);
     }
 
+    @Override
+    public boolean deleteAllRecipeLike(Long memberId) {
+        recipeLikeRepository.deleteAllByMemberId(memberId);
+       return true;
+    }
+
 }

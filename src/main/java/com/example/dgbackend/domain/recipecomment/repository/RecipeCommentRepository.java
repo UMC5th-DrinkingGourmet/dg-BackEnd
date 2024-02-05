@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Long> {
     List<RecipeComment> findAllByRecipe(Recipe recipe);
+    boolean deleteAllByMemberId(Long memberId);
 }

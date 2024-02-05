@@ -20,4 +20,5 @@ public interface CombinationCommentCommandService {
 
     CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request);
 
+    boolean deleteAllComment(Long memberId);
 }

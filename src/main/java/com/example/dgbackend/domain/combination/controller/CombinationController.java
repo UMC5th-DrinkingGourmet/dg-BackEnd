@@ -129,4 +129,13 @@ public class CombinationController {
         return ApiResponse.onSuccess(
             combinationQueryService.getWeeklyBestCombinationPreviewResultList(page));
     }
+
+    @Operation(summary = "내가 좋아요한 오늘의 조합 조회", description = "좋아요를 누른 오늘의 조합 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내가 좋아요한 오늘의 조합 목록 조회 성공")
+    })
+    @GetMapping("/likes")
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(@RequestParam(name="Member Id") Long memberId, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationLikeList(memberId, page));
+    }
 }

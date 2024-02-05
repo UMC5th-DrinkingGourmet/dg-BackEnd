@@ -13,4 +13,6 @@ public interface CombinationLikeRepository extends JpaRepository<CombinationLike
     boolean existsByCombinationAndMember(Combination combination, Member member);
 
     Optional<CombinationLike> findByCombinationAndMember(Combination combination, Member member);
+
+    boolean deleteAllByMemberId(Long memberId);
 }

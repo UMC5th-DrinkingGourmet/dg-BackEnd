@@ -1,7 +1,5 @@
 package com.example.dgbackend.domain.recipelike.dto;
 
-import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.recipe.Recipe;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

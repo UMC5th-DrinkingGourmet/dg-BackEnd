@@ -9,7 +9,6 @@ import com.example.dgbackend.domain.recipelike.dto.RecipeLikeRequest;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
 import com.example.dgbackend.domain.recipelike.repository.RecipeLikeRepository;
-import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

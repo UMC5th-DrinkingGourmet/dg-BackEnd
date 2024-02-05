@@ -2,11 +2,7 @@ package com.example.dgbackend.domain.recipeimage.dto;
 
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RecipeImageRequest {

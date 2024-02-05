@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RecipeCommentServiceImpl implements RecipeCommentService{
+public class RecipeCommentServiceImpl implements RecipeCommentService {
 
     private final RecipeCommentRepository recipeCommentRepository;
     private final MemberService memberService;
@@ -65,7 +65,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService{
         RecipeComment ParentRecipeComment = getEntityById(parentId);
 
         //부모의 부모 댓글이 존재할 경우
-        if(ParentRecipeComment.getParentComment() != null) {
+        if (ParentRecipeComment.getParentComment() != null) {
             throw new ApiException(ErrorStatus._OVER_DEPTH_RECIPE_COMMENT);
         }
 

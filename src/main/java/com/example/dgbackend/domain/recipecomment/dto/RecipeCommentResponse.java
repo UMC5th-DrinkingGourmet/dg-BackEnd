@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.dto;
 
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

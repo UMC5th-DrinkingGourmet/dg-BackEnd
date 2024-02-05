@@ -1,6 +1,5 @@
 package com.example.dgbackend.domain.recommend.controller;
 
-import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
@@ -54,7 +53,6 @@ public class RecommendController {
     @GetMapping("/list/{MemberID}")
     public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@PathVariable(name = "MemberID") Long memberID, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
         return ApiResponse.onSuccess(recommendQueryService.getRecommendListResult(memberID, page, size));
-      
     }
   
     @Operation(summary = "오늘의 조합 - 추천 받은 조합 삭제", description = "추천 받은 조합을 선택하여 오늘의 조합을 작성합니다.")
@@ -66,7 +64,6 @@ public class RecommendController {
     public ApiResponse<RecommendResponse.RecommendResult> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.deleteRecommend(recommendId));
-      
     }
 }
 

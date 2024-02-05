@@ -128,6 +128,7 @@ public class JwtProvider {
     }
 
     public String getMemberIdFromToken(String token) {
+
         SecretKey secretKey = generateKey();
 
         // parsing 해서 body값 가져오기
@@ -164,6 +165,7 @@ public class JwtProvider {
 
     // Access Token 재발급
     public String refreshAccessToken(String refreshToken) {
+
         String id = getMemberIdFromToken(refreshToken);
 
         // Refresh Token의 사용자 정보를 기반으로 새로운 Access Token 발급

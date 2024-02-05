@@ -155,4 +155,20 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
 
+    @Override
+    public CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
+        String keyword) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
+            keyword, pageRequest, 30L);
+
+        List<Combination> combinationList = combinations.getContent();
+        List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
+            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+            .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+    }
+
 }

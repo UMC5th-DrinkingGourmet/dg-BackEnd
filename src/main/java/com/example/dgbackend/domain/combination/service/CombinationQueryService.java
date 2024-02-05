@@ -22,4 +22,7 @@ public interface CombinationQueryService {
 
     CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
 
+    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
+        String keyword);
+
 }

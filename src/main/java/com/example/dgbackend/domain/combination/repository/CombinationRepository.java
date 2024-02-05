@@ -12,4 +12,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     Page<Combination> findCombinationsByTitleContaining(String keyword, PageRequest pageRequest);
 
+    Page<Combination> findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
+        String keyword, PageRequest pageRequest, Long likeCount);
+
+
 }

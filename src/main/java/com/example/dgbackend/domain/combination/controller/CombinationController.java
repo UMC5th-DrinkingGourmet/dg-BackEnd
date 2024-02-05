@@ -129,4 +129,12 @@ public class CombinationController {
             combinationQueryService.findCombinationsListByKeyword(page, keyword));
     }
 
+    @Operation(summary = "주간 베스트 조합 검색", description = "주간 베스트 조합 목록을 검색합니다.")
+    @GetMapping("/weekly-best/search")
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> findWeeklyBestCombinationsListByKeyWord(
+        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.findWeeklyBestCombinationsListByKeyWord(page, keyword));
+    }
+
 }

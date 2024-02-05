@@ -29,7 +29,7 @@ public class RecipeLikeController {
     private final MemberRepository memberRepository;
     private Member DefaultMember = Member.builder()
             .name("김동규").email("email@email.com").birthDate("birthDate")
-            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
+            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE)
             .build();
 
     @Operation(summary = "레시피북 좋아요 조회", description = "특정 레시피북의 좋아요를 조회합니다.")

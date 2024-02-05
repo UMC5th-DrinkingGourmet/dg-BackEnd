@@ -12,14 +12,14 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-            .addServersItem(new Server().url("/"))
-            .info(apiInfo());
+                .addServersItem(new Server().url("/"))
+                .info(apiInfo());
     }
 
     private Info apiInfo() {
         return new Info()
-            .title("음주미식회 Springdoc 테스트")
-            .description("Springdoc을 사용한 음주미식회 Swagger UI 테스트")
-            .version("1.0.0");
+                .title("음주미식회 Springdoc 테스트")
+                .description("Springdoc을 사용한 음주미식회 Swagger UI 테스트")
+                .version("1.0.0");
     }
 }

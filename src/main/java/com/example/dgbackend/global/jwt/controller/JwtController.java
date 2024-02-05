@@ -1,16 +1,18 @@
-package com.example.dgbackend.global.jwt;
+package com.example.dgbackend.global.jwt.controller;
 
-import com.example.dgbackend.global.security.oauth2.service.AuthService;
+import com.example.dgbackend.global.jwt.dto.AuthRequest;
+import com.example.dgbackend.global.jwt.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @Tag(name = "Jwt Token", description = "로그아웃 및 토큰 재발행 API")
 @RestController
@@ -29,5 +31,15 @@ public class JwtController {
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
 
         return authService.reIssueAccessToken(request);
+    }
+
+    @PostMapping("/kakao")
+    public void kakaoLoign(@RequestBody AuthRequest authRequest, HttpServletResponse response) throws IOException {
+        authService.loginOrJoin(response, authRequest);
+    }
+
+    @PostMapping("/naver")
+    public void naverLoign(@RequestBody AuthRequest authRequest, HttpServletResponse response) throws IOException {
+        authService.loginOrJoin(response, authRequest);
     }
 }

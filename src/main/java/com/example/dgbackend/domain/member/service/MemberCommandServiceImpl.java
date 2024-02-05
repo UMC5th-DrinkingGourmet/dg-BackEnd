@@ -93,5 +93,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.deleteById(memberId);
 
         return "회원 탈퇴가 완료되었습니다.";
+
+    @Override
+    public void saveMember(Member member) {
+        memberRepository.save(member);
     }
 }

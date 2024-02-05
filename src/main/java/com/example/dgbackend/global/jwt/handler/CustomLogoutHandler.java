@@ -1,6 +1,6 @@
-package com.example.dgbackend.global.security.oauth2.handler;
+package com.example.dgbackend.global.jwt.handler;
 
-import com.example.dgbackend.global.security.oauth2.service.AuthService;
+import com.example.dgbackend.global.jwt.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -53,14 +53,14 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     recommendRequestDTO : 추천 요청 정보
      */
     @Override
-    public RecommendResponse.RecommendResponseDTO requestRecommend(Long memberID, RecommendRequest.RecommendRequestDTO recommendRequestDTO) {
+    public RecommendResponse.RecommendResponseDTO requestRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO) {
         if (recommendRequestDTO.getDesireLevel() == null)
             throw new ApiException(ErrorStatus._NULL_DESIRE_LEVEL);
         if (recommendRequestDTO.getFoodName() == null)
             throw new ApiException(ErrorStatus._NULL_FOOD_NAME);
 
         // 사용자 선호 정보 추출을 위한 Member 객체 생성
-        Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+//        Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
         //GPT API 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -96,7 +96,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         String reason = gptResult.get("Reason");
 
         //추천 결과 이미지 생성
-        String imageUrl = makeCombinationImage(memberID, drinkType, recommendRequestDTO);
+        String imageUrl = makeCombinationImage(member.getId(), drinkType, recommendRequestDTO);
         //추천 결과 DB에 저장
         recommendQueryService.addRecommend(member, recommendRequestDTO, drinkType, reason, imageUrl);
 
@@ -220,8 +220,8 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     mood : 유저 기분
     weather : 현재 날씨
      */
-    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather) {
-
+    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather)
+    {
         String prompt = "You create the right images based on food and alcohol pairings, " +
                 "considering the given combination, the user's mood, " +
                 "and the current weather. The images should prominently feature both the food and the alcohol. " +
@@ -229,9 +229,9 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
                 "The images you create are used to recommend alcohol based on the food, stimulate appetite, " +
                 "and gain empathy. When creating the images, make sure no text is visible.";
 
-        if (mood != null)
+        if(mood != null)
             prompt += String.format("The user's mood is \"%s\". ", mood);
-        if (weather != null)
+        if(weather != null)
             prompt += String.format("The current weather is \"%s\". ", weather);
 
         prompt += String.format("The combination is \"%s과(와) %s\". Make an image please.", foodName, drinkyType);

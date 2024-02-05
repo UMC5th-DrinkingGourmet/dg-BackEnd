@@ -31,7 +31,7 @@ public class RecipeCommentController {
     private final MemberRepository memberRepository;
     private Member defaultmember = Member.builder()
             .name("김동규").email("email@email.com").birthDate("birthDate")
-            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE).socialType(SocialType.APPLE)
+            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE)
             .build();
 
     @Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")

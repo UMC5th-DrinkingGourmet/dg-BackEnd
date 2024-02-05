@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /*
- * BASE64DecodedMultipartFile.java
- * BASE64로 인코딩된 MultipartFile을 디코딩하여 사용하기 위한 클래스
- * S3에 이미지를 업로드하기 위해 사용
+    * BASE64DecodedMultipartFile.java
+    * BASE64로 인코딩된 MultipartFile을 디코딩하여 사용하기 위한 클래스
+    * S3에 이미지를 업로드하기 위해 사용
  */
 public class BASE64DecodedMultipartFile implements MultipartFile {
     private final byte[] imgContent;            // 이미지를 담을 바이트 배열(Based64로 인코딩된 이미지)

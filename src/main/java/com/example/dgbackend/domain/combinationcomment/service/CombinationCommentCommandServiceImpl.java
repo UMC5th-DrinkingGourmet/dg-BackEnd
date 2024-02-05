@@ -86,10 +86,9 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
 
         Optional.ofNullable(combinationComment.getChildComments())
                 .ifPresent(child -> child.forEach(CombinationComment::deleteComment));
-
         return toCommentProcResult(commentId);
     }
-  
+
     @Override
     public CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request) {
 

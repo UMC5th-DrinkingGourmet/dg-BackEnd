@@ -2,7 +2,6 @@ package com.example.dgbackend.domain.member;
 
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
-import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -41,8 +40,10 @@ public class Member extends BaseTimeEntity {
     private Gender gender;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private String provider;
+
+    @NotNull
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     private Role role;

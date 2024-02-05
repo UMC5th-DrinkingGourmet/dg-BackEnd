@@ -20,4 +20,6 @@ public interface CombinationQueryService {
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
 
+    CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
+
 }

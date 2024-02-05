@@ -67,17 +67,18 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
             () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
-
         // TODO : Login Member 추후에 Token을 통해 정보 얻기
         Member loginMember = memberRepository.findById(1L).get();
 
         // CombinationLike
-        boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination, loginMember);
+        boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,
+            loginMember);
 
         // HashTagOption
-        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(combination);
-        CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions, isCombinationLike);
-
+        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
+            combination);
+        CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions,
+            isCombinationLike);
 
         // Member - 작성자
         Member member = combination.getMember();
@@ -129,6 +130,22 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
             30L, pageRequest);
+
+        List<Combination> combinationList = combinations.getContent();
+        List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
+            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+            .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+    }
+
+    @Override
+    public CombinationPreviewResultList findCombinationsListByKeyword(Integer page,
+        String keyword) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContaining(
+            keyword, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()

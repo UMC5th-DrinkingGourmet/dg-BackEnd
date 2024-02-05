@@ -120,4 +120,21 @@ public class CombinationController {
         return ApiResponse.onSuccess(
             combinationQueryService.getWeeklyBestCombinationPreviewResultList(page));
     }
+
+    @Operation(summary = "오늘의 조합 검색", description = "오늘의 조합 목록을 검색합니다.")
+    @GetMapping("/search")
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> findCombinationsListByKeyWord(
+        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.findCombinationsListByKeyword(page, keyword));
+    }
+
+    @Operation(summary = "주간 베스트 조합 검색", description = "주간 베스트 조합 목록을 검색합니다.")
+    @GetMapping("/weekly-best/search")
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> findWeeklyBestCombinationsListByKeyWord(
+        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.findWeeklyBestCombinationsListByKeyWord(page, keyword));
+    }
+
 }

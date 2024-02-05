@@ -9,11 +9,10 @@ import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +25,8 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeResponse> getExistRecipes() {
         return recipeRepository.findAllByState(true).stream()
-                .map(RecipeResponse::toResponse)
-                .toList();
+            .map(RecipeResponse::toResponse)
+            .toList();
     }
 
     @Override
@@ -41,7 +40,8 @@ public class RecipeServiceImpl implements RecipeService {
 
         Member memberEntity = memberService.findMemberByName(member.getName());
         isAlreadyCreate(recipeRequest.getName(), memberEntity.getName());
-        return RecipeResponse.toResponse(recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity)));
+        return RecipeResponse.toResponse(
+            recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity)));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe getRecipe(Long id) {
 
         Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         return isDelete(recipe);
     }
@@ -72,7 +72,9 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe isDelete(Recipe recipe) {
 
-        if (!recipe.isState()) throw new ApiException(ErrorStatus._DELETE_RECIPE);
+        if (!recipe.isState()) {
+            throw new ApiException(ErrorStatus._DELETE_RECIPE);
+        }
 
         return recipe;
     }
@@ -80,11 +82,18 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void isAlreadyCreate(String RecipeName, String memberName) {
         recipeRepository.findAllByNameAndMember_Name(RecipeName, memberName).stream()
-                .filter(Recipe::isState)
-                .findFirst()
-                .ifPresent(recipe -> {
-                    throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
-                });
+            .filter(Recipe::isState)
+            .findFirst()
+            .ifPresent(recipe -> {
+                throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
+            });
+    }
+
+    @Override
+    public List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword) {
+        return recipeRepository.findRecipesByNameContaining(keyword).stream()
+            .map(RecipeResponse::toResponse)
+            .toList();
     }
 
 }

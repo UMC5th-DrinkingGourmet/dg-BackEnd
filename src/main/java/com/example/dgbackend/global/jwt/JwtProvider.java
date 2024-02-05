@@ -119,7 +119,7 @@ public class JwtProvider {
         setContextHolder(token, loginMember);
     }
 
-    private Member getMemberFromToken(String token) {
+    public Member getMemberFromToken(String token) {
 
         String[] providers = getMemberIdFromToken(token).split("_");
         return memberRepository.findByProviderAndProviderId(providers[0], providers[1]).orElseThrow(

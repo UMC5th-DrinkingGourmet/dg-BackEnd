@@ -130,6 +130,7 @@ public class CombinationController {
             combinationQueryService.getWeeklyBestCombinationPreviewResultList(page));
     }
 
+
     @Operation(summary = "내가 좋아요한 오늘의 조합 조회", description = "좋아요를 누른 오늘의 조합 목록을 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내가 좋아요한 오늘의 조합 목록 조회 성공")
@@ -137,5 +138,21 @@ public class CombinationController {
     @GetMapping("/likes")
     public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(@RequestParam(name="Member Id") Long memberId, @CheckPage @RequestParam(name = "page") Integer page) {
         return ApiResponse.onSuccess(combinationQueryService.getCombinationLikeList(memberId, page));
+    }
+
+    @Operation(summary = "오늘의 조합 검색", description = "오늘의 조합 목록을 검색합니다.")
+    @GetMapping("/search")
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> findCombinationsListByKeyWord(
+        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.findCombinationsListByKeyword(page, keyword));
+    }
+
+    @Operation(summary = "주간 베스트 조합 검색", description = "주간 베스트 조합 목록을 검색합니다.")
+    @GetMapping("/weekly-best/search")
+    public ApiResponse<CombinationResponse.CombinationPreviewResultList> findWeeklyBestCombinationsListByKeyWord(
+        @RequestParam(name = "page") Integer page, @RequestParam(name = "keyword") String keyword) {
+        return ApiResponse.onSuccess(
+            combinationQueryService.findWeeklyBestCombinationsListByKeyWord(page, keyword));
     }
 }

@@ -23,5 +23,13 @@ public interface CombinationQueryService {
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
 
+
     CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
+
+    CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
+
+    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
+        String keyword);
+
+
 }

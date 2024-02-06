@@ -1,5 +1,17 @@
 package com.example.dgbackend.domain.combination.service;
 
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationResult;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
+import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
+
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
@@ -14,6 +26,7 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +55,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     오늘의 조합 홈 조회(페이징)
      */
     @Override
-    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member loginMember) {
+    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page,
+        Member loginMember) {
         Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
 
         List<Combination> combinationList = combinations.getContent();
@@ -61,7 +75,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      * 오늘의 조합 상세 조회
      */
     @Override
-    public CombinationDetailResult getCombinationDetailResult(Long combinationId, Member loginMember) {
+    public CombinationDetailResult getCombinationDetailResult(Long combinationId,
+        Member loginMember) {
 
         // Combination
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(

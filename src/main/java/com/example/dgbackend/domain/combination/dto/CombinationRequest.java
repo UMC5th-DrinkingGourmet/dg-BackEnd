@@ -16,6 +16,7 @@ public class CombinationRequest {
 
         String title;
         String content;
+        Long recommendId;
         List<String> hashTagNameList;
         List<String> combinationImageList;
     }

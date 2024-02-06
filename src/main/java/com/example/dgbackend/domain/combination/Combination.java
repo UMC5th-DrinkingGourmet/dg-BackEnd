@@ -4,6 +4,7 @@ package com.example.dgbackend.domain.combination;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -58,6 +59,10 @@ public class Combination extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommend_id")
+    private Recommend recommend;
+
     @OneToMany(mappedBy = "combination", cascade = CascadeType.ALL)
     private List<CombinationImage> combinationImages = new ArrayList<>();
 
@@ -82,9 +87,10 @@ public class Combination extends BaseTimeEntity {
     /**
      * update 함수
      */
-    public void updateCombination(String title, String content) {
+    public void updateCombination(String title, String content, Recommend recommend) {
         this.title = title;
         this.content = content;
+        this.recommend = recommend;
     }
 
     public void delete() {

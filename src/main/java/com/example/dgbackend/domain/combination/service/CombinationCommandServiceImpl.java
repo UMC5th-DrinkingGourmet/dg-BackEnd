@@ -14,7 +14,7 @@ import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandSe
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.Recommend;
-import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
+import com.example.dgbackend.domain.recommend.service.RecommendQueryService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
@@ -30,7 +30,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
     private final CombinationRepository combinationRepository;
     private final CombinationQueryService combinationQueryService;
-    private final RecommendRepository recommendRepository;
+    private final RecommendQueryService recommendQueryService;
     private final S3Service s3Service;
     private final HashTagCommandService hashTagCommandService;
     private final HashTagOptionCommandService hashTagOptionCommandService;
@@ -52,9 +52,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
         // 업로드 이미지가 없는 경우, GPT가 추천해준 이미지 사용
         if (combinationImageList == null || combinationImageList.isEmpty()) {
-            Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
-                () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
-            );
+            Recommend recommend = recommendQueryService.getRecommend(recommendId);
             String recommendImageUrl = recommend.getImageUrl();
 
             newCombination = createCombination(loginMember, request.getTitle(),
@@ -92,20 +90,21 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
      * 오늘의 조합 수정
      */
     @Override
-    public CombinationResponse.CombinationProcResult editCombination(Long combinationId, CombinationRequest.WriteCombination request) {
+    public CombinationResponse.CombinationProcResult editCombination(Long combinationId,
+        CombinationRequest.WriteCombination request) {
 
-        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
-        );
+        Combination combination = combinationQueryService.getCombination(combinationId);
+        Recommend recommend = recommendQueryService.getRecommend(request.getRecommendId());
 
-        // Combination - title, content 수정
-        combination.updateCombination(request.getTitle(), request.getContent());
+        // Combination - title, content, recommend 수정
+        combination.updateCombination(request.getTitle(), request.getContent(), recommend);
 
         // HashTagOption, HashTag - name 수정
         hashTagOptionCommandService.updateHashTagOption(combination, request.getHashTagNameList());
 
         // CombinationImage - imageUrl 수정
-        combinationImageCommandService.updateCombinationImage(combination, request.getCombinationImageList());
+        combinationImageCommandService.updateCombinationImage(combination,
+            request.getCombinationImageList());
 
         return CombinationResponse.toCombinationProcResult(combinationId);
     }

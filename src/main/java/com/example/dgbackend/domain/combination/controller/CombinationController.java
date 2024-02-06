@@ -102,7 +102,7 @@ public class CombinationController {
     @PatchMapping("/{combinationId}")
     public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(
         @ExistCombination @PathVariable(name = "combinationId") Long combinationId,
-        @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request)
+        @RequestBody CombinationRequest.WriteCombination request)
         throws IOException {
         return ApiResponse.onSuccess(
             combinationCommandService.editCombination(combinationId, request));

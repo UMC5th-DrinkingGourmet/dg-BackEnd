@@ -12,7 +12,7 @@ public interface RecommendQueryService {
 
     RecommendResult getRecommendResult(Long recommendId);
 
-    RecommendResponse.RecommendListResult getRecommendListResult(Long memberID, Integer page, Integer size);
+    RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size);
 
     RecommendResult deleteRecommend(Long recommendId);          //추천 삭제
 }

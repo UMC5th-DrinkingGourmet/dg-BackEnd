@@ -52,11 +52,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     }
 
     @Override
-    public RecommendResponse.RecommendListResult getRecommendListResult(Long memberID, Integer page, Integer size) {
-        Member member = memberRepository.findById(memberID).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
-        );
-
+    public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Recommend> pageList = recommendRepository.findAllByMemberId(member.getId(), pageable);
 

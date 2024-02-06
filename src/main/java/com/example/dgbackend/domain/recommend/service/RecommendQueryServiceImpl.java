@@ -15,12 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class RecommendQueryServiceImpl implements RecommendQueryService {
+
     private final RecommendRepository recommendRepository;
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
@@ -43,12 +42,15 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     @Override
     public RecommendResponse.RecommendResult getRecommendResult(Long recommendId) {
 
-        Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
-                () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
+        return RecommendResponse.toRecommendResult(getRecommend(recommendId));
+
+    }
+
+    @Override
+    public Recommend getRecommend(Long recommendId) {
+        return recommendRepository.findById(recommendId).orElseThrow(
+            () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
         );
-
-        return RecommendResponse.toRecommendResult(recommend);
-
     }
 
     @Override

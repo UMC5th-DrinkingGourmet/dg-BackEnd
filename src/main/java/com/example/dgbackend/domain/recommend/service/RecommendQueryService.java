@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recommend.service;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 
@@ -9,6 +10,8 @@ import static com.example.dgbackend.domain.recommend.dto.RecommendResponse.Recom
 public interface RecommendQueryService {
 
     void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
+
+    Recommend getRecommend(Long recommendId);
 
     RecommendResult getRecommendResult(Long recommendId);
 

@@ -7,9 +7,9 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*
 
 public interface CombinationQueryService {
 
-    CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member member);
+    CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member loginMember);
 
-    CombinationDetailResult getCombinationDetailResult(Long combinationId);
+    CombinationDetailResult getCombinationDetailResult(Long combinationId, Member loginMember);
 
     CombinationEditResult getCombinationEditResult(Long combinationId);
 

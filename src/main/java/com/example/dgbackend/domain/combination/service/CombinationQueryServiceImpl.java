@@ -8,6 +8,7 @@ import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeQueryService;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
+import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionQueryService;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
@@ -35,22 +36,23 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     private final CombinationCommentQueryService combinationCommentQueryService;
     private final MemberRepository memberRepository;
     private final CombinationLikeQueryService combinationLikeQueryService;
+    private final HashTagOptionQueryService hashTagOptionQueryService;
 
     /*
     오늘의 조합 홈 조회(페이징)
      */
     @Override
-    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member member) {
+    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member loginMember) {
         Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-                .toList();
+            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+            .toList();
 
         List<Boolean> isLikeList = combinationList.stream()
-                .map(cb -> combinationLikeQueryService.isCombinationLike(cb, member))
-                .toList();
+            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+            .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
@@ -59,11 +61,11 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      * 오늘의 조합 상세 조회
      */
     @Override
-    public CombinationDetailResult getCombinationDetailResult(Long combinationId) {
+    public CombinationDetailResult getCombinationDetailResult(Long combinationId, Member loginMember) {
 
         // Combination
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
         // TODO : Login Member 추후에 Token을 통해 정보 얻기
@@ -71,13 +73,13 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,
-                loginMember);
+            loginMember);
 
         // HashTagOption
-        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
-                combination);
+        List<HashTagOption> hashTagOptions = hashTagOptionQueryService.getAllHashTagOptionByCombination(
+            combination);
         CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions,
-                isCombinationLike);
+            isCombinationLike);
 
         // Member - 작성자
         Member member = combination.getMember();
@@ -85,7 +87,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // CombinationComment
         CommentPreViewResult combinationCommentResult = combinationCommentQueryService.getCommentsFromCombination(
-                combinationId, 0);
+            combinationId, 0);
 
         return toCombinationDetailResult(combinationResult, memberResult, combinationCommentResult);
     }

@@ -13,11 +13,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "오늘의 조합 API")
 @RestController
@@ -36,9 +43,10 @@ public class CombinationController {
     @Parameter(name = "page", description = "오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping()
     public ApiResponse<CombinationResponse.CombinationPreviewResultList> getCombinations(
-        @MemberObject Member member,
+        @Parameter(hidden = true) @MemberObject Member loginMember,
         @CheckPage @RequestParam(name = "page") Integer page) {
-        return ApiResponse.onSuccess(combinationQueryService.getCombinationPreviewResultList(page, member));
+        return ApiResponse.onSuccess(
+            combinationQueryService.getCombinationPreviewResultList(page, loginMember));
     }
 
     @Operation(summary = "오늘의 조합 상세정보 조회", description = "특정 오늘의 조합 정보를 조회합니다.")
@@ -48,9 +56,10 @@ public class CombinationController {
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}")
     public ApiResponse<CombinationResponse.CombinationDetailResult> getDetailCombination(
+        @Parameter(hidden = true) @MemberObject Member loginMember,
         @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(
-            combinationQueryService.getCombinationDetailResult(combinationId));
+            combinationQueryService.getCombinationDetailResult(combinationId, loginMember));
     }
 
     @Operation(summary = "오늘의 조합 작성", description = "오늘의 조합 작성합니다.")

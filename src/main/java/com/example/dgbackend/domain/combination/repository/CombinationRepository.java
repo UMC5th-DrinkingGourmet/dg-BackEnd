@@ -14,6 +14,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     List<Combination> findAllByMember(Member member);
 
+    Page<Combination> findAllByState(Boolean state, PageRequest pageRequest);
+
     Page<Combination> findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
         Long likeCount, PageRequest pageRequest);
 

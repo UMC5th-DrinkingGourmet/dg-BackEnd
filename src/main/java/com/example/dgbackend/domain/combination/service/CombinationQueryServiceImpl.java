@@ -49,9 +49,10 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationPreviewResultList getCombinationPreviewResultList(Integer page,
         Member loginMember) {
-        Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
-
+        Page<Combination> combinations = combinationRepository.findAllByState(true,
+            PageRequest.of(page, 10));
         List<Combination> combinationList = combinations.getContent();
+
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
             .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
             .toList();
@@ -71,9 +72,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         Member loginMember) {
 
         // Combination
-        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
-        );
+        Combination combination = getCombination(combinationId);
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,

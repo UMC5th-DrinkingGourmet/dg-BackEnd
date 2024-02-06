@@ -23,7 +23,6 @@ import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionReposi
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionQueryService;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
-import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import java.util.List;
@@ -33,12 +32,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
-import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -47,7 +40,6 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     private final CombinationRepository combinationRepository;
     private final HashTagOptionRepository hashTagOptionRepository;
     private final CombinationCommentQueryService combinationCommentQueryService;
-    private final MemberRepository memberRepository;
     private final CombinationLikeQueryService combinationLikeQueryService;
     private final HashTagOptionQueryService hashTagOptionQueryService;
 
@@ -82,9 +74,6 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
             () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
-
-        // TODO : Login Member 추후에 Token을 통해 정보 얻기
-        Member loginMember = memberRepository.findById(1L).get();
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,

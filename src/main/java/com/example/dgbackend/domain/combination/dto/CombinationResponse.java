@@ -259,14 +259,15 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationProcResult {
+
         Long combinationId;
         LocalDateTime createdAt;
     }
 
     public static CombinationProcResult toCombinationProcResult(Long combinationId) {
         return CombinationProcResult.builder()
-                .combinationId(combinationId)
-                .createdAt(LocalDateTime.now())
-                .build();
+            .combinationId(combinationId)
+            .createdAt(LocalDateTime.now())
+            .build();
     }
 }

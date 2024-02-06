@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CombinationResponse {
 
@@ -38,20 +39,22 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationPreviewResult {
+        Long combinationId;
         String title;
         String combinationImageUrl;
         Long likeCount;
         Long commentCount;
         List<String> hashTageList;
+        Boolean isLike;
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
     public static CombinationPreviewResultList toCombinationPreviewResultList(Page<Combination> combinations,
-                                                                              List<List<HashTagOption>> hashTagOptions) {
+                                                                              List<List<HashTagOption>> hashTagOptions,
+                                                                              List<Boolean> isLikes) {
 
-        List<CombinationPreviewResult> combinationPreviewDTOS = combinations.getContent()
-                .stream()
-                .map(cb -> toCombinationPreviewResult(cb, hashTagOptions))
+        List<CombinationPreviewResult> combinationPreviewDTOS = IntStream.range(0, combinations.getContent().size())
+                .mapToObj(i -> toCombinationPreviewResult(combinations.getContent().get(i), hashTagOptions.get(i), isLikes.get(i)))
                 .collect(Collectors.toList());
 
         return CombinationPreviewResultList.builder()
@@ -66,7 +69,8 @@ public class CombinationResponse {
 
     // Combination -> CombinationPreviewDTO로 변환
     public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
-                                                                      List<List<HashTagOption>> hashTagOptions) {
+                                                                      List<HashTagOption> hashTagOptions,
+                                                                      Boolean isLike) {
         // TODO: 대표 이미지 정하기
         String imageUrl = combination.getCombinationImages()
                 .stream()
@@ -76,18 +80,17 @@ public class CombinationResponse {
 
         // 해시태그 정보
         List<String> hashTagList = hashTagOptions.stream()
-                .filter(htoList -> htoList.stream()
-                        .anyMatch(hto -> hto.getCombination().equals(combination)))
-                .flatMap(htoList -> htoList.stream()
-                        .map(hto -> hto.getHashTag().getName()))
-                .toList();
+                .map(hto -> hto.getHashTag().getName())
+                .collect(Collectors.toList());
 
         return CombinationPreviewResult.builder()
+                .combinationId(combination.getId())
                 .title(combination.getTitle())
                 .combinationImageUrl(imageUrl)
                 .likeCount(combination.getLikeCount())
                 .commentCount(combination.getCommentCount())
                 .hashTageList(hashTagList)
+                .isLike(isLike)
                 .build();
     }
 

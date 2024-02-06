@@ -7,6 +7,7 @@ import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
+import com.example.dgbackend.global.validation.annotation.CheckCombinationOwner;
 import com.example.dgbackend.global.validation.annotation.CheckPage;
 import com.example.dgbackend.global.validation.annotation.ExistCombination;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,9 +88,10 @@ public class CombinationController {
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}/edit")
     public ApiResponse<CombinationResponse.CombinationEditResult> editCombination(
-        @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
+        @Parameter(hidden = true) @MemberObject Member loginMember,
+        @CheckCombinationOwner @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(
-            combinationQueryService.getCombinationEditResult(combinationId));
+            combinationQueryService.getCombinationEditResult(combinationId, loginMember));
     }
 
     @Operation(summary = "오늘의 조합 수정", description = "특정 오늘의 조합을 수정합니다.")

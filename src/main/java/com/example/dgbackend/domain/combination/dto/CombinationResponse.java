@@ -225,30 +225,33 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationEditResult {
+
         String title;
         String content;
         List<String> hashTagList;
         List<String> combinationImageUrlList;
+        Long recommendId;
     }
 
     public static CombinationEditResult toCombinationEditResult(Combination combination,
-                                                                List<HashTagOption> hashTagOptions,
-                                                                List<CombinationImage> combinationImages) {
+        List<HashTagOption> hashTagOptions,
+        List<CombinationImage> combinationImages) {
 
         List<String> hashTagList = hashTagOptions.stream()
-                .map(hto -> hto.getHashTag().getName())
-                .toList();
+            .map(hto -> hto.getHashTag().getName())
+            .toList();
 
         List<String> combinationImageUrlList = combinationImages.stream()
-                .map(CombinationImage::getImageUrl)
-                .toList();
+            .map(CombinationImage::getImageUrl)
+            .toList();
 
         return CombinationEditResult.builder()
-                .title(combination.getTitle())
-                .content(combination.getContent())
-                .hashTagList(hashTagList)
-                .combinationImageUrlList(combinationImageUrlList)
-                .build();
+            .title(combination.getTitle())
+            .content(combination.getContent())
+            .hashTagList(hashTagList)
+            .combinationImageUrlList(combinationImageUrlList)
+            .recommendId(combination.getRecommend().getId())
+            .build();
     }
 
     /**

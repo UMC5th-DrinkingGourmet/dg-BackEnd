@@ -99,19 +99,17 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      * 오늘의 조합 수정 정보 조회
      */
     @Override
-    public CombinationEditResult getCombinationEditResult(Long combinationId) {
+    public CombinationEditResult getCombinationEditResult(Long combinationId, Member member) {
 
-        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
-        );
+        Combination combination = getCombination(combinationId);
 
         List<CombinationImage> combinationImages = combination.getCombinationImages();
 
-        List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
-                combination);
+        List<HashTagOption> hashTagOptions = hashTagOptionQueryService.getAllHashTagOptionByCombination(
+            combination);
 
         return CombinationResponse.toCombinationEditResult(combination, hashTagOptions,
-                combinationImages);
+            combinationImages);
     }
 
     @Override
@@ -138,6 +136,11 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
             throw new ApiException(ErrorStatus._DELETE_COMBINATION);
         }
         return combination;
+    }
+
+    @Override
+    public Boolean isCombinationOwner(Long combinationId, Member member) {
+        return combinationRepository.existsByIdAndMember(combinationId, member);
     }
 
     /*

@@ -125,9 +125,20 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      */
     @Override
     public Combination getCombination(Long combinationId) {
-        return combinationRepository.findById(combinationId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+        Combination combination = combinationRepository.findById(combinationId).orElseThrow(
+            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
+
+        return isDelete(combination);
+    }
+
+    @Override
+    public Combination isDelete(Combination combination) {
+
+        if (!combination.isState()) {
+            throw new ApiException(ErrorStatus._DELETE_COMBINATION);
+        }
+        return combination;
     }
 
     /*

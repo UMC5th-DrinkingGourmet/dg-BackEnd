@@ -17,6 +17,8 @@ public interface CombinationQueryService {
 
     Combination getCombination(Long combinationId);
 
+    Combination isDelete(Combination combination);
+
     CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);

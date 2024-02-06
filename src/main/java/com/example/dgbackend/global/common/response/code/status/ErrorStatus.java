@@ -20,6 +20,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //오늘의 조합 관련
     _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
+    _DELETE_COMBINATION(HttpStatus.BAD_REQUEST, "COMBINATION_002", "삭제된 오늘의 조합입니다."),
 
     //오늘의 조합 댓글
     _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001", "존재하지 않는 오늘의 조합 댓글입니다."),

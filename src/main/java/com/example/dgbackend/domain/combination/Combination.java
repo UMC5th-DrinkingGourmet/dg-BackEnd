@@ -87,6 +87,10 @@ public class Combination extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void delete() {
+        this.state = false;
+    }
+
     /**
      * CombinationLike 관련 메서드
      */

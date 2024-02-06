@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CombinationCommandServiceImpl implements CombinationCommandService {
 
     private final CombinationRepository combinationRepository;
+    private final CombinationQueryService combinationQueryService;
     private final RecommendRepository recommendRepository;
     private final S3Service s3Service;
     private final HashTagCommandService hashTagCommandService;
@@ -76,18 +77,9 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     @Override
     public CombinationResponse.CombinationProcResult deleteCombination(Long combinationId) {
 
-        // HashTagOption 삭제
-        hashTagOptionCommandService.deleteHashTagOption(combinationId);
+        // soft delete 적용
+        combinationQueryService.getCombination(combinationId).delete();
 
-        // CombinationLike 삭제
-        combinationLikeCommandService.deleteCombinationLike(combinationId);
-
-        // S3에 해당 Combination 이미지 삭제
-        List<String> imageUrls = combinationImageQueryService.getCombinationImageUrl(combinationId);
-        deleteS3Image(imageUrls);
-
-        // combination 삭제 - 양방향 매핑 CombinationImage, CombinationComment 함께 삭제
-        combinationRepository.deleteById(combinationId);
         return CombinationResponse.toCombinationProcResult(combinationId);
     }
 

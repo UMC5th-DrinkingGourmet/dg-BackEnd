@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 
-import java.util.List;
-
 public class CombinationRequest {
 
     @Getter

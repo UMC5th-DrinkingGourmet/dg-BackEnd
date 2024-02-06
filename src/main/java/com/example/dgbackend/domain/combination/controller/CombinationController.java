@@ -87,9 +87,10 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @GetMapping("/{combinationId}/edit")
+    @CheckCombinationOwner
     public ApiResponse<CombinationResponse.CombinationEditResult> editCombination(
         @Parameter(hidden = true) @MemberObject Member loginMember,
-        @CheckCombinationOwner @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
+        @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(
             combinationQueryService.getCombinationEditResult(combinationId, loginMember));
     }
@@ -100,6 +101,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @PatchMapping("/{combinationId}")
+    @CheckCombinationOwner
     public ApiResponse<CombinationResponse.CombinationProcResult> editProcCombination(
         @ExistCombination @PathVariable(name = "combinationId") Long combinationId,
         @RequestBody CombinationRequest.WriteCombination request)
@@ -114,6 +116,7 @@ public class CombinationController {
     })
     @Parameter(name = "combinationId", description = "오늘의 조합 Id, Path Variable 입니다.")
     @DeleteMapping("/{combinationId}")
+    @CheckCombinationOwner
     public ApiResponse<CombinationResponse.CombinationProcResult> deleteCombination(
         @ExistCombination @PathVariable(name = "combinationId") Long combinationId) {
 

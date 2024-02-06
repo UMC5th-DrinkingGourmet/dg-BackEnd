@@ -5,6 +5,7 @@ import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
@@ -44,6 +45,7 @@ public class Recommend extends BaseTimeEntity {
     @NotNull
     private String imageUrl;
 
+    @Builder.Default()
     private Boolean deleted = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)

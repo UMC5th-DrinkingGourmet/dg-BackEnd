@@ -42,7 +42,7 @@ public class RecommendController {
     })
     @Parameter(name = "recommendId", description = "특정 recommend 정보 가져오기, Path Variable 입니다.")
     @PostMapping("/{recommendId}")
-    public ApiResponse<RecommendResponse.RecommendResult> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
+    public ApiResponse<RecommendResponse.RecommendResponseDTO> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.getRecommendResult(recommendId));
     }
@@ -62,7 +62,7 @@ public class RecommendController {
     })
     @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
     @DeleteMapping("/{recommendId}")
-    public ApiResponse<RecommendResponse.RecommendResult> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
+    public ApiResponse<RecommendResponse.RecommendResponseDTO> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.deleteRecommend(recommendId));
     }

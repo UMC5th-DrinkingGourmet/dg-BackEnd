@@ -36,12 +36,13 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
                 .drinkInfo(drinkInfo)
                 .imageUrl(imageUrl)
                 .member(member)
+//                .deleted(false)
                 .build();
         recommendRepository.save(recommend);
     }
         
     @Override
-    public RecommendResponse.RecommendResult getRecommendResult(Long recommendId) {
+    public RecommendResponse.RecommendResponseDTO getRecommendResult(Long recommendId) {
 
         Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
                 () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
@@ -67,7 +68,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     }
 
     @Override
-    public RecommendResponse.RecommendResult deleteRecommend(Long recommendId) {
+    public RecommendResponse.RecommendResponseDTO deleteRecommend(Long recommendId) {
         Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
                 () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
         );

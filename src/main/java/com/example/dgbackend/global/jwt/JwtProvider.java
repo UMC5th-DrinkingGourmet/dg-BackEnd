@@ -175,11 +175,12 @@ public class JwtProvider {
     // Access Token을 Header에서 추출
     public String getJwtTokenFromHeader(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
-        log.info("-------------------------Authorization Header: " + authorizationHeader);
-        if (authorizationHeader != null) {
-            return authorizationHeader;
+
+        if (authorizationHeader == null) {
+            throw new ApiException(ErrorStatus._EMPTY_JWT);
         }
-        return null;
+        log.info("-------------------------Authorization Header: " + authorizationHeader);
+        return authorizationHeader;
     }
 
 

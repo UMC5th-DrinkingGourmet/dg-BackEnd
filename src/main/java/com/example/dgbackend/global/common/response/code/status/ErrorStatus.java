@@ -17,6 +17,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
+    _FORBIDDEN_MEMBER_REQUEST(HttpStatus.FORBIDDEN, "MEMBER_002", "해당 사용자는 금지된 요청을 하였습니다."),
 
     //오늘의 조합 관련
     _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),

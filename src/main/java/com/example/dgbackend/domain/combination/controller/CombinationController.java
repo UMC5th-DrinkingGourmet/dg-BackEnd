@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -69,12 +70,12 @@ public class CombinationController {
     @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
     @PostMapping("/recommends/{recommendId}")
     public ApiResponse<CombinationResponse.CombinationProcResult> writeCombination(
+        @Parameter(hidden = true) @MemberObject Member loginMember,
         @PathVariable(name = "recommendId") Long recommendId,
-        @RequestPart(name = "writeCombination") CombinationRequest.WriteCombination request)
+        @RequestBody CombinationRequest.WriteCombination request)
         throws IOException {
-        // TODO: HttpServletRequest 사용해서 Authorization token으로 사용자 정보 받아오기
         return ApiResponse.onSuccess(
-            combinationCommandService.uploadCombination(recommendId, request));
+            combinationCommandService.uploadCombination(recommendId, request, loginMember));
 
     }
 

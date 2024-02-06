@@ -69,21 +69,6 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
         return CombinationResponse.toCombinationProcResult(saveCombination.getId());
     }
 
-    private Combination createCombination(String title, String content, String... imageUrls) {
-        Combination combination = Combination.builder()
-                .title(title)
-                .content(content)
-                .combinationImages(new ArrayList<>())
-                .build();
-
-        for (String imageUrl : imageUrls) {
-            CombinationImage combinationImage = CombinationImage.builder()
-                    .imageUrl(imageUrl)
-                    .build();
-            combination.addCombinationImage(combinationImage);
-        }
-        return combination;
-    }
 
     /**
      * 오늘의 조합 삭제

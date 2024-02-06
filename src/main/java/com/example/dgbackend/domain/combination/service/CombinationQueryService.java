@@ -1,15 +1,13 @@
 package com.example.dgbackend.domain.combination.service;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
-
 import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.member.Member;
+
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
 
 public interface CombinationQueryService {
 
-    CombinationPreviewResultList getCombinationPreviewResultList(Integer page);
+    CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member member);
 
     CombinationDetailResult getCombinationDetailResult(Long combinationId);
 
@@ -29,7 +27,7 @@ public interface CombinationQueryService {
     CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
 
     CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
-        String keyword);
+                                                                         String keyword);
 
 
 }

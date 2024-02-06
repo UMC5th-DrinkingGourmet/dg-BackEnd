@@ -1,9 +1,5 @@
 package com.example.dgbackend.domain.combination.service;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
-import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
-
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
@@ -17,12 +13,17 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
+import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,15 +40,19 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     오늘의 조합 홈 조회(페이징)
      */
     @Override
-    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page) {
+    public CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member member) {
         Page<Combination> combinations = combinationRepository.findAll(PageRequest.of(page, 10));
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-            .toList();
+                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+                .toList();
 
-        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+        List<Boolean> isLikeList = combinationList.stream()
+                .map(cb -> combinationLikeQueryService.isCombinationLike(cb, member))
+                .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
 
     /*
@@ -58,7 +63,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // Combination
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
         // TODO : Login Member 추후에 Token을 통해 정보 얻기
@@ -66,13 +71,13 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,
-            loginMember);
+                loginMember);
 
         // HashTagOption
         List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
-            combination);
+                combination);
         CombinationResult combinationResult = toCombinationResult(combination, hashTagOptions,
-            isCombinationLike);
+                isCombinationLike);
 
         // Member - 작성자
         Member member = combination.getMember();
@@ -80,7 +85,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // CombinationComment
         CommentPreViewResult combinationCommentResult = combinationCommentQueryService.getCommentsFromCombination(
-            combinationId, 0);
+                combinationId, 0);
 
         return toCombinationDetailResult(combinationResult, memberResult, combinationCommentResult);
     }
@@ -92,16 +97,16 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     public CombinationEditResult getCombinationEditResult(Long combinationId) {
 
         Combination combination = combinationRepository.findById(combinationId).orElseThrow(
-            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
 
         List<CombinationImage> combinationImages = combination.getCombinationImages();
 
         List<HashTagOption> hashTagOptions = hashTagOptionRepository.findAllByCombinationWithFetch(
-            combination);
+                combination);
 
         return CombinationResponse.toCombinationEditResult(combination, hashTagOptions,
-            combinationImages);
+                combinationImages);
     }
 
     @Override
@@ -115,7 +120,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public Combination getCombination(Long combinationId) {
         return combinationRepository.findById(combinationId).orElseThrow(
-            () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
+                () -> new ApiException(ErrorStatus._COMBINATION_NOT_FOUND)
         );
     }
 
@@ -133,12 +138,12 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     public CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            30L, pageRequest);
+                30L, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-            .toList();
+                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+                .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
@@ -149,36 +154,36 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return toCombinationMyPageList(combinations);
     }
-  
-  
+
+
     @Override
     public CombinationPreviewResultList findCombinationsListByKeyword(Integer page,
-        String keyword) {
+                                                                      String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContaining(
-            keyword, pageRequest);
+                keyword, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-            .toList();
+                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+                .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
 
     @Override
     public CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
-        String keyword) {
+                                                                                String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            keyword, pageRequest, 30L);
+                keyword, pageRequest, 30L);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-            .toList();
+                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+                .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }

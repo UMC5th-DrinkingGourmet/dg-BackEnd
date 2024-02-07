@@ -6,11 +6,11 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberCommandService {
-    MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID, MemberRequest.RecommendInfoDTO recommendInfoDTO);
+    MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member, MemberRequest.RecommendInfoDTO recommendInfoDTO);
 
-    MemberResponse.GetMember patchMember(Long memberID, MemberRequest.PatchMember patchMember);
+    MemberResponse.GetMember patchMember(Member member, MemberRequest.PatchMember patchMember);
 
-    MemberResponse.GetMember patchProfileImage(Long memberId, MultipartFile multipartFile);
+    MemberResponse.GetMember patchProfileImage(Member member, MultipartFile multipartFile);
 
     void saveMember(Member member);
 }

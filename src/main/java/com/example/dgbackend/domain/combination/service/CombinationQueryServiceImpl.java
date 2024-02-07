@@ -123,8 +123,9 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      * 내가 작성한 오늘의 조합 조회
      */
     @Override
-    public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page) {
-        Page<Combination> combinations = combinationRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+    public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Member member,
+                                                                              Integer page) {
+        Page<Combination> combinations = combinationRepository.findAllByMemberId(member.getId(), PageRequest.of(page, 9));
 
         return toCombinationMyPageList(combinations);
     }
@@ -143,9 +144,13 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
 
+    /*
+     * 내가 좋아요한 오늘의 조합 조회
+     */
     @Override
-    public CombinationMyPageList getCombinationLikeList(Long memberId, Integer page) {
-        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(memberId, PageRequest.of(page, 9));
+    public CombinationMyPageList getCombinationLikeList(Member member,
+                                                        Integer page) {
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(member.getId(), PageRequest.of(page, 9));
 
         return toCombinationMyPageList(combinations);
     }

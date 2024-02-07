@@ -17,9 +17,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByNameAndMember_Name(String name, String memberName);
 
     Page<Recipe> findAllByMemberId(Long memberId, PageRequest pageRequest);
-  
-    boolean deleteAllByMemberId(Long memberId);
-  
+
     @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId")
     Page<Recipe> findRecipesByMemberId(Long memberId, PageRequest pageRequest);
 

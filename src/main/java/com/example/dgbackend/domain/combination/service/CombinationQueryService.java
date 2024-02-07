@@ -6,6 +6,7 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.C
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
 
 import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.member.Member;
 
 public interface CombinationQueryService {
 
@@ -19,17 +20,13 @@ public interface CombinationQueryService {
 
     Combination getCombination(Long combinationId);
 
-    CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationMyPageList(Member member, Integer page);
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
 
-
-    CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationLikeList(Member member, Integer page);
 
     CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
 
-    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
-        String keyword);
-
-
+    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page, String keyword);
 }

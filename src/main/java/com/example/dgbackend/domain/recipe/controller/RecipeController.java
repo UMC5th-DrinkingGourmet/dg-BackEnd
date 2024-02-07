@@ -6,6 +6,7 @@ import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
+import com.example.dgbackend.global.validation.annotation.CheckPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -69,31 +70,21 @@ public class RecipeController {
         recipeServiceImpl.deleteRecipe(recipeId);
         return ApiResponse.onSuccess("삭제 완료");
     }
-  
-    @Operation(summary = "내가 작성한 레시피북 조회", description = "특정 회원의 레시피북 목록을 조회합니다.")
-    @GetMapping("/my-page")
-    public ApiResponse<RecipeResponse.RecipeMyPageList> getMyPageList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(memberId, page));
-    }
-
-    @Operation(summary = "내가 좋아요한 레시피북 조회", description = "좋아요를 누른 레시피북 목록을 조회합니다.")
-    @GetMapping("/likes")
-    public ApiResponse<RecipeResponse.RecipeMyPageList> getLikeList(@RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeLikeList(memberId, page));
-
 
     @Operation(summary = "내가 작성한 레시피북 조회", description = "특정 회원의 레시피북 목록을 조회합니다.")
+    @Parameter(name = "page", description = "내가 작성한 레시피북 목록 페이지 번호, query string 입니다.")
     @GetMapping("/my-page")
     public ApiResponse<RecipeResponse.RecipeMyPageList> getMyPageList(
-        @RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(memberId, page));
+        @MemberObject Member member, @CheckPage @RequestParam(name=" page" ) Integer page) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(member, page));
     }
 
     @Operation(summary = "내가 좋아요한 레시피북 조회", description = "좋아요를 누른 레시피북 목록을 조회합니다.")
+    @Parameter(name = "page", description = "내가 좋아요한 목록 페이지 번호, query string 입니다.")
     @GetMapping("/likes")
     public ApiResponse<RecipeResponse.RecipeMyPageList> getLikeList(
-        @RequestParam("name= memberId") Long memberId, @RequestParam Integer page) {
-        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeLikeList(memberId, page));
+        @MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(recipeServiceImpl.getRecipeLikeList(member, page));
     }
 
     @Operation(summary = "레시피북 검색", description = "레시피북 목록을 검색합니다.")
@@ -103,6 +94,5 @@ public class RecipeController {
         @RequestParam(value = "keyword") String keyword) {
         return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));
     }
-
 }
 

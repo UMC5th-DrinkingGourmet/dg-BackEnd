@@ -11,5 +11,4 @@ import java.util.List;
 public interface CombinationCommentRepository extends JpaRepository<CombinationComment, Long> {
 
     Page<CombinationComment> findAllByCombinationId(Long combinationId, Pageable pageable);
-    List<CombinationComment> findAllByMemberId (Long memberId);
 }

@@ -36,10 +36,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final RecipeLikeService recipeLikeCommandService;
 
     @Override
-    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID,
+    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,
         MemberRequest.RecommendInfoDTO requestInfoDTO) {
-        Member member = memberRepository.findById(memberID)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         member.setPreferredAlcoholType(requestInfoDTO.getPreferredAlcoholType());
         member.setPreferredAlcoholDegree(requestInfoDTO.getPreferredAlcoholDegree());
         member.setDrinkingTimes(requestInfoDTO.getDrinkingTimes());
@@ -52,10 +50,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     // 회원 정보 수정
     @Override
-    public MemberResponse.GetMember patchMember(Long memberId,
+    public MemberResponse.GetMember patchMember(Member member,
                                                 MemberRequest.PatchMember patchMember) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         member.setName(patchMember.getName());
         member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());
@@ -67,10 +63,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     //회원 사진 수정
     @Override
-    public MemberResponse.GetMember patchProfileImage(Long memberId,
+    public MemberResponse.GetMember patchProfileImage(Member member,
                                                       MultipartFile multipartFile) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {

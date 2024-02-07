@@ -9,10 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Long> {
-<<<<<<< HEAD
     List<RecipeComment> findAllByRecipe(Recipe recipe);
-=======
     Page<RecipeComment> findAllByRecipe(Recipe recipe, Pageable pageable);
->>>>>>> ca3653607857470642acb4b163d809decd90486f
-    boolean deleteAllByMemberId(Long memberId);
 }

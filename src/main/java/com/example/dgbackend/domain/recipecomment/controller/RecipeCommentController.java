@@ -36,9 +36,10 @@ public class RecipeCommentController {
 
     @Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
+    @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)
     @GetMapping("/{recipeId}")
-    public ApiResponse<List<RecipeCommentResponse>> getRecipeComments(@PathVariable Long recipeId) {
-        return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId));
+    public ApiResponse<List<RecipeCommentResponse>> getRecipeComments(@PathVariable Long recipeId, @RequestParam("page") int page) {
+        return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId, page));
     }
 
     @Operation(summary = "레시피북 댓글 등록", description = "레시피북 댓글을 등록합니다.")

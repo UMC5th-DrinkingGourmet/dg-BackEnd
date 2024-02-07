@@ -13,6 +13,7 @@ import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +28,13 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     private final RecipeService recipeService;
 
     @Override
-    public List<RecipeCommentResponse> getRecipeComment(Long recipeId) {
+    public List<RecipeCommentResponse> getRecipeComment(Long recipeId, int page) {
 
         Recipe recipe = recipeService.getRecipe(recipeId);
 
-        return recipeCommentRepository.findAllByRecipe(recipe).stream()
+        Pageable pageable = Pageable.ofSize(10).withPage(page);
+
+        return recipeCommentRepository.findAllByRecipe(recipe, pageable).stream()
                 .filter(RecipeComment::isState)
                 .filter(recipeComment -> recipeComment.getParentComment() == null)
                 .map(RecipeCommentResponse::toResponse)
@@ -41,7 +44,11 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     @Transactional
     public RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO) {
-        return RecipeCommentResponse.toResponse(recipeCommentRepository.save(getEntity(paramVO)));
+        RecipeComment save = recipeCommentRepository.save(getEntity(paramVO));
+
+        //댓글 수 증가
+        save.getRecipe().changeCommentCount(true);
+        return RecipeCommentResponse.toResponse(save);
     }
 
     @Override
@@ -88,7 +95,13 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Override
     @Transactional
     public RecipeCommentResponse deleteRecipeComment(Long recipeCommentId) {
-        RecipeComment recipeComment = getEntityById(recipeCommentId).delete();
+        RecipeComment entityById = getEntityById(recipeCommentId);
+
+        if (!entityById.isState()) {
+            throw new ApiException(ErrorStatus._Already_DELETE_RECIPE_COMMENT);
+        }
+
+        RecipeComment recipeComment = entityById.delete();
 
         //대댓글도 삭제
         recipeComment.getChildCommentList().forEach(RecipeComment::delete);

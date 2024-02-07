@@ -74,4 +74,23 @@ public class Recipe extends BaseTimeEntity {
         return this;
     }
 
+    public void changeLikeCount(boolean isIncrease) {
+
+        if (isIncrease) {
+            this.likeCount++;
+        } else {
+            this.likeCount--;
+        }
+
+    }
+
+    public void changeCommentCount(boolean isIncrease) {
+
+        if (isIncrease) {
+            this.commentCount++;
+        } else {
+            this.commentCount--;
+        }
+
+    }
 }

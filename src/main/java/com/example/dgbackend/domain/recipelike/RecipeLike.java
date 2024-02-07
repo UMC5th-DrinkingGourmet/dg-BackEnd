@@ -28,7 +28,12 @@ public class RecipeLike extends BaseTimeEntity {
     private Recipe recipe;
 
     public RecipeLike changeState() {
-        this.state = !this.state;
+        boolean isDecrease = this.state;
+
+        // true -> false, false -> true
+        this.state = !isDecrease;
+        this.recipe.changeLikeCount(!isDecrease);
+
         return this;
     }
 

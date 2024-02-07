@@ -48,6 +48,7 @@ public class RecipeComment extends BaseTimeEntity {
     }
 
     public RecipeComment delete() {
+        this.recipe.changeCommentCount(false);
         this.state = false;
         return this;
     }

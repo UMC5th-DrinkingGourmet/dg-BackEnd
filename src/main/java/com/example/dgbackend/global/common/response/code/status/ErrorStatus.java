@@ -58,6 +58,7 @@ public enum ErrorStatus implements BaseErrorCode {
     //레시피 댓글
     _EMPTY_RECIPE_COMMENT(HttpStatus.CONFLICT, "RECIPE_COMMENT_001", "존재하지 않는 레시피 댓글입니다."),
     _OVER_DEPTH_RECIPE_COMMENT(HttpStatus.BAD_REQUEST, "RECIPE_COMMENT_003", "대댓글까지만 가능합니다."),
+    _Already_DELETE_RECIPE_COMMENT(HttpStatus.BAD_REQUEST, "RECIPE_COMMENT_004", "이미 삭제된 댓글입니다."),
 
     //레시피 이미지
     _EMPTY_RECIPE_IMAGE(HttpStatus.CONFLICT, "RECIPE_IMAGE_001", "존재하지 않는 레시피 이미지입니다."),

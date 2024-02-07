@@ -48,10 +48,15 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
     }
 
     @Override
+    @Transactional
     public RecipeLike createRecipe(RecipeLikeVO recipeLikeVO) {
         Recipe recipe = recipeServiceImpl.getRecipe(recipeLikeVO.getRecipeId());
         Member member = memberService.findMemberByName(recipeLikeVO.getMemberName());
-        return recipeLikeRepository.save(RecipeLikeRequest.toEntity(recipe, member));
+
+        //레시피 좋아요 엔티티 생성 ㅎ  증가
+        RecipeLike save = recipeLikeRepository.save(RecipeLikeRequest.toEntity(recipe, member));
+        recipe.changeLikeCount(true);
+        return save;
     }
 
 

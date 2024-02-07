@@ -220,8 +220,8 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     mood : 유저 기분
     weather : 현재 날씨
      */
-    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather)
-    {
+    private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather) {
+
         String prompt = "You create the right images based on food and alcohol pairings, " +
                 "considering the given combination, the user's mood, " +
                 "and the current weather. The images should prominently feature both the food and the alcohol. " +
@@ -229,9 +229,9 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
                 "The images you create are used to recommend alcohol based on the food, stimulate appetite, " +
                 "and gain empathy. When creating the images, make sure no text is visible.";
 
-        if(mood != null)
+        if (mood != null)
             prompt += String.format("The user's mood is \"%s\". ", mood);
-        if(weather != null)
+        if (weather != null)
             prompt += String.format("The current weather is \"%s\". ", weather);
 
         prompt += String.format("The combination is \"%s과(와) %s\". Make an image please.", foodName, drinkyType);

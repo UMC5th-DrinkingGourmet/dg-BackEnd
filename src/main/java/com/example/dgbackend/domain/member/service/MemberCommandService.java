@@ -10,8 +10,6 @@ public interface MemberCommandService {
 
     MemberResponse.GetMember patchMember(Long memberID, MemberRequest.PatchMember patchMember);
 
-    String patchSignOut(Long memberID);
-
     MemberResponse.GetMember patchProfileImage(Long memberId, MultipartFile multipartFile);
 
     void saveMember(Member member);

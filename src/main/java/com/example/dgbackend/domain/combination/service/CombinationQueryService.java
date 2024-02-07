@@ -15,7 +15,7 @@ public interface CombinationQueryService {
 
     CombinationEditResult getCombinationEditResult(Long combinationId);
 
-    boolean existCombination(Long combinationId);
+    boolean existCombination(Long combinationId, boolean state);
 
     Combination getCombination(Long combinationId);
 

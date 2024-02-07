@@ -105,8 +105,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     }
 
     @Override
-    public boolean existCombination(Long combinationId) {
-        return combinationRepository.existsById(combinationId);
+    public boolean existCombination(Long combinationId, boolean state) {
+        return combinationRepository.existsByIdAndState(combinationId, state);
     }
 
     /*

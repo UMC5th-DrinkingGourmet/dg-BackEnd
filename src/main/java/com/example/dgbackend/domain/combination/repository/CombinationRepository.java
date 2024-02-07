@@ -26,4 +26,6 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Page<Combination> findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
         String keyword, PageRequest pageRequest, Long likeCount);
 
+    boolean existsByIdAndState(Long combinationId, boolean state);
+
 }

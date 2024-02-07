@@ -1,5 +1,11 @@
 package com.example.dgbackend.domain.combinationcomment.service;
 
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.WriteComment;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.toCombinationComment;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentResult;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCommentProcResult;
+import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.toCommentResult;
+
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.service.CombinationQueryService;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
@@ -10,16 +16,11 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.WriteComment;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRequest.toCombinationComment;
-import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.*;
 
 @Service
 @Transactional
@@ -32,13 +33,11 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
 
 
     @Override
-    public CommentResult saveCombinationComment(Long combinationId, WriteComment request) {
+    public CommentResult saveCombinationComment(Member loginMember, Long combinationId,
+        WriteComment request) {
 
         // Combination
         Combination combination = combinationQueryService.getCombination(combinationId);
-
-        // TODO: Login Member는 Token 정보 조회로 변경
-        Member loginMember = memberRepository.findById(1L).get();
 
         // Comment 생성
         CombinationComment newComment = createComment(combination, loginMember, request);
@@ -48,14 +47,16 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     }
 
     @Override
-    public CombinationComment createComment(Combination combination, Member member, WriteComment request) {
+    public CombinationComment createComment(Combination combination, Member member,
+        WriteComment request) {
 
         String content = request.getContent();
 
         CombinationComment newComment = Optional.ofNullable(request.getParentId())
-                .filter(parentId -> parentId != 0)
-                .map(parentId -> toCombinationComment(combination, member, content, getParentComment(request.getParentId())))
-                .orElse(toCombinationComment(combination, member, content, null));
+            .filter(parentId -> parentId != 0)
+            .map(parentId -> toCombinationComment(combination, member, content,
+                getParentComment(request.getParentId())))
+            .orElse(toCombinationComment(combination, member, content, null));
 
         return combinationCommentRepository.save(newComment);
     }
@@ -74,7 +75,7 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     @Override
     public CombinationComment getComment(Long commentId) {
         return combinationCommentRepository.findById(commentId).orElseThrow(
-                () -> new ApiException(ErrorStatus._COMBINATION_COMMENT_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._COMBINATION_COMMENT_NOT_FOUND)
         );
     }
 
@@ -85,12 +86,13 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         combinationComment.deleteComment();
 
         Optional.ofNullable(combinationComment.getChildComments())
-                .ifPresent(child -> child.forEach(CombinationComment::deleteComment));
+            .ifPresent(child -> child.forEach(CombinationComment::deleteComment));
         return toCommentProcResult(commentId);
     }
 
     @Override
-    public CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request) {
+    public CombinationCommentResponse.CommentProcResult updateComment(Long commentId,
+        CombinationCommentRequest.UpdateComment request) {
 
         CombinationComment combinationComment = getComment(commentId);
 
@@ -101,7 +103,8 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
 
     @Override
     public boolean deleteAllComment(Long memberId) {
-        List<CombinationComment> combinationComments = combinationCommentRepository.findAllByMemberId(memberId);
+        List<CombinationComment> combinationComments = combinationCommentRepository.findAllByMemberId(
+            memberId);
 
         for (CombinationComment combinationComment : combinationComments) {
             combinationComment.deleteComment();

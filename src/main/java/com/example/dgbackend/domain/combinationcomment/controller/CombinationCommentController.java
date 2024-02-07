@@ -93,7 +93,7 @@ public class CombinationCommentController {
     @Parameter(name = "commentId", description = "수정하는 댓글 Id, Path Variable 입니다.")
     @PatchMapping("/{commentId}")
     public ApiResponse<CombinationCommentResponse.CommentProcResult> updateCombinationComment(
-        @ExistCombination @PathVariable(name = "commentId") Long commentId,
+        @PathVariable(name = "commentId") Long commentId,
         @RequestBody CombinationCommentRequest.UpdateComment request) {
 
         return ApiResponse.onSuccess(

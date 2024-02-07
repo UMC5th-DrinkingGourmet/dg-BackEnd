@@ -75,7 +75,7 @@ public class RecipeController {
     @Parameter(name = "page", description = "내가 작성한 레시피북 목록 페이지 번호, query string 입니다.")
     @GetMapping("/my-page")
     public ApiResponse<RecipeResponse.RecipeMyPageList> getMyPageList(
-        @MemberObject Member member, @CheckPage @RequestParam(name=" page" ) Integer page) {
+        @MemberObject Member member, @CheckPage @RequestParam(name= "page" ) Integer page) {
         return ApiResponse.onSuccess(recipeServiceImpl.getRecipeMyPageList(member, page));
     }
 

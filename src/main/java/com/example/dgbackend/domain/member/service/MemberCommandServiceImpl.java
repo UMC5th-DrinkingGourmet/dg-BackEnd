@@ -69,10 +69,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         if (originUrl != null) {
             s3Service.deleteFile(originUrl);
-            String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
-
-            member.updateProfileImageUrl(profileImageUrl);
         }
+        String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
+        member.updateProfileImageUrl(profileImageUrl);
 
         return MemberResponse.toGetMember(member);
     }

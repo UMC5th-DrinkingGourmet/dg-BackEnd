@@ -8,8 +8,6 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.C
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
-
 public interface CombinationQueryService {
 
     CombinationPreviewResultList getCombinationPreviewResultList(Integer page, Member loginMember);
@@ -28,15 +26,18 @@ public interface CombinationQueryService {
 
     CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
 
-    CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
+    CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Member loginMember,
+        Integer page);
 
 
     CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
 
-    CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
+    CombinationPreviewResultList findCombinationsListByKeyword(Member loginMember, Integer page,
+        String keyword);
 
-    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
-                                                                         String keyword);
+    CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Member loginMember,
+        Integer page,
+        String keyword);
 
 
 }

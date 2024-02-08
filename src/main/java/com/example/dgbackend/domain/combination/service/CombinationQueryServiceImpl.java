@@ -147,64 +147,82 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      * 내가 작성한 오늘의 조합 조회
      */
     @Override
-    public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page) {
-        Page<Combination> combinations = combinationRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
+    public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Long memberId,
+        Integer page) {
+        Page<Combination> combinations = combinationRepository.findAllByMemberId(memberId,
+            PageRequest.of(page, 9));
 
         return toCombinationMyPageList(combinations);
     }
 
     @Override
-    public CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page) {
+    public CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(
+        Member loginMember, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-                30L, pageRequest);
+            30L, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-                .toList();
+            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+            .toList();
 
-        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+        List<Boolean> isLikeList = combinationList.stream()
+            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+            .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
 
     @Override
     public CombinationMyPageList getCombinationLikeList(Long memberId, Integer page) {
-        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(memberId, PageRequest.of(page, 9));
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(memberId,
+            PageRequest.of(page, 9));
 
         return toCombinationMyPageList(combinations);
     }
 
 
     @Override
-    public CombinationPreviewResultList findCombinationsListByKeyword(Integer page,
-                                                                      String keyword) {
+    public CombinationPreviewResultList findCombinationsListByKeyword(Member loginMember,
+        Integer page,
+        String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContaining(
-                keyword, pageRequest);
+            keyword, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-                .toList();
+            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+            .toList();
 
-        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+        List<Boolean> isLikeList = combinationList.stream()
+            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+            .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
 
     @Override
-    public CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
-                                                                                String keyword) {
+    public CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Member loginMember,
+        Integer page,
+        String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-                keyword, pageRequest, 30L);
+            keyword, pageRequest, 30L);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-                .toList();
+            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+            .toList();
 
-        return toCombinationPreviewResultList(combinations, hashTagOptionList);
+        List<Boolean> isLikeList = combinationList.stream()
+            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+            .toList();
+
+        return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }
 }
 

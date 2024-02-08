@@ -112,7 +112,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     @Override
     public boolean deleteAllCombination(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
         List<Combination> combinationList = combinationRepository.findAllByMember(member);
         for (Combination combination : combinationList) {

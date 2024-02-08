@@ -71,7 +71,7 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     }
 
     @Override
-    public CombinationCommentResponse.CommentProcResult updateComment(Long commentId,
+    public CombinationCommentResponse.CommentResult updateComment(Long commentId,
         CombinationCommentRequest.UpdateComment request) {
 
         CombinationComment combinationComment = combinationCommentQueryService.getComment(
@@ -79,7 +79,7 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
 
         combinationComment.updateComment(request.getContent());
 
-        return toCommentProcResult(commentId);
+        return toCommentResult(combinationComment);
     }
 
     @Override

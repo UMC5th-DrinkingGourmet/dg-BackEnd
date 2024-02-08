@@ -43,7 +43,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
      * 오늘의 조합 작성
      */
     @Override
-    public CombinationResponse.CombinationProcResult uploadCombination(Long recommendId,
+    public CombinationResponse.CombinationProcResult uploadCombination(
         CombinationRequest.WriteCombination request, Member loginMember) {
 
         // Combination & CombinationImage
@@ -52,7 +52,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
         // 업로드 이미지가 없는 경우, GPT가 추천해준 이미지 사용
         if (combinationImageList == null || combinationImageList.isEmpty()) {
-            Recommend recommend = recommendQueryService.getRecommend(recommendId);
+            Recommend recommend = recommendQueryService.getRecommend(request.getRecommendId());
             String recommendImageUrl = recommend.getImageUrl();
 
             newCombination = createCombination(loginMember, request.getTitle(),

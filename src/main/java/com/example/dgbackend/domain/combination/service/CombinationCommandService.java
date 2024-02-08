@@ -6,8 +6,8 @@ import com.example.dgbackend.domain.member.Member;
 
 public interface CombinationCommandService {
 
-    CombinationResponse.CombinationProcResult uploadCombination(Long recommendId,
-        WriteCombination request, Member loginMember);
+    CombinationResponse.CombinationProcResult uploadCombination(WriteCombination request,
+        Member loginMember);
 
     CombinationResponse.CombinationProcResult deleteCombination(Long combinationId);
 

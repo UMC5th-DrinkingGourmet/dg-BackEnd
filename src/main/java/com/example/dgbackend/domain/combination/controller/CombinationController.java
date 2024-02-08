@@ -68,15 +68,13 @@ public class CombinationController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 작성 성공")
     })
-    @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
     @PostMapping("/recommends/{recommendId}")
     public ApiResponse<CombinationResponse.CombinationProcResult> writeCombination(
         @Parameter(hidden = true) @MemberObject Member loginMember,
-        @PathVariable(name = "recommendId") Long recommendId,
         @RequestBody CombinationRequest.WriteCombination request)
         throws IOException {
         return ApiResponse.onSuccess(
-            combinationCommandService.uploadCombination(recommendId, request, loginMember));
+            combinationCommandService.uploadCombination(request, loginMember));
 
     }
 

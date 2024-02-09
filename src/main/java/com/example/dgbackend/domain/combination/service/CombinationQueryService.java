@@ -4,8 +4,10 @@ import static com.example.dgbackend.domain.combination.dto.CombinationResponse.C
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
 import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMainList;
 
 import com.example.dgbackend.domain.combination.Combination;
+import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 
 public interface CombinationQueryService {
 
@@ -23,7 +25,6 @@ public interface CombinationQueryService {
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Integer page);
 
-
     CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
 
     CombinationPreviewResultList findCombinationsListByKeyword(Integer page, String keyword);
@@ -31,5 +32,5 @@ public interface CombinationQueryService {
     CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Integer page,
         String keyword);
 
-
+    CombinationMainList getMainRandomCombinationList();
 }

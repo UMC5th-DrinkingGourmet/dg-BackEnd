@@ -107,6 +107,22 @@ public class CombinationResponse {
         Boolean isLast;
     }
 
+    /**
+     * 오늘의 조합 메인 DTO
+     */
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CombinationMainList {
+        List<CombinationMyPage> combinationList;
+    }
+
+    /**
+     * 내가 작성한 오늘의 조합
+     * 내가 좋아요한 오늘의 조합
+     * 메인 랜덤 5개 오늘의 조합
+     */
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -131,6 +147,18 @@ public class CombinationResponse {
                 .totalElements(combinations.getTotalElements())
                 .isFirst(combinations.isFirst())
                 .isLast(combinations.isLast())
+                .build();
+    }
+
+    public static CombinationMainList toCombinationMainList(List<Combination> combinations) {
+
+        List<CombinationMyPage> combinationMyPages = combinations
+                .stream()
+                .map(combo -> toCombinationMyPage(combo))
+                .collect(Collectors.toList());
+
+        return CombinationMainList.builder()
+                .combinationList(combinationMyPages)
                 .build();
     }
 

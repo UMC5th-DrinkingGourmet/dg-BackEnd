@@ -182,5 +182,11 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList);
     }
+
+    @Override
+    public CombinationMainList getMainRandomCombinationList() {
+        List<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue();
+        return toCombinationMainList(combinations);
+    }
 }
 

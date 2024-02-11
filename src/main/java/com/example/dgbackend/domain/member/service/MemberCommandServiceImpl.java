@@ -77,6 +77,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
+    public MemberResponse.GetMember getMember(Member member) {
+        return MemberResponse.toGetMember(member);
+    }
+
+    @Override
     public void saveMember(Member member) {
         memberRepository.save(member);
     }

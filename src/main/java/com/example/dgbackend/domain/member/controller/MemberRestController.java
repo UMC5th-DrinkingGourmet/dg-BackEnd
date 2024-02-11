@@ -57,4 +57,14 @@ public class MemberRestController {
 
         return ApiResponse.onSuccess(memberCommandService.patchProfileImage(member, patchProfileImage));
     }
+
+    @Operation(summary = "회원 정보 조회", description = "회원 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
+    })
+    @GetMapping()
+    public ApiResponse<MemberResponse.GetMember> getMember(@MemberObject Member member) {
+
+        return ApiResponse.onSuccess(memberCommandService.getMember(member));
+    }
 }

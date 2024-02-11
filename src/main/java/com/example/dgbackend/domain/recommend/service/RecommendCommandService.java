@@ -6,6 +6,6 @@ import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 
 public interface RecommendCommandService {
     RecommendResponse.RecommendResponseDTO requestRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO);
-    String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO);
+    String makeCombinationImage(Member member, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO);
 
 }

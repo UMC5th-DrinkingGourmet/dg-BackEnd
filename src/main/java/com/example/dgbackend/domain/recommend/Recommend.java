@@ -5,12 +5,21 @@ import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE recommend SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Recommend extends BaseTimeEntity {
 
     @Id
@@ -35,6 +44,9 @@ public class Recommend extends BaseTimeEntity {
 
     @NotNull
     private String imageUrl;
+
+    @Builder.Default()
+    private Boolean deleted = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

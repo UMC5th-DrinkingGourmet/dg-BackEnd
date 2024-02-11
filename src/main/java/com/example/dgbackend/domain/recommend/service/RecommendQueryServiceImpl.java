@@ -15,12 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class RecommendQueryServiceImpl implements RecommendQueryService {
+
     private final RecommendRepository recommendRepository;
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
@@ -36,27 +35,27 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
                 .drinkInfo(drinkInfo)
                 .imageUrl(imageUrl)
                 .member(member)
+//                .deleted(false)
                 .build();
         recommendRepository.save(recommend);
     }
         
     @Override
-    public RecommendResponse.RecommendResult getRecommendResult(Long recommendId) {
+    public RecommendResponse.RecommendResponseDTO getRecommendResult(Long recommendId) {
 
-        Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
-                () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
-        );
-
-        return RecommendResponse.toRecommendResult(recommend);
+        return RecommendResponse.toRecommendResult(getRecommend(recommendId));
 
     }
 
     @Override
-    public RecommendResponse.RecommendListResult getRecommendListResult(Long memberID, Integer page, Integer size) {
-        Member member = memberRepository.findById(memberID).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+    public Recommend getRecommend(Long recommendId) {
+        return recommendRepository.findById(recommendId).orElseThrow(
+            () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
         );
+    }
 
+    @Override
+    public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         Page<Recommend> pageList = recommendRepository.findAllByMemberId(member.getId(), pageable);
 
@@ -71,7 +70,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     }
 
     @Override
-    public RecommendResponse.RecommendResult deleteRecommend(Long recommendId) {
+    public RecommendResponse.RecommendResponseDTO deleteRecommend(Long recommendId) {
         Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
                 () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
         );

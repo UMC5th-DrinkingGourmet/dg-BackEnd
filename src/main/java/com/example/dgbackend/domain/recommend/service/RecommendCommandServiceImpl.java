@@ -96,7 +96,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         String reason = gptResult.get("Reason");
 
         //추천 결과 이미지 생성
-        String imageUrl = makeCombinationImage(member.getId(), drinkType, recommendRequestDTO);
+        String imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
         //추천 결과 DB에 저장
         recommendQueryService.addRecommend(member, recommendRequestDTO, drinkType, reason, imageUrl);
 
@@ -171,11 +171,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     drinkType : 추천된 주종
     requestDTO : 추천 요청 정보
      */
-    public String makeCombinationImage(Long memberID, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO) {
-
-        // 사용자 선호 정보 추출을 위한 Member 객체 생성
-        Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
-
+    public String makeCombinationImage(Member member, String drinkName, RecommendRequest.RecommendRequestDTO requestDTO) {
         //Dall e API 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

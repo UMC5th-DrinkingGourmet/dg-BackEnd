@@ -1,9 +1,11 @@
 package com.example.dgbackend.domain.combination.controller;
 
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.service.CombinationCommandService;
 import com.example.dgbackend.domain.combination.service.CombinationQueryService;
+import com.example.dgbackend.domain.combination.service.CombinationScheduler;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.validation.annotation.CheckPage;
 import com.example.dgbackend.global.validation.annotation.ExistCombination;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +36,7 @@ public class CombinationController {
 
     private final CombinationQueryService combinationQueryService;
     private final CombinationCommandService combinationCommandService;
+    private final CombinationScheduler combinationScheduler;
 
     @Operation(summary = "오늘의 조합 홈 조회", description = "오늘의 조합 목록을 조회합니다.")
     @ApiResponses(value = {
@@ -160,5 +164,15 @@ public class CombinationController {
     public ApiResponse<CombinationResponse.CombinationMainList> getRandomMain() {
         return ApiResponse.onSuccess(
                 combinationQueryService.getMainRandomCombinationList());
+    }
+
+    @Operation(summary = "메인 오늘의 조합 로테이션 조회", description = "메인에 표시될 오늘의 조합 랜덤 3개를 조회합니다.")
+    @GetMapping("/main/rotation")
+    public ApiResponse<CombinationResponse.CombinationMainPreviewList> getMainRotation() {
+
+        CombinationResponse.CombinationMainPreviewList combinationMainPreviewList =
+                combinationScheduler.getMainTodayCombinationList();
+
+        return ApiResponse.onSuccess(combinationMainPreviewList);
     }
 }

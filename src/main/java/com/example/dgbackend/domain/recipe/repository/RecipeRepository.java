@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
@@ -26,4 +25,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Page<Recipe> findRecipesByMemberId(Long memberId, PageRequest pageRequest);
 
     List<Recipe> findRecipesByNameContaining(String keyword);
+
+    Page<Recipe> findAllByOrderByLikeCountDesc(PageRequest pageRequest);
 }

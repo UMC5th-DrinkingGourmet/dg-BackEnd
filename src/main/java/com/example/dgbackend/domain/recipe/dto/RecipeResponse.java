@@ -137,4 +137,54 @@ public class RecipeResponse {
                 .build();
     }
 
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeMain {
+        private Long id;
+        private String recipeName;
+        private String cookingTime;
+        private String ingredient;
+        private String recipeImageUrl;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeMainList {
+        List<RecipeMain> recipeList;
+    }
+
+    public static RecipeMainList toRecipeMainList(List<Recipe> recipes, List<RecipeImage> imgList) {
+
+        List<RecipeMain> recipeMains = recipes
+                .stream()
+                .map(rc -> toRecipeMain(rc, imgList))
+                .collect(Collectors.toList());
+
+        return RecipeResponse.RecipeMainList.builder()
+                .recipeList(recipeMains)
+                .build();
+    }
+
+
+    public static RecipeMain toRecipeMain(Recipe recipe, List<RecipeImage> imgList) {
+        // TODO: 대표 이미지 정하기
+        String imageUrl = imgList.stream()
+                .filter(img -> img != null && img.getRecipe().getId().equals(recipe.getId()))
+                .findAny()  // 이미지 중 첫 번째 것만 가져옴
+                .map(img -> img.getImageUrl())
+                .orElse(null);  // 만약 이미지가 없다면 null 반환
+
+        return RecipeMain.builder()
+                .id(recipe.getId())
+                .recipeName(recipe.getName())
+                .cookingTime(recipe.getCookingTime())
+                .ingredient(recipe.getIngredient())
+                .recipeImageUrl(imageUrl)
+                .build();
+    }
+
 }

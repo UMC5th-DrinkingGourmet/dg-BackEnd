@@ -9,6 +9,7 @@ import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
+import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeQueryService;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
@@ -18,6 +19,7 @@ import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     private final CombinationCommentQueryService combinationCommentQueryService;
     private final MemberRepository memberRepository;
     private final CombinationLikeQueryService combinationLikeQueryService;
+    private final CombinationScheduler combinationScheduler;
+    private final CombinationImageRepository combinationImageRepository;
 
     /*
     오늘의 조합 홈 조회(페이징)

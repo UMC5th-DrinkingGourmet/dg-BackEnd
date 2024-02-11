@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.recipe.controller;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
+import com.example.dgbackend.domain.recipe.service.RecipeScheduler;
 import com.example.dgbackend.domain.recipe.service.RecipeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecipeController {
 
     private final RecipeServiceImpl recipeServiceImpl;
+    private final RecipeScheduler recipeScheduler;
 
     //TODO: @AutenticationPrincipal로 변경
 
@@ -91,6 +93,12 @@ public class RecipeController {
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "keyword") String keyword) {
         return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));
+    }
+
+    @Operation(summary = "메인 레시피북 조회", description = "메인에 띄울 레시피북을 조회합니다.")
+    @GetMapping("/main")
+    public ApiResponse<RecipeResponse.RecipeMainList> getMainRecipeList() {
+        return ApiResponse.onSuccess(recipeScheduler.getMainTodayRecipeList());
     }
 
 }

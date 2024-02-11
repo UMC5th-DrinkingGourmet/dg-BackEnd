@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 public class RecommendController {
     private final RecommendCommandService recommendCommandService;
     private final RecommendQueryService recommendQueryService;
-    private final MemberRepository memberRepository;
 
     @Operation(summary = "주류 추천 요청", description = "GPT API에 추류 추천 요청을 보내고 응답을 받아옵니다.")
     @ApiResponses(value = {
@@ -41,9 +40,9 @@ public class RecommendController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 조회 성공")
     })
-    @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
+    @Parameter(name = "recommendId", description = "특정 recommend 정보 가져오기, Path Variable 입니다.")
     @PostMapping("/{recommendId}")
-    public ApiResponse<RecommendResponse.RecommendResult> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
+    public ApiResponse<RecommendResponse.RecommendResponseDTO> getRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.getRecommendResult(recommendId));
     }
@@ -52,9 +51,9 @@ public class RecommendController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "추천 받은 조합 리스트 조회 성공")
     })
-    @GetMapping("/list/{MemberID}")
-    public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@PathVariable(name = "MemberID") Long memberID, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
-        return ApiResponse.onSuccess(recommendQueryService.getRecommendListResult(memberID, page, size));
+    @GetMapping("/list")
+    public ApiResponse<RecommendResponse.RecommendListResult> getRecommendList(@MemberObject Member member, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
+        return ApiResponse.onSuccess(recommendQueryService.getRecommendListResult(member, page, size));
     }
   
     @Operation(summary = "오늘의 조합 - 추천 받은 조합 삭제", description = "추천 받은 조합을 선택하여 오늘의 조합을 작성합니다.")
@@ -63,7 +62,7 @@ public class RecommendController {
     })
     @Parameter(name = "recommendId", description = "내가 받은 추천 조합 Id, Path Variable 입니다.")
     @DeleteMapping("/{recommendId}")
-    public ApiResponse<RecommendResponse.RecommendResult> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
+    public ApiResponse<RecommendResponse.RecommendResponseDTO> deleteRecommend(@PathVariable(name = "recommendId") Long recommendId) {
 
         return ApiResponse.onSuccess(recommendQueryService.deleteRecommend(recommendId));
     }

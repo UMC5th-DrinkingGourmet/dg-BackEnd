@@ -17,16 +17,15 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
+    _FORBIDDEN_MEMBER_REQUEST(HttpStatus.FORBIDDEN, "MEMBER_002", "해당 사용자는 금지된 요청을 하였습니다."),
 
     //오늘의 조합 관련
     _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
+    _DELETE_COMBINATION(HttpStatus.BAD_REQUEST, "COMBINATION_002", "삭제된 오늘의 조합입니다."),
 
     //오늘의 조합 댓글
     _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001", "존재하지 않는 오늘의 조합 댓글입니다."),
     _OVER_DEPTH_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_002", "대댓글까지만 가능합니다."),
-
-    //Recommend 관련
-    _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
 
     //CombinationImage 관련
     _COMBINATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_IMAGE_001", "존재하지 않는 이미지입니다."),
@@ -46,9 +45,10 @@ public enum ErrorStatus implements BaseErrorCode {
     //Redis 관련
     _REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_001", "Redis에 존재하지 않는 Key 입니다."),
 
-    //주류 추천 관련
-    _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_001", "취하고 싶은 정도를 입력해주세요."),
-    _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "음식 이름을 입력해주세요."),
+    //Recommend 관련
+    _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
+    _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "취하고 싶은 정도를 입력해주세요."),
+    _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_003", "음식 이름을 입력해주세요."),
   
     //레시피
     _EMPTY_RECIPE(HttpStatus.CONFLICT, "RECIPE_001", "존재하지 않는 레시피입니다."),

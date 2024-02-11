@@ -32,19 +32,10 @@ public class RecommendResponse {
         private RecommendRequest.GPTMessage message;
     }
 
-    //TODO :RecommendResponseDTO와 통합할 예정
-    @Builder
-    @Getter
-    public static class RecommendResult {
-        String drinkName;
-        String drinkInfo;
-        String imageUrl;
-    }
-
     @Getter
     @Builder
     public static class RecommendListResult {
-        List<RecommendResult> recommendResponseDTOList;
+        List<RecommendResponseDTO> recommendResponseDTOList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -52,10 +43,11 @@ public class RecommendResponse {
         Boolean isLast;
     }
 
-    public static RecommendResult toRecommendResult(Recommend recommend) {
-        return RecommendResult.builder()
+    public static RecommendResponseDTO toRecommendResult(Recommend recommend) {
+        return RecommendResponseDTO.builder()
+                .foodName(recommend.getFoodName())
                 .drinkName(recommend.getDrinkName())
-                .drinkInfo(recommend.getDrinkInfo())
+                .recommendReason(recommend.getDrinkInfo())
                 .imageUrl(recommend.getImageUrl())
                 .build();
     }

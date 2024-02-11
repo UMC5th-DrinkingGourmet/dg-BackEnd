@@ -5,16 +5,16 @@ import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRes
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CombinationResponse {
 
@@ -26,6 +26,7 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationPreviewResultList {
+
         List<CombinationPreviewResult> combinationList;
         Integer listSize;
         Integer totalPage;
@@ -39,57 +40,63 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationPreviewResult {
+
+        Long combinationId;
         String title;
         String combinationImageUrl;
         Long likeCount;
         Long commentCount;
         List<String> hashTageList;
+        Boolean isLike;
     }
 
     // Page<Combination> -> Page<CombinationPreviewDTO> 로 변환
-    public static CombinationPreviewResultList toCombinationPreviewResultList(Page<Combination> combinations,
-                                                                              List<List<HashTagOption>> hashTagOptions) {
+    public static CombinationPreviewResultList toCombinationPreviewResultList(
+        Page<Combination> combinations,
+        List<List<HashTagOption>> hashTagOptions,
+        List<Boolean> isLikes) {
 
-        List<CombinationPreviewResult> combinationPreviewDTOS = combinations.getContent()
-                .stream()
-                .map(cb -> toCombinationPreviewResult(cb, hashTagOptions))
-                .collect(Collectors.toList());
+        List<CombinationPreviewResult> combinationPreviewDTOS = IntStream.range(0,
+                combinations.getContent().size())
+            .mapToObj(i -> toCombinationPreviewResult(combinations.getContent().get(i),
+                hashTagOptions.get(i), isLikes.get(i)))
+            .collect(Collectors.toList());
 
         return CombinationPreviewResultList.builder()
-                .combinationList(combinationPreviewDTOS)
-                .listSize(combinationPreviewDTOS.size())
-                .totalPage(combinations.getTotalPages())
-                .totalElements(combinations.getTotalElements())
-                .isFirst(combinations.isFirst())
-                .isLast(combinations.isLast())
-                .build();
+            .combinationList(combinationPreviewDTOS)
+            .listSize(combinationPreviewDTOS.size())
+            .totalPage(combinations.getTotalPages())
+            .totalElements(combinations.getTotalElements())
+            .isFirst(combinations.isFirst())
+            .isLast(combinations.isLast())
+            .build();
     }
 
     // Combination -> CombinationPreviewDTO로 변환
     public static CombinationPreviewResult toCombinationPreviewResult(Combination combination,
-                                                                      List<List<HashTagOption>> hashTagOptions) {
+        List<HashTagOption> hashTagOptions,
+        Boolean isLike) {
         // TODO: 대표 이미지 정하기
         String imageUrl = combination.getCombinationImages()
-                .stream()
-                .findFirst()
-                .map(CombinationImage::getImageUrl)
-                .orElse(null);
+            .stream()
+            .findFirst()
+            .map(CombinationImage::getImageUrl)
+            .orElse(null);
 
         // 해시태그 정보
         List<String> hashTagList = hashTagOptions.stream()
-                .filter(htoList -> htoList.stream()
-                        .anyMatch(hto -> hto.getCombination().equals(combination)))
-                .flatMap(htoList -> htoList.stream()
-                        .map(hto -> hto.getHashTag().getName()))
-                .toList();
+            .map(hto -> hto.getHashTag().getName())
+            .collect(Collectors.toList());
 
         return CombinationPreviewResult.builder()
-                .title(combination.getTitle())
-                .combinationImageUrl(imageUrl)
-                .likeCount(combination.getLikeCount())
-                .commentCount(combination.getCommentCount())
-                .hashTageList(hashTagList)
-                .build();
+            .combinationId(combination.getId())
+            .title(combination.getTitle())
+            .combinationImageUrl(imageUrl)
+            .likeCount(combination.getLikeCount())
+            .commentCount(combination.getCommentCount())
+            .hashTageList(hashTagList)
+            .isLike(isLike)
+            .build();
     }
 
     /**
@@ -187,19 +194,21 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationDetailResult {
+
         CombinationResult combinationResult;
         MemberResponse.MemberResult memberResult;
         CombinationCommentResponse.CommentPreViewResult combinationCommentResult;
     }
 
-    public static CombinationDetailResult toCombinationDetailResult(CombinationResult combinationResult,
-                                                                    MemberResponse.MemberResult memberResult,
-                                                                    CombinationCommentResponse.CommentPreViewResult combinationCommentResult) {
+    public static CombinationDetailResult toCombinationDetailResult(
+        CombinationResult combinationResult,
+        MemberResponse.MemberResult memberResult,
+        CombinationCommentResponse.CommentPreViewResult combinationCommentResult) {
         return CombinationDetailResult.builder()
-                .combinationResult(combinationResult)
-                .memberResult(memberResult)
-                .combinationCommentResult(combinationCommentResult)
-                .build();
+            .combinationResult(combinationResult)
+            .memberResult(memberResult)
+            .combinationCommentResult(combinationCommentResult)
+            .build();
     }
 
     @Builder
@@ -207,6 +216,7 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationResult {
+
         Long combinationId;
         String title;
         String content;
@@ -216,24 +226,24 @@ public class CombinationResponse {
     }
 
     public static CombinationResult toCombinationResult(Combination combination,
-                                                        List<HashTagOption> hashTagOptions,
-                                                        boolean isCombinationLike) {
+        List<HashTagOption> hashTagOptions,
+        boolean isCombinationLike) {
         List<String> hashTagList = hashTagOptions.stream()
-                .map(hto -> hto.getHashTag().getName())
-                .toList();
+            .map(hto -> hto.getHashTag().getName())
+            .toList();
 
         List<String> imageList = combination.getCombinationImages().stream()
-                .map(CombinationImage::getImageUrl)
-                .toList();
+            .map(CombinationImage::getImageUrl)
+            .toList();
 
         return CombinationResult.builder()
-                .combinationId(combination.getId())
-                .title(combination.getTitle())
-                .content(combination.getContent())
-                .hashTagList(hashTagList)
-                .combinationImageList(imageList)
-                .isCombinationLike(isCombinationLike)
-                .build();
+            .combinationId(combination.getId())
+            .title(combination.getTitle())
+            .content(combination.getContent())
+            .hashTagList(hashTagList)
+            .combinationImageList(imageList)
+            .isCombinationLike(isCombinationLike)
+            .build();
     }
 
     /**
@@ -244,30 +254,33 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationEditResult {
+
         String title;
         String content;
         List<String> hashTagList;
         List<String> combinationImageUrlList;
+        Long recommendId;
     }
 
     public static CombinationEditResult toCombinationEditResult(Combination combination,
-                                                                List<HashTagOption> hashTagOptions,
-                                                                List<CombinationImage> combinationImages) {
+        List<HashTagOption> hashTagOptions,
+        List<CombinationImage> combinationImages) {
 
         List<String> hashTagList = hashTagOptions.stream()
-                .map(hto -> hto.getHashTag().getName())
-                .toList();
+            .map(hto -> hto.getHashTag().getName())
+            .toList();
 
         List<String> combinationImageUrlList = combinationImages.stream()
-                .map(CombinationImage::getImageUrl)
-                .toList();
+            .map(CombinationImage::getImageUrl)
+            .toList();
 
         return CombinationEditResult.builder()
-                .title(combination.getTitle())
-                .content(combination.getContent())
-                .hashTagList(hashTagList)
-                .combinationImageUrlList(combinationImageUrlList)
-                .build();
+            .title(combination.getTitle())
+            .content(combination.getContent())
+            .hashTagList(hashTagList)
+            .combinationImageUrlList(combinationImageUrlList)
+            .recommendId(combination.getRecommend().getId())
+            .build();
     }
 
     /**
@@ -278,15 +291,16 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationProcResult {
+
         Long combinationId;
         LocalDateTime createdAt;
     }
 
     public static CombinationProcResult toCombinationProcResult(Long combinationId) {
         return CombinationProcResult.builder()
-                .combinationId(combinationId)
-                .createdAt(LocalDateTime.now())
-                .build();
+            .combinationId(combinationId)
+            .createdAt(LocalDateTime.now())
+            .build();
     }
 
     /**

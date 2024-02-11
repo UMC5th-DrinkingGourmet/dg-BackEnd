@@ -8,19 +8,19 @@ import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.jwt.dto.AuthRequest;
+import com.example.dgbackend.global.jwt.dto.AuthResponse;
 import com.example.dgbackend.global.util.CookieUtil;
 import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
 
 @Service
 @Transactional
@@ -39,11 +39,13 @@ public class AuthService {
     /**
      * 회원가입 및 로그인 진행
      */
-    public void loginOrJoin(HttpServletResponse response, AuthRequest authRequest) throws IOException {
+    public AuthResponse loginOrJoin(HttpServletResponse response, AuthRequest authRequest)
+        throws IOException {
 
         String id = authRequest.getProvider() + "_" + authRequest.getProviderId();
 
-        if (!memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(), authRequest.getProviderId())) {
+        if (!memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(),
+            authRequest.getProviderId())) {
             Member newMember = MemberRequest.toEntity(authRequest);
             memberCommandService.saveMember(newMember);
         }
@@ -58,8 +60,7 @@ public class AuthService {
             log.info("-------------------- cookie에 refresh Token 저장 : {}", refreshToken);
         }
 
-        // TODO: 추후 리다이렉트 필요 여부에 따라 변경
-        // response.sendRedirect(frontendRedirectUrl);
+        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName());
     }
 
     // Header에 Access Token 담아서 전달
@@ -95,7 +96,7 @@ public class AuthService {
     public ResponseEntity<?> reIssueAccessToken(HttpServletRequest request) {
 
         Cookie refreshTokenCookie = cookieUtil.getCookie(request, "refreshToken").orElseThrow(
-                () -> new ApiException(ErrorStatus._REFRESH_TOKEN_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._REFRESH_TOKEN_NOT_FOUND)
         );
 
         String refreshToken = refreshTokenCookie.getValue();

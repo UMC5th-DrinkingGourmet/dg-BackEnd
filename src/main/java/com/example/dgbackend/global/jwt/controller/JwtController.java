@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class JwtController {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "accessToken 재발급 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "refreshToken이 만료되었습니다.")
     })
-    @GetMapping("/token")
+    @PostMapping("/reissue-token")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
 
         return authService.reIssueAccessToken(request);

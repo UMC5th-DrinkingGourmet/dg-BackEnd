@@ -158,11 +158,11 @@ public class CombinationResponse {
                 .build();
     }
 
-    public static CombinationMainList toCombinationMainList(List<Combination> combinations) {
+    public static CombinationMainList toCombinationMainList(List<Combination> combinations, List<CombinationImage> imgs) {
 
         List<CombinationMyPage> combinationMyPages = combinations
                 .stream()
-                .map(combo -> toCombinationMyPage(combo))
+                .map(combo -> toCombinationMain(combo, imgs))
                 .collect(Collectors.toList());
 
         return CombinationMainList.builder()
@@ -177,6 +177,22 @@ public class CombinationResponse {
                 .findFirst()
                 .map(CombinationImage::getImageUrl)
                 .orElse(null);
+
+        return CombinationMyPage.builder()
+                .combinationId(combination.getId())
+                .title(combination.getTitle())
+                .combinationImageUrl(imageUrl)
+                .build();
+    }
+
+    public static CombinationMyPage toCombinationMain(Combination combination, List<CombinationImage> imgList) {
+        // TODO: 대표 이미지 정하기
+
+        String imageUrl = imgList.stream()
+                .filter(img -> img != null && img.getCombination().getId().equals(combination.getId()))
+                .findAny()  // 이미지 중 첫 번째 것만 가져옴
+                .map(img -> img.getImageUrl())
+                .orElse(null);  // 만약 이미지가 없다면 null 반환
 
         return CombinationMyPage.builder()
                 .combinationId(combination.getId())
@@ -332,11 +348,6 @@ public class CombinationResponse {
     public static CombinationMainPreviewList toCombinationMainPreviewList(List<Combination> combinations, List<CombinationImage> imgList, List<List<HashTagOption>> hashTagOptions) {
 
         System.out.println("combinations = " + hashTagOptions);
-
-//        for(int i = 0; i < 3; i++){
-//            if(imgList.get(i) != null)
-//                System.out.println("imgList = " + imgList.get(i).getImageUrl() + imgList.get(i).getCombination().getId());
-//        }
 
         List<CombinationMainPreview> combinationMainPreviews = combinations
                 .stream()

@@ -204,24 +204,18 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            keyword, pageRequest, 30L);
+                keyword, pageRequest, 30L);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
-            .toList();
+                .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+                .toList();
 
         List<Boolean> isLikeList = combinationList.stream()
-            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
-            .toList();
+                .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+                .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
-    }
-
-    @Override
-    public CombinationResponse.CombinationMainList getMainRandomCombinationList() {
-        List<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue();
-        return toCombinationMainList(combinations);
     }
 }
 

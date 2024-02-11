@@ -38,6 +38,4 @@ public interface CombinationQueryService {
     CombinationPreviewResultList findWeeklyBestCombinationsListByKeyWord(Member loginMember,
         Integer page,
         String keyword);
-
-    CombinationMainList getMainRandomCombinationList();
 }

@@ -180,7 +180,7 @@ public class CombinationController {
     @GetMapping("/main/weekly-best")
     public ApiResponse<CombinationResponse.CombinationMainList> getRandomMain() {
         return ApiResponse.onSuccess(
-                combinationQueryService.getMainRandomCombinationList());
+                combinationScheduler.getMainRandomCombinationList());
     }
 
     @Operation(summary = "메인 오늘의 조합 로테이션 조회", description = "메인에 표시될 오늘의 조합 랜덤 3개를 조회합니다.")

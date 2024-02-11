@@ -1,10 +1,10 @@
 package com.example.dgbackend.global.jwt.resolver;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
-import com.example.dgbackend.global.jwt.service.AuthService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,9 @@ Header에 있는 토큰을 이용하여 유저 정보를 가져오는 클래스
 @Component
 @RequiredArgsConstructor
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
+
     private final JwtProvider jwtProvider;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isUserIdAnnotation = parameter.getParameterAnnotation(MemberObject.class) != null;
@@ -30,10 +32,12 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader("Authorization");
-        if(token == null)
-            return null;
+        if (token == null) {
+            throw new ApiException(ErrorStatus._EMPTY_JWT);
+        }
 
         return jwtProvider.getMemberFromToken(token.split(" ")[1]);
     }

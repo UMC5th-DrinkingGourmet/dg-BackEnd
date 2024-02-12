@@ -2,7 +2,9 @@ package com.example.dgbackend.domain.combinationlike.controller;
 
 
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeQueryServiceImpl;
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +19,10 @@ public class CombinationLikeController {
     private final CombinationLikeQueryServiceImpl combinationLikeQueryServiceImpl;
 
 
-    @PostMapping("/combination-likes/{memberId}/{combinationId}")
-    public ApiResponse<Boolean> updateCombinationLike(
-        @PathVariable(value = "memberId") Long memberId,
+    @PostMapping("/combination-likes/{combinationId}")
+    public ApiResponse<Boolean> updateCombinationLike(@MemberObject Member member,
         @PathVariable(value = "combinationId") Long combinationId) {
         return ApiResponse.onSuccess(
-            combinationLikeQueryServiceImpl.changeCombinationLike(memberId, combinationId));
+            combinationLikeQueryServiceImpl.changeCombinationLike(member, combinationId));
     }
 }

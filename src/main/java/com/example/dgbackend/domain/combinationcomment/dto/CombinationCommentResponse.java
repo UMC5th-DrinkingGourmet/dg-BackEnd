@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.combinationcomment.dto;
 
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.global.util.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,7 +60,7 @@ public class CombinationCommentResponse {
         private Long id;
         private String content;
         private String memberName;
-        private LocalDateTime updatedAt; // 댓글 생성 및 수정 시간
+        private String updatedAt; // 댓글 생성 및 수정 시간
         private Integer childCount;
         private List<CommentResult> childComments = new ArrayList<>();
     }
@@ -70,7 +71,7 @@ public class CombinationCommentResponse {
                 .id(combinationComment.getId())
                 .content(combinationComment.getContent())
                 .memberName(combinationComment.getMember().getName())
-                .updatedAt(combinationComment.getUpdatedAt())
+                .updatedAt(DateTimeUtils.formatLocalDateTime(combinationComment.getUpdatedAt()))
                 .childCount(getChildCount(combinationComment))
                 .childComments(getChildComments(combinationComment))
                 .build();

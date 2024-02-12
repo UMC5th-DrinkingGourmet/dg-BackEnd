@@ -26,6 +26,7 @@ public enum ErrorStatus implements BaseErrorCode {
     //오늘의 조합 댓글
     _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001", "존재하지 않는 오늘의 조합 댓글입니다."),
     _OVER_DEPTH_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_002", "대댓글까지만 가능합니다."),
+    _DELETE_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_003", "이미 삭제된 오늘의 조합 댓글입니다."),
 
     //CombinationImage 관련
     _COMBINATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_IMAGE_001", "존재하지 않는 이미지입니다."),

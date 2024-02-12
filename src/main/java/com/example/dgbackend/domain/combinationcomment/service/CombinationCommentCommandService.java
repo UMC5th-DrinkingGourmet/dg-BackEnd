@@ -8,15 +8,14 @@ import com.example.dgbackend.domain.member.Member;
 
 public interface CombinationCommentCommandService {
 
-    CombinationCommentResponse.CommentResult saveCombinationComment(Long combinationId, CombinationCommentRequest.WriteComment request);
+    CombinationCommentResponse.CommentResult saveCombinationComment(Member loginMember,
+        Long combinationId, CombinationCommentRequest.WriteComment request);
 
-    CombinationComment createComment(Combination combination, Member member, CombinationCommentRequest.WriteComment request);
-
-    CombinationComment getParentComment(Long parentId);
-
-    CombinationComment getComment(Long commentId);
+    CombinationComment createComment(Combination combination, Member member,
+        CombinationCommentRequest.WriteComment request);
 
     CombinationCommentResponse.CommentProcResult deleteComment(Long commentId);
 
     CombinationCommentResponse.CommentProcResult updateComment(Long commentId, CombinationCommentRequest.UpdateComment request);
+
 }

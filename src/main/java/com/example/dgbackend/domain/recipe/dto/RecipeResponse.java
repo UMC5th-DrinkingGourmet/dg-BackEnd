@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
+import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -64,6 +65,38 @@ public class RecipeResponse {
     @Schema(description = "작성자 이름", example = "김동규")
     private String memberName;
 
+    @Schema(description = "레시피 이미지 목록")
+    private List<String> recipeImageList;
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeResponseList {
+        List<RecipeResponse> recipeList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes) {
+        List<RecipeResponse> recipeResponses = recipes.getContent()
+                .stream()
+                .map(RecipeResponse::toResponse)
+                .collect(Collectors.toList());
+
+        return RecipeResponseList.builder()
+                .recipeList(recipeResponses)
+                .listSize(recipeResponses.size())
+                .totalPage(recipes.getTotalPages())
+                .totalElements(recipes.getTotalElements())
+                .isFirst(recipes.isFirst())
+                .isLast(recipes.isLast())
+                .build();
+    }
+
     public static RecipeResponse toResponse(Recipe recipe) {
         return RecipeResponse.builder()
                 .id(recipe.getId())
@@ -78,6 +111,7 @@ public class RecipeResponse {
                 .recommendCombination(recipe.getRecommendCombination())
                 .state(recipe.isState())
                 .memberName(recipe.getMember().getName())
+                .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
                 .build();
     }
 

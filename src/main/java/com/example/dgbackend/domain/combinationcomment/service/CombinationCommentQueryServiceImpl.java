@@ -8,6 +8,7 @@ import com.example.dgbackend.domain.combinationcomment.repository.CombinationCom
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,10 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
     @Override
     public CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page) {
 
-        return toCommentPreViewResult(
-            combinationCommentRepository.findAllByCombinationId(combinationId,
-                PageRequest.of(page, 10)));
+        Page<CombinationComment> comments = combinationCommentRepository.findAllByCombinationIdAndState(
+            combinationId, true, PageRequest.of(page, 10));
+
+        return toCommentPreViewResult(comments);
     }
 
     @Override

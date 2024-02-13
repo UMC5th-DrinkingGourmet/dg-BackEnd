@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,11 +34,10 @@ public class RecipeServiceImpl implements RecipeService {
     private final MemberService memberService;
 
     @Override
-    public List<RecipeResponse> getExistRecipes(int page) {
+    public RecipeResponse.RecipeResponseList getExistRecipes(int page) {
         Pageable pageable = Pageable.ofSize(10).withPage(page);
-        return recipeRepository.findAllByState(true, pageable).stream()
-                .map(RecipeResponse::toResponse)
-                .toList();
+
+        return RecipeResponse.toRecipeResponseList(recipeRepository.findAllByState(true, pageable));
     }
 
     @Override

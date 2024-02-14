@@ -9,11 +9,11 @@ import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.jwt.dto.AuthRequest;
 import com.example.dgbackend.global.jwt.dto.AuthResponse;
-import com.example.dgbackend.global.util.CookieUtil;
 import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final RedisUtil redisUtil;
-    private final CookieUtil cookieUtil;
     private final JwtProvider jwtProvider;
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
@@ -41,17 +40,24 @@ public class AuthService {
 
         String id = authRequest.getProvider() + "_" + authRequest.getProviderId();
 
-        if (!memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(),
-            authRequest.getProviderId())) {
+        Long memberId;
+        Optional<Member> loginMember = memberQueryService.findByProviderAndProviderId(
+            authRequest.getProvider(),
+            authRequest.getProviderId());
+        if (loginMember.isEmpty()) {
             Member newMember = MemberRequest.toEntity(authRequest);
             memberCommandService.saveMember(newMember);
+            memberId = newMember.getId();
+        } else {
+            memberId = loginMember.get().getId();
         }
 
         // 인증이 성공했을 때, Header에 Access Token, RefreshToken 생성 및 저장
         registerHeaderToken(response, id, "Authorization");
         registerHeaderToken(response, id, "RefreshToken");
 
-        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName());
+        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName(),
+            memberId);
     }
 
     // Header에 Access Token 담아서 전달

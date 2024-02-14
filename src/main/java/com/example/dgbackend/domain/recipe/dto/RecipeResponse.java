@@ -62,8 +62,8 @@ public class RecipeResponse {
     @Schema(description = "존재 여부", example = "true")
     private boolean state = true; //true : 존재, false : 삭제
 
-    @Schema(description = "작성자 이름", example = "김동규")
-    private String memberName;
+    @Schema(description = "작성자 닉네임", example = "mason")
+    private String memberNickName;
 
     @Schema(description = "레시피 이미지 목록")
     private List<String> recipeImageList;
@@ -110,7 +110,7 @@ public class RecipeResponse {
                 .recipeInstruction(recipe.getRecipeInstruction())
                 .recommendCombination(recipe.getRecommendCombination())
                 .state(recipe.isState())
-                .memberName(recipe.getMember().getName())
+                .memberNickName(recipe.getMember().getNickName())
                 .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
                 .build();
     }

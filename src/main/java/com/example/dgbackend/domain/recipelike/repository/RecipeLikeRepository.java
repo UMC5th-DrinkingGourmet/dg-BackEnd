@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface RecipeLikeRepository extends JpaRepository<RecipeLike, Long> {
 
     Optional<RecipeLike> findByRecipeAndMember(Recipe recipe, Member member);
-    boolean deleteAllByMemberId(Long memberId);
 }

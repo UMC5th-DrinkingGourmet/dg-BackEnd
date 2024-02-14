@@ -32,7 +32,6 @@ public class MemberRequest {
     public static class PatchMember {
         private String name;
         private String nickName;
-        private MultipartFile profileImage;
         private String birthDate;
         private String phoneNumber;
         @Enumerated(EnumType.STRING)

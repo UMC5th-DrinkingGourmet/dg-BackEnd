@@ -92,22 +92,33 @@ public class Member extends BaseTimeEntity {
         this.drinkingLimit = drinkingLimit;
     }
 
-    public Member update (String name, String nickName, String birthDate, String phoneNumber,  Gender gender) {
-        this.name = name;
-        this.nickName = nickName;
-        this.birthDate = birthDate;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
+    /*
+    Setter: name (이름)
+     */
+    public void setName(String name) { this.name = name; }
 
-        return this;
-    }
+    /*
+    Setter: nickName (닉네임)
+     */
+    public void setNickName(String nickName) { this.nickName = nickName; }
+
+    /*
+    Setter: birthDate (생일)
+     */
+    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+
+    /*
+    Setter: birthDate (생일)
+     */
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    /*
+    Setter: gender (생일)
+     */
+    public void setGender(Gender gender) { this.gender = gender; }
 
     public String updateProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
         return profileImageUrl;
-    }
-
-    public void signout() {
-        this.state = false;
     }
 }

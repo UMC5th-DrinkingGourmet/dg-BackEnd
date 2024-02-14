@@ -12,6 +12,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +25,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Component
 @Slf4j
@@ -52,11 +51,11 @@ public class JwtProvider {
         SecretKey secretKey = generateKey();
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(expiredDate))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(new Date(expiredDate))
+            .signWith(secretKey, SignatureAlgorithm.HS256)
+            .compact();
     }
 
     /**
@@ -68,13 +67,14 @@ public class JwtProvider {
         SecretKey secretKey = generateKey();
 
         String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
+            .compact();
 
         // Redis에 저장
         redisUtil.setDataExpire(id, refreshToken, REFRESH_TOKEN_VALID_TIME);
+        log.info("Redis에 Refresh Token 저장 = " + refreshToken);
 
         return refreshToken;
     }
@@ -101,9 +101,9 @@ public class JwtProvider {
         try {
             SecretKey secretKey = generateKey();
             Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token);
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
             throw new ApiException(ErrorStatus._INVALID_JWT);
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class JwtProvider {
 
         String[] providers = getMemberIdFromToken(token).split("_");
         return memberRepository.findByProviderAndProviderId(providers[0], providers[1]).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
     }
 
@@ -133,10 +133,10 @@ public class JwtProvider {
 
         // parsing 해서 body값 가져오기
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
 
         log.info("-------------- JwtProvider.getUserIdFromAccessToken: " + claims.getSubject());
         return claims.getSubject();
@@ -147,7 +147,7 @@ public class JwtProvider {
         List<GrantedAuthority> authorities = getAuthoritiesFromMember(loginMember);
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginMember, token, authorities);
+            new UsernamePasswordAuthenticationToken(loginMember, token, authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
@@ -164,7 +164,7 @@ public class JwtProvider {
     }
 
     // Access Token 재발급
-    public String refreshAccessToken(String refreshToken) {
+    public String reissueAccessToken(String refreshToken) {
 
         String id = getMemberIdFromToken(refreshToken);
 

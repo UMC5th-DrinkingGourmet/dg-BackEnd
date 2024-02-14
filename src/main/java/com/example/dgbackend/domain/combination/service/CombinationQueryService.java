@@ -17,7 +17,7 @@ public interface CombinationQueryService {
 
     CombinationEditResult getCombinationEditResult(Long combinationId, Member loginMember);
 
-    boolean existCombination(Long combinationId);
+    boolean existCombination(Long combinationId, boolean state);
 
     Combination getCombination(Long combinationId);
 
@@ -25,12 +25,12 @@ public interface CombinationQueryService {
 
     Boolean isCombinationOwner(Long combinationId, Member member);
 
-    CombinationMyPageList getCombinationMyPageList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationMyPageList(Member member, Integer page);
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Member loginMember,
         Integer page);
 
-    CombinationMyPageList getCombinationLikeList(Long memberId, Integer page);
+    CombinationMyPageList getCombinationLikeList(Member member, Integer page);
 
     CombinationPreviewResultList findCombinationsListByKeyword(Member loginMember, Integer page,
         String keyword);

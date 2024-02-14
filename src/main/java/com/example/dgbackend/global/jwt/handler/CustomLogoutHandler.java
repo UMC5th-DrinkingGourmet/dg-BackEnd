@@ -25,7 +25,7 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
         authService.logout(request, response);
 
         // 로그아웃 후 리다이렉션
-        String redirectUrl = "/login";
+        String redirectUrl = "/";
         response.sendRedirect(redirectUrl);
     }
 

@@ -84,6 +84,10 @@ public class Combination extends BaseTimeEntity {
         combinationComment.setCombination(this);
     }
 
+    public void deleteCombinationComment() {
+        commentCount -= 1;
+    }
+
     /**
      * update 함수
      */

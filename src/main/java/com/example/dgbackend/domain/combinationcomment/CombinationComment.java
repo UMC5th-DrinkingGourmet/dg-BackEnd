@@ -49,6 +49,7 @@ public class CombinationComment extends BaseTimeEntity {
 
     public void deleteComment() {
         this.state = false;
+        this.combination.deleteCombinationComment();
     }
   
 

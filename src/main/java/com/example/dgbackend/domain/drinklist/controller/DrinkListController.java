@@ -68,7 +68,6 @@ public class DrinkListController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "주류 리스트 조회 성공")
     })
-    @Parameter(name = "drinkType", description = "주류 종류", required = true)
     @GetMapping("/all")
     public ApiResponse<DrinkListResponse.DrinkListPreviewList> getDrinkListAll(
             @RequestParam(name = "page", defaultValue = "0") Integer page) {

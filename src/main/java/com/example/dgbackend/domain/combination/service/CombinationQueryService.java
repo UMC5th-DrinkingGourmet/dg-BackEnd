@@ -29,6 +29,7 @@ public interface CombinationQueryService {
 
     CombinationPreviewResultList getWeeklyBestCombinationPreviewResultList(Member loginMember,
         Integer page);
+
     CombinationMyPageList getCombinationLikeList(Member member, Integer page);
 
     CombinationPreviewResultList findCombinationsListByKeyword(Member loginMember, Integer page,

@@ -1,7 +1,5 @@
 package com.example.dgbackend.domain.recipecomment.controller;
 
-import com.example.dgbackend.domain.enums.Gender;
-import com.example.dgbackend.domain.enums.SocialType;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
@@ -9,6 +7,7 @@ import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
 import com.example.dgbackend.domain.recipecomment.service.RecipeCommentServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -26,13 +25,7 @@ public class RecipeCommentController {
 
     private final RecipeCommentServiceImpl recipeCommentService;
 
-    //Default Member 생성
-    //TODO: @AutenticationPrincipal로 변경
     private final MemberRepository memberRepository;
-    private Member defaultmember = Member.builder()
-            .name("김동규").email("email@email.com").birthDate("birthDate")
-            .phoneNumber("phoneNumber").nickName("nickName").gender(Gender.MALE)
-            .build();
 
     @Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
@@ -45,8 +38,10 @@ public class RecipeCommentController {
     @Operation(summary = "레시피북 댓글 등록", description = "레시피북 댓글을 등록합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @PostMapping("/{recipeId}")
-    public ApiResponse<RecipeCommentResponse> saveRecipeComment(@PathVariable Long recipeId, @RequestBody RecipeCommentRequest.Post recipeCommentRequest) {
-        RecipeCommentVO paramVO = RecipeCommentVO.of(recipeCommentRequest, recipeId, defaultmember.getName());
+    public ApiResponse<RecipeCommentResponse> saveRecipeComment(@PathVariable Long recipeId,
+                                                                @RequestBody RecipeCommentRequest.Post recipeCommentRequest,
+                                                                @MemberObject Member member) {
+        RecipeCommentVO paramVO = RecipeCommentVO.of(recipeCommentRequest, recipeId, member.getName());
         return ApiResponse.onSuccess(recipeCommentService.saveRecipeComment(paramVO));
     }
 

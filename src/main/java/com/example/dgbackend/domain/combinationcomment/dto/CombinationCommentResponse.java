@@ -77,6 +77,7 @@ public class CombinationCommentResponse {
             .childCount(getChildCount(combinationComment))
             .childComments(getChildComments(combinationComment))
             .build();
+
     }
 
 

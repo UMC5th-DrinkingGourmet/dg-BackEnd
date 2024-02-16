@@ -9,4 +9,5 @@ public interface CombinationCommentRepository extends JpaRepository<CombinationC
 
     Page<CombinationComment> findAllByCombinationIdAndState(Long combinationId, boolean state,
         Pageable pageable);
+
 }

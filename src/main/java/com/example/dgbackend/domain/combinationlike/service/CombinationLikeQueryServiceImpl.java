@@ -5,7 +5,6 @@ import com.example.dgbackend.domain.combination.repository.CombinationRepository
 import com.example.dgbackend.domain.combinationlike.CombinationLike;
 import com.example.dgbackend.domain.combinationlike.repository.CombinationLikeRepository;
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -25,8 +24,6 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
 
     private final MemberService memberService;
 
-    private final MemberRepository memberRepository;
-
     @Override
     public boolean isCombinationLike(Combination combination, Member member) {
 
@@ -35,10 +32,8 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
 
     @Override
     @Transactional
-    public Boolean changeCombinationLike(Long memberId, Long combinationId) {
+    public Boolean changeCombinationLike(Member member, Long combinationId) {
 
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         Optional<CombinationLike> combinationLike = getCombinationLikeEntity(member, combinationId);
 
         CombinationLike savedCombinationLike = combinationLike.map(CombinationLike::changeState)

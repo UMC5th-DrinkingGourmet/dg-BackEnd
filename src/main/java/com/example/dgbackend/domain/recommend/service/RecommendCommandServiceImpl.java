@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recommend.service;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.repository.RecommendRepository;
@@ -98,10 +99,11 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         //추천 결과 이미지 생성
         String imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
         //추천 결과 DB에 저장
-        recommendQueryService.addRecommend(member, recommendRequestDTO, drinkType, reason, imageUrl);
+        Recommend recommend = recommendQueryService.addRecommend(member, recommendRequestDTO, drinkType, reason, imageUrl);
 
         //ResponseDTO 생성 및 return
         return RecommendResponse.RecommendResponseDTO.builder()
+                .recommendID(recommend.getId())
                 .drinkName(drinkType)
                 .foodName(recommendRequestDTO.getFoodName())
                 .recommendReason(reason)

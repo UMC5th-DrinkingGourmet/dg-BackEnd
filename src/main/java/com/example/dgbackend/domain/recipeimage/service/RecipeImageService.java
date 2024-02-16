@@ -56,7 +56,7 @@ public class RecipeImageService {
         //RecipeImage 엔티티 모두 저장
         recipeImageRepository.saveAll(recipeImages);
 
-        return RecipeImageResponse.toResponse(RecipeResponse.toResponse(recipe), imageURLs);
+        return RecipeImageResponse.toURLResponse(recipe);
     }
 
     //파일 없을 시 예외처리
@@ -90,7 +90,7 @@ public class RecipeImageService {
             );
         }
 
-        return RecipeImageResponse.toResponse(RecipeResponse.toResponse(recipe), getRecipeImages(recipe.getId()));
+        return RecipeImageResponse.toURLResponse(recipe);
     }
 
     //recipeImageRepository에서 imageUrl로 조회해서 있으면 삭제하고 s3에서도 삭제

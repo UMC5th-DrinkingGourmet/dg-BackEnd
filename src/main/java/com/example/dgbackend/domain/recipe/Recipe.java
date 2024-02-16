@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
+import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -9,7 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
@@ -55,8 +58,13 @@ public class Recipe extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeImage> recipeImageList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private Set<RecipeHashTag> recipeHashTagList = new HashSet<>();
 
     public Recipe update(RecipeRequest recipeResponseDto) {
         this.name = recipeResponseDto.getName();
@@ -93,4 +101,9 @@ public class Recipe extends BaseTimeEntity {
         }
 
     }
+
+    public void setHashTagList(List<RecipeHashTag> recipeHashTagList) {
+        this.recipeHashTagList = new HashSet<>(recipeHashTagList);
+    }
+
 }

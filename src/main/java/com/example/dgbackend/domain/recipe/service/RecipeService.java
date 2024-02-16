@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeResponse> getExistRecipes(int page);
+    RecipeResponse.RecipeResponseList getExistRecipes(int page);
 
     RecipeResponse getRecipeDetail(Long id);
 

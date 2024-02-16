@@ -27,6 +27,7 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
             combinationId, true, PageRequest.of(page, 10));
 
         return toCommentPreViewResult(comments);
+
     }
 
     @Override

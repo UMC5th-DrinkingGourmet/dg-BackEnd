@@ -1,7 +1,9 @@
 package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.recipe.Recipe;
+import com.example.dgbackend.domain.recipe_hashtag.dto.RecipeHashTagResponse;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
+import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -61,8 +63,44 @@ public class RecipeResponse {
     @Schema(description = "존재 여부", example = "true")
     private boolean state = true; //true : 존재, false : 삭제
 
-    @Schema(description = "작성자 이름", example = "김동규")
-    private String memberName;
+    @Schema(description = "작성자 닉네임", example = "mason")
+    private String memberNickName;
+
+    @Schema(description = "레시피 이미지 목록")
+    private List<String> recipeImageList;
+
+    @Schema(description = "해시태그 리스트", example = "[김치찌개, 참이슬]")
+    private List<String> hashTagNameList;
+
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecipeResponseList {
+        List<RecipeResponse> recipeList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes) {
+        List<RecipeResponse> recipeResponses = recipes.getContent()
+                .stream()
+                .map(RecipeResponse::toResponse)
+                .collect(Collectors.toList());
+
+        return RecipeResponseList.builder()
+                .recipeList(recipeResponses)
+                .listSize(recipeResponses.size())
+                .totalPage(recipes.getTotalPages())
+                .totalElements(recipes.getTotalElements())
+                .isFirst(recipes.isFirst())
+                .isLast(recipes.isLast())
+                .build();
+    }
 
     public static RecipeResponse toResponse(Recipe recipe) {
         return RecipeResponse.builder()
@@ -77,7 +115,9 @@ public class RecipeResponse {
                 .recipeInstruction(recipe.getRecipeInstruction())
                 .recommendCombination(recipe.getRecommendCombination())
                 .state(recipe.isState())
-                .memberName(recipe.getMember().getName())
+                .memberNickName(recipe.getMember().getNickName())
+                .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
+                .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
                 .build();
     }
 

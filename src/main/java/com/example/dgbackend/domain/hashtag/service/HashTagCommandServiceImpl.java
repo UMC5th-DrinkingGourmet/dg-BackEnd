@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -23,9 +25,7 @@ public class HashTagCommandServiceImpl implements HashTagCommandService {
     @Override
     public void uploadHashTag(Combination combination, List<String> hashTageNames) {
 
-        List<HashTag> hashTags = hashTageNames.stream()
-                .map(this::getOrCreateHashTag)
-                .toList();
+        List<HashTag> hashTags = getHashTags(hashTageNames);
 
         hashTags.forEach(hashTag -> {
             HashTagOption hashTagOption = HashTagOption.builder()
@@ -33,9 +33,20 @@ public class HashTagCommandServiceImpl implements HashTagCommandService {
                     .combination(combination)
                     .build();
 
-            hashTagRepository.save(hashTag);
             hashTagOptionRepository.save(hashTagOption);
         });
+    }
+
+    @Override
+    public List<HashTag> getHashTags(List<String> hashTageNames) {
+
+        List<HashTag> hashTags = hashTageNames.stream()
+                .map(ht->{
+                    return hashTagRepository.save(getOrCreateHashTag(ht));
+                })
+                .toList();
+
+        return hashTags;
     }
 
     private HashTag getOrCreateHashTag(String hashTagName) {

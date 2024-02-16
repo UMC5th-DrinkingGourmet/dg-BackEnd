@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -41,6 +43,9 @@ public class RecipeRequest {
 
     @Schema(description = "추천 조합", example = "김치찌개와 참이슬")
     private String recommendCombination;
+
+    @Schema(description = "해시태그 리스트", example = "[김치찌개, 참이슬]")
+    private List<String> hashTagNameList;
 
     public static Recipe toEntity(RecipeRequest recipeRequest, Member member) {
         return Recipe.builder()

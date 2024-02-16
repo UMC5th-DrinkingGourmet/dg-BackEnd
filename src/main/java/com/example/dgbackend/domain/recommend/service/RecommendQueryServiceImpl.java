@@ -25,7 +25,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     private final S3Service s3Service;
 
     @Override
-    public void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl) {
+    public Recommend addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl) {
         Recommend recommend = Recommend.builder()
                 .desireLevel(recommendRequestDTO.getDesireLevel())
                 .foodName(recommendRequestDTO.getFoodName())
@@ -38,6 +38,8 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
 //                .deleted(false)
                 .build();
         recommendRepository.save(recommend);
+
+        return recommend;
     }
         
     @Override

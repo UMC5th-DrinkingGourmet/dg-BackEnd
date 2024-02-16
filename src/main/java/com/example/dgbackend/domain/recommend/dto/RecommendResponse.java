@@ -19,6 +19,7 @@ public class RecommendResponse {
     @NoArgsConstructor
     @Getter
     public static class RecommendResponseDTO {
+        Long recommendID;           //추천 ID
         String foodName;            //음식 이름
         String drinkName;           //술 이름
         String recommendReason;     //추천 이유
@@ -45,6 +46,7 @@ public class RecommendResponse {
 
     public static RecommendResponseDTO toRecommendResult(Recommend recommend) {
         return RecommendResponseDTO.builder()
+                .recommendID(recommend.getId())
                 .foodName(recommend.getFoodName())
                 .drinkName(recommend.getDrinkName())
                 .recommendReason(recommend.getDrinkInfo())

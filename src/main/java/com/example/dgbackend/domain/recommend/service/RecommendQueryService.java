@@ -8,7 +8,7 @@ import com.example.dgbackend.domain.recommend.dto.RecommendResponse.RecommendRes
 
 public interface RecommendQueryService {
 
-    void addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
+    Recommend addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
 
     RecommendResponseDTO getRecommendResult(Long recommendId);
     Recommend getRecommend(Long recommendId);

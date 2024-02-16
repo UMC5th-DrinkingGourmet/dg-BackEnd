@@ -58,6 +58,7 @@ public class AuthService {
 
         return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName(),
             memberId);
+
     }
 
     // Header에 Access Token 담아서 전달

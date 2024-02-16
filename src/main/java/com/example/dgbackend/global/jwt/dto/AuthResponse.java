@@ -14,13 +14,15 @@ public class AuthResponse {
 
     private String provider;
     private String nickName;
+    private Long memberId;
     private LocalDateTime createdAt;
 
-    public static AuthResponse toAuthResponse(String provider, String nickName) {
+    public static AuthResponse toAuthResponse(String provider, String nickName, Long memberId) {
 
         return AuthResponse.builder()
             .provider(provider)
             .nickName(nickName)
+            .memberId(memberId)
             .createdAt(LocalDateTime.now())
             .build();
     }

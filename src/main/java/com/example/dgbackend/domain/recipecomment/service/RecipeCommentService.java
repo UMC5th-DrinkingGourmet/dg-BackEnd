@@ -22,6 +22,4 @@ public interface RecipeCommentService {
     RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO);
 
     RecipeCommentResponse deleteRecipeComment(Long recipeCommentId);
-
-    boolean deleteAllRecipeComment(Long memberId);
 }

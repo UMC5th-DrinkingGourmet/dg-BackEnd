@@ -36,10 +36,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final RecipeLikeService recipeLikeCommandService;
 
     @Override
-    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Long memberID,
+    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,
         MemberRequest.RecommendInfoDTO requestInfoDTO) {
-        Member member = memberRepository.findById(memberID)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         member.setPreferredAlcoholType(requestInfoDTO.getPreferredAlcoholType());
         member.setPreferredAlcoholDegree(requestInfoDTO.getPreferredAlcoholDegree());
         member.setDrinkingTimes(requestInfoDTO.getDrinkingTimes());
@@ -52,63 +50,40 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     // 회원 정보 수정
     @Override
-    public MemberResponse.GetMember patchMember(Long memberId,
-        MemberRequest.PatchMember patchMember) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
-
-        member.update(patchMember.getName(), patchMember.getNickName(), patchMember.getBirthDate(),
-            patchMember.getPhoneNumber(), patchMember.getGender());
+    public MemberResponse.GetMember patchMember(Member member,
+                                                MemberRequest.PatchMember patchMember) {
+        member.setName(patchMember.getName());
+        member.setNickName(patchMember.getNickName());
+        member.setBirthDate(patchMember.getBirthDate());
+        member.setPhoneNumber(patchMember.getPhoneNumber());
+        member.setGender(patchMember.getGender());
 
         return MemberResponse.toGetMember(member);
     }
 
     //회원 사진 수정
     @Override
-    public MemberResponse.GetMember patchProfileImage(Long memberId, MultipartFile multipartFile) {
-
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
-
+    public MemberResponse.GetMember patchProfileImage(Member member,
+                                                      MultipartFile multipartFile) {
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {
             s3Service.deleteFile(originUrl);
-            String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
-
-            member.updateProfileImageUrl(profileImageUrl);
         }
+        String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
+        member.updateProfileImageUrl(profileImageUrl);
 
         return MemberResponse.toGetMember(member);
     }
 
-    // 회원 탈퇴
     @Override
-    public String patchSignOut(Long memberId) {
-
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
-
-        member.signout();
-
-        combinationCommandService.deleteAllCombination(memberId);
-        combinationCommentCommandService.deleteAllComment(memberId);
-        combinationLikeCommandService.deleteAllLike(memberId);
-
-        recipeCommandService.deleteAllRecipe(memberId);
-        recipeLikeCommandService.deleteAllRecipeLike(memberId);
-        recipeCommentService.deleteAllRecipeComment(memberId);
-
-        memberRepository.deleteById(memberId);
-
-        return "회원 탈퇴가 완료되었습니다.";
-
+    public MemberResponse.GetMember getMember(Member member) {
+        return MemberResponse.toGetMember(member);
     }
 
     @Override
     public void saveMember(Member member) {
         memberRepository.save(member);
     }
-  
 }
 

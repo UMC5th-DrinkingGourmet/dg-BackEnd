@@ -12,12 +12,11 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -109,25 +108,18 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Long memberId, Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findAllByMemberId(memberId, PageRequest.of(page, 9));
-
-
-        return toRecipeMyPageList(recipePage);
-    }
-
-    @Override
-    public RecipeResponse.RecipeMyPageList getRecipeLikeList(Long memberId, Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberId(memberId, PageRequest.of(page, 9));
+    public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
+                                                               Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberId(member.getId(), PageRequest.of(page, 9));
 
         return toRecipeMyPageList(recipePage);
     }
 
     @Override
-    public boolean deleteAllRecipe(Long memberId) {
-        recipeRepository.deleteAllByMemberId(memberId);
+    public RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member,
+                                                             Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberId(member.getId(), PageRequest.of(page, 9));
 
-        return true;
+        return toRecipeMyPageList(recipePage);
     }
-
 }

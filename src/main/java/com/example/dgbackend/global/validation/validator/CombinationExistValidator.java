@@ -22,7 +22,7 @@ public class CombinationExistValidator implements ConstraintValidator<ExistCombi
     @Override
     public boolean isValid(Long combinationId, ConstraintValidatorContext context) {
 
-        boolean valid = combinationQueryService.existCombination(combinationId);
+        boolean valid = combinationQueryService.existCombination(combinationId, true);
 
         if (!valid) {
             context.disableDefaultConstraintViolation();

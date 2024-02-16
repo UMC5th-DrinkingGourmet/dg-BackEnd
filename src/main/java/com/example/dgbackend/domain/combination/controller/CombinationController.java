@@ -127,12 +127,10 @@ public class CombinationController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내가 작성한 오늘의 조합 목록 조회 성공")
     })
+    @Parameter(name = "page", description = "내가 작성한 오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("/my-page")
-    public ApiResponse<CombinationResponse.CombinationMyPageList> getMyPageCombinations(
-        @RequestParam(name = "Member Id") Long memberId,
-        @CheckPage @RequestParam(name = "page") Integer page) {
-        return ApiResponse.onSuccess(
-            combinationQueryService.getCombinationMyPageList(memberId, page));
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getMyPageCombinations(@MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationMyPageList(member, page));
     }
 
     @Operation(summary = "주간 베스트 조합 조회", description = "주간 베스트 조합 목록을 조회합니다.")
@@ -149,12 +147,10 @@ public class CombinationController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내가 좋아요한 오늘의 조합 목록 조회 성공")
     })
+    @Parameter(name = "page", description = "내가 좋아요 누른 오늘의 조합 목록 페이지 번호, query string 입니다.")
     @GetMapping("/likes")
-    public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(
-        @RequestParam(name = "Member Id") Long memberId,
-        @CheckPage @RequestParam(name = "page") Integer page) {
-        return ApiResponse.onSuccess(
-            combinationQueryService.getCombinationLikeList(memberId, page));
+    public ApiResponse<CombinationResponse.CombinationMyPageList> getLikeCombinations(@MemberObject Member member, @CheckPage @RequestParam(name = "page") Integer page) {
+        return ApiResponse.onSuccess(combinationQueryService.getCombinationLikeList(member, page));
     }
 
     @Operation(summary = "오늘의 조합 검색", description = "오늘의 조합 목록을 검색합니다.")

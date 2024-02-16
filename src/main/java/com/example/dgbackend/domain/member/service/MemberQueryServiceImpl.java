@@ -1,6 +1,8 @@
 package com.example.dgbackend.domain.member.service;
 
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,5 +17,10 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     @Override
     public Boolean existsByProviderAndProviderId(String provider, String providerId) {
         return memberRepository.existsByProviderAndProviderId(provider, providerId);
+    }
+
+    @Override
+    public Optional<Member> findByProviderAndProviderId(String provider, String providerId) {
+        return memberRepository.findByProviderAndProviderId(provider, providerId);
     }
 }

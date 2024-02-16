@@ -34,4 +34,6 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     List<Combination> findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue();
 
     Page<Combination> findAllByOrderByLikeCountDesc(PageRequest pageRequest);
+
+    boolean existsByIdAndState(Long combinationId, boolean state);
 }

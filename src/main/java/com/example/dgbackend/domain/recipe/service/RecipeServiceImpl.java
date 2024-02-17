@@ -123,7 +123,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
                                                                Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findAllByMemberId(member.getId(), PageRequest.of(page, 9));
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
 
         return toRecipeMyPageList(recipePage);
     }
@@ -131,7 +131,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member,
                                                              Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberId(member.getId(), PageRequest.of(page, 9));
+        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
 
         return toRecipeMyPageList(recipePage);
     }

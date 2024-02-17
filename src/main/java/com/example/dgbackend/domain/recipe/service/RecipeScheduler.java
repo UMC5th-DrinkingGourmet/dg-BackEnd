@@ -33,7 +33,7 @@ public class RecipeScheduler {
     @Transactional
     List<Recipe> get3TopRecipes() {
         List<Recipe> recipes = new ArrayList<>();
-        recipeRepository.findAllByOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(recipes::add);
+        recipeRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(recipes::add);
 
         // 리스트가 3개보다 작을 경우, 전체 리스트를 반환
         if (recipes.size() <= 3) {

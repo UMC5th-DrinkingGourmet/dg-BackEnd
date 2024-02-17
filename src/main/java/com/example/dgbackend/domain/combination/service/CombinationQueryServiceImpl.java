@@ -142,7 +142,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Member member,
                                                                               Integer page) {
-        Page<Combination> combinations = combinationRepository.findAllByMemberId(member.getId(), PageRequest.of(page, 9));
+        Page<Combination> combinations = combinationRepository.findAllByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
 
         return toCombinationMyPageList(combinations);
     }
@@ -172,7 +172,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationMyPageList getCombinationLikeList(Member member,
                                                         Integer page) {
-        Page<Combination> combinations = combinationRepository.findCombinationsByMemberId(member.getId(), PageRequest.of(page, 9));
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
 
         return toCombinationMyPageList(combinations);
     }

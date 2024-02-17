@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CombinationRepository extends JpaRepository<Combination, Long> {
 
-    Page<Combination> findAllByMemberId(Long memberId, PageRequest pageRequest);
+    Page<Combination> findAllByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
     List<Combination> findAllByMember(Member member);
 
@@ -21,9 +21,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Page<Combination> findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
         Long likeCount, PageRequest pageRequest);
 
-
-    @Query("SELECT cl.combination FROM CombinationLike cl WHERE cl.member.id = :memberId")
-    Page<Combination> findCombinationsByMemberId(Long memberId, PageRequest pageRequest);
+    @Query("SELECT cl.combination FROM CombinationLike cl WHERE cl.member.id = :memberId AND cl.combination.state = true")
+    Page<Combination> findCombinationsByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
     Page<Combination> findCombinationsByTitleContaining(String keyword, PageRequest pageRequest);
 
@@ -33,7 +32,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     @Query("SELECT c FROM Combination c WHERE c.likeCount >= 30 AND c.state = true ORDER BY RAND() LIMIT 5")
     List<Combination> findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue();
 
-    Page<Combination> findAllByOrderByLikeCountDesc(PageRequest pageRequest);
+    Page<Combination> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);
 
     boolean existsByIdAndState(Long combinationId, boolean state);
 }

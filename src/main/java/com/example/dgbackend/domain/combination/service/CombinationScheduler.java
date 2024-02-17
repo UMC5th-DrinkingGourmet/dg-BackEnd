@@ -41,7 +41,7 @@ public class CombinationScheduler {
     @Transactional
     List<Combination> get3TopCombinations() {
         List<Combination> combos = new ArrayList<>();
-        combinationRepository.findAllByOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(combos::add);
+        combinationRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(combos::add);
       // 리스트가 3개보다 작을 경우, 전체 리스트를 반환
         if (combos.size() <= 3) {
             return combos;

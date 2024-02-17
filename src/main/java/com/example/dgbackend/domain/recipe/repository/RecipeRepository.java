@@ -15,12 +15,12 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     List<Recipe> findAllByNameAndMember_Name(String name, String memberName);
 
-    Page<Recipe> findAllByMemberId(Long memberId, PageRequest pageRequest);
+    Page<Recipe> findAllByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId")
-    Page<Recipe> findRecipesByMemberId(Long memberId, PageRequest pageRequest);
+    @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.state = true")
+    Page<Recipe> findRecipesByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
     List<Recipe> findRecipesByNameContaining(String keyword);
 
-    Page<Recipe> findAllByOrderByLikeCountDesc(PageRequest pageRequest);
+    Page<Recipe> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);
 }

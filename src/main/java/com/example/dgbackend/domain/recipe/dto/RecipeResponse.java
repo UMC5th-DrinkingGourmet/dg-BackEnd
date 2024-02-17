@@ -30,10 +30,6 @@ public class RecipeResponse {
     private String name;
 
     @NotNull
-    @Schema(description = "레시피 소개", example = "맛있는 김치찌개")
-    private String info;
-
-    @NotNull
     @Schema(description = "조리시간", example = "30분")
     private String cookingTime;
 
@@ -106,7 +102,6 @@ public class RecipeResponse {
         return RecipeResponse.builder()
                 .id(recipe.getId())
                 .name(recipe.getName())
-                .info(recipe.getInfo())
                 .cookingTime(recipe.getCookingTime())
                 .calorie(recipe.getCalorie())
                 .likeCount(recipe.getLikeCount())

@@ -22,10 +22,6 @@ public class RecipeRequest {
     private String name;
 
     @NotNull
-    @Schema(description = "레시피 소개", example = "맛있는 김치찌개")
-    private String info;
-
-    @NotNull
     @Schema(description = "조리시간", example = "30분")
     private String cookingTime;
 
@@ -50,7 +46,6 @@ public class RecipeRequest {
     public static Recipe toEntity(RecipeRequest recipeRequest, Member member) {
         return Recipe.builder()
                 .name(recipeRequest.getName())
-                .info(recipeRequest.getInfo())
                 .cookingTime(recipeRequest.getCookingTime())
                 .calorie(recipeRequest.getCalorie())
                 .likeCount(0L)

@@ -29,9 +29,6 @@ public class Recipe extends BaseTimeEntity {
     private String name;
 
     @NotNull
-    private String info;
-
-    @NotNull
     private String cookingTime;
 
     @NotNull
@@ -68,7 +65,6 @@ public class Recipe extends BaseTimeEntity {
 
     public Recipe update(RecipeRequest recipeResponseDto) {
         this.name = recipeResponseDto.getName();
-        this.info = recipeResponseDto.getInfo();
         this.cookingTime = recipeResponseDto.getCookingTime();
         this.calorie = recipeResponseDto.getCalorie();
         this.ingredient = recipeResponseDto.getIngredient();

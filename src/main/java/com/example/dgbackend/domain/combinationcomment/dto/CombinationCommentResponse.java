@@ -61,7 +61,7 @@ public class CombinationCommentResponse {
         private String content;
         private String memberNickName;
         private String memberProfile;
-        private String updatedAt; // 댓글 생성 및 수정 시간
+        private String createdAt;
         private Integer childCount;
         private List<CommentResult> childComments = new ArrayList<>();
     }
@@ -73,7 +73,7 @@ public class CombinationCommentResponse {
             .content(combinationComment.getContent())
             .memberNickName(combinationComment.getMember().getNickName())
             .memberProfile(combinationComment.getMember().getProfileImageUrl())
-            .updatedAt(DateTimeUtils.formatLocalDateTime(combinationComment.getUpdatedAt()))
+            .createdAt(DateTimeUtils.formatLocalDateTime(combinationComment.getCreatedAt()))
             .childCount(getChildCount(combinationComment))
             .childComments(getChildComments(combinationComment))
             .build();

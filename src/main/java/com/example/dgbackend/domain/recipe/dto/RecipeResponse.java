@@ -27,7 +27,7 @@ public class RecipeResponse {
 
     @NotNull
     @Schema(description = "레시피 이름", example = "김치찌개")
-    private String name;
+    private String title;
 
     @NotNull
     @Schema(description = "조리시간", example = "30분")
@@ -101,7 +101,7 @@ public class RecipeResponse {
     public static RecipeResponse toResponse(Recipe recipe) {
         return RecipeResponse.builder()
                 .id(recipe.getId())
-                .name(recipe.getName())
+                .title(recipe.getTitle())
                 .cookingTime(recipe.getCookingTime())
                 .calorie(recipe.getCalorie())
                 .likeCount(recipe.getLikeCount())
@@ -167,7 +167,7 @@ public class RecipeResponse {
 
         return RecipeMyPage.builder()
                 .id(recipe.getId())
-                .name(recipe.getName())
+                .name(recipe.getTitle())
                 .recipeImageUrl(imageUrl)
                 .build();
     }
@@ -215,7 +215,7 @@ public class RecipeResponse {
 
         return RecipeMain.builder()
                 .id(recipe.getId())
-                .recipeName(recipe.getName())
+                .recipeName(recipe.getTitle())
                 .cookingTime(recipe.getCookingTime())
                 .ingredient(recipe.getIngredient())
                 .recipeImageUrl(imageUrl)

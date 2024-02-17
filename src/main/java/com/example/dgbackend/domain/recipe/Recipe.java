@@ -26,7 +26,7 @@ public class Recipe extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private String name;
+    private String title;
 
     @NotNull
     private String cookingTime;
@@ -64,7 +64,7 @@ public class Recipe extends BaseTimeEntity {
     private Set<RecipeHashTag> recipeHashTagList = new HashSet<>();
 
     public Recipe update(RecipeRequest recipeResponseDto) {
-        this.name = recipeResponseDto.getName();
+        this.title = recipeResponseDto.getTitle();
         this.cookingTime = recipeResponseDto.getCookingTime();
         this.calorie = recipeResponseDto.getCalorie();
         this.ingredient = recipeResponseDto.getIngredient();

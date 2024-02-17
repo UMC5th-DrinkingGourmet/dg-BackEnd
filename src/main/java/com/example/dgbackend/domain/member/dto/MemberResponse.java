@@ -15,14 +15,14 @@ public class MemberResponse {
     @Getter
     public static class MemberResult {
         Long memberId;
-        String name;
+        String nickName;
         String profileImageUrl;
     }
 
     public static MemberResult toMemberResult(Member member) {
         return MemberResult.builder()
                 .memberId(member.getId())
-                .name(member.getName())
+                .nickName(member.getNickName())
                 .profileImageUrl(member.getProfileImageUrl())
                 .build();
     }

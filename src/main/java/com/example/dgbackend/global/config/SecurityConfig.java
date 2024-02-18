@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
                     CorsConfiguration cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("*", "https://drink-gourmet.kro.kr", "http://localhost:8080")); // 추후 수정
+                    cors.setAllowedOrigins(List.of("https://drink-gourmet.kro.kr", "http://localhost:8080")); // 추후 수정
                     cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE"));
                     // cookie 활성화
                     cors.setAllowCredentials(true);
@@ -43,13 +43,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(
-                                        "/swagger-ui/**"
+                                    "/v3/api-docs/**",
+                                    "/swagger-ui/**"
                                         , "/favicon.ico"
-                                        , "/**"
                                         , "/auth/**"
                                         , "/logout"
                                 ).permitAll() // 추후에 hasRole() 설정
-                                .anyRequest().permitAll());
+                                .anyRequest().authenticated());
         http
                 .logout((logout) ->
                         logout

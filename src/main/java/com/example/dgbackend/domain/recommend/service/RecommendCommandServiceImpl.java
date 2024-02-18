@@ -188,7 +188,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         body.put("n", 1);
         body.put("size", API_IMAGE_SIZE);
         body.put("response_format", "b64_json");
-        body.put("style", "natural");
+        body.put("style", "vivid");
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
@@ -219,20 +219,17 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     weather : 현재 날씨
      */
     private String generateImagePrompt(Member member, String foodName, String drinkyType, String mood, String weather) {
-
-        String prompt = "You create the right images based on food and alcohol pairings, " +
-                "considering the given combination, the user's mood, " +
-                "and the current weather. The images should prominently feature both the food and the alcohol. " +
-                "They must be created as realistically as possible. " +
-                "The images you create are used to recommend alcohol based on the food, stimulate appetite, " +
-                "and gain empathy. When creating the images, make sure no text is visible.";
-
+        String prompt = "Things to consider for creation: Photorealism, "
+            + "Food and drink combinations, "
+            + "Setting and atmosphere, "
+            + "Visual Characteristics of the Food, "
+            + "Sentimental Value.\n";
         if (mood != null)
             prompt += String.format("The user's mood is \"%s\". ", mood);
-        if (weather != null)
-            prompt += String.format("The current weather is \"%s\". ", weather);
+//        if (weather != null)      // 사용하지 않지만 혹시몰라 남겨둔다.
+//            prompt += String.format("The current weather is \"%s\". ", weather);
 
-        prompt += String.format("The combination is \"%s과(와) %s\". Make an image please.", foodName, drinkyType);
+        prompt += String.format("The combination is \"%s\" and \"%s\". Make an image please.", foodName, drinkyType);
 
         return prompt;
     }

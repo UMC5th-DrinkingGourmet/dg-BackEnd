@@ -30,6 +30,9 @@ public class RecipeCommentResponse {
     @Schema(description = "작성자 닉니임 ", example = "mason")
     private String memberNickName;
 
+    @Schema(description = "작성자 이미지", example = "https://image.com")
+    private String memberImage;
+
     @Schema(description = "작성일", example = "2021-08-01 12:00:00")
     private LocalDateTime createdDate;
 
@@ -39,6 +42,9 @@ public class RecipeCommentResponse {
     @Builder.Default
     @Schema(description = "자식 댓글 목록", example = "[]")
     private List<RecipeCommentResponse> childCommentList = new ArrayList<>();
+
+    @Schema(description = "자식 댓글 수", example = "5")
+    private int childCommentCount;
 
     public static RecipeCommentResponse toResponse(RecipeComment recipeComment) {
 
@@ -52,8 +58,10 @@ public class RecipeCommentResponse {
                 .content(recipeComment.getContent())
                 .childCommentList(getList(recipeComment))
                 .memberNickName(recipeComment.getMember().getNickName())
+                .memberImage(recipeComment.getMember().getProfileImageUrl())
                 .createdDate(recipeComment.getCreatedAt())
                 .updatedDate(recipeComment.getUpdatedAt())
+                .childCommentCount(recipeComment.getChildCommentList().size())
                 .build();
     }
 

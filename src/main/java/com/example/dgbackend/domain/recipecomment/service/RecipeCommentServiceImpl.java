@@ -13,6 +13,7 @@ import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,17 +29,15 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     private final RecipeService recipeService;
 
     @Override
-    public List<RecipeCommentResponse> getRecipeComment(Long recipeId, int page) {
+    public RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page) {
 
         Recipe recipe = recipeService.getRecipe(recipeId);
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        return recipeCommentRepository.findAllByRecipe(recipe, pageable).stream()
-                .filter(RecipeComment::isState)
-                .filter(recipeComment -> recipeComment.getParentComment() == null)
-                .map(RecipeCommentResponse::toResponse)
-                .toList();
+        Page<RecipeComment> recipeCommentPage = recipeCommentRepository.findByRecipeAndParentCommentIsNullAndStateIsTrue(recipe, pageable);
+
+        return RecipeCommentResponse.toResponseList(recipeCommentPage);
     }
 
     @Override

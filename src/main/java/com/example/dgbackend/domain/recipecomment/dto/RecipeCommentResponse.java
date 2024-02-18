@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,7 +45,33 @@ public class RecipeCommentResponse {
     private List<RecipeCommentResponse> childCommentList = new ArrayList<>();
 
     @Schema(description = "자식 댓글 수", example = "5")
-    private int childCommentCount;
+    private int childCommentCount = 0;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Getter
+    public static class RecipeCommentResponseList {
+
+        private List<RecipeCommentResponse> commentList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    public static RecipeCommentResponseList toResponseList(Page<RecipeComment> recipeCommentList) {
+        return RecipeCommentResponseList.builder()
+                .commentList(recipeCommentList.stream().map(RecipeCommentResponse::toResponse).toList())
+                .listSize(recipeCommentList.getNumberOfElements())
+                .totalPage(recipeCommentList.getTotalPages())
+                .totalElements(recipeCommentList.getTotalElements())
+                .isFirst(recipeCommentList.isFirst())
+                .isLast(recipeCommentList.isLast())
+                .build();
+    }
+
 
     public static RecipeCommentResponse toResponse(RecipeComment recipeComment) {
 
@@ -52,6 +79,10 @@ public class RecipeCommentResponse {
         Long parentId = Optional.ofNullable(recipeComment.getParentComment())
                 .map(RecipeComment::getId)
                 .orElse(0L);
+
+        int childCommentCount = Optional.ofNullable(recipeComment.getChildCommentList())
+                .orElse(new ArrayList<>())
+                .size();
 
         return RecipeCommentResponse.builder()
                 .id(recipeComment.getId())
@@ -61,7 +92,7 @@ public class RecipeCommentResponse {
                 .memberImage(recipeComment.getMember().getProfileImageUrl())
                 .createdDate(recipeComment.getCreatedAt())
                 .updatedDate(recipeComment.getUpdatedAt())
-                .childCommentCount(recipeComment.getChildCommentList().size())
+                .childCommentCount(childCommentCount)
                 .build();
     }
 

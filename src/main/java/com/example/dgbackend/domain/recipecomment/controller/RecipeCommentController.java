@@ -31,7 +31,7 @@ public class RecipeCommentController {
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
     @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)
     @GetMapping("/{recipeId}")
-    public ApiResponse<List<RecipeCommentResponse>> getRecipeComments(@PathVariable Long recipeId, @RequestParam("page") int page) {
+    public ApiResponse<RecipeCommentResponse.RecipeCommentResponseList> getRecipeComments(@PathVariable Long recipeId, @RequestParam("page") int page) {
         return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId, page));
     }
 

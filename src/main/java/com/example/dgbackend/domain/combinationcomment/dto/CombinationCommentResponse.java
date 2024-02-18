@@ -40,7 +40,7 @@ public class CombinationCommentResponse {
 
         return CommentPreViewResult.builder()
             .combinationCommentList(commentPreviewList)
-            .listSize(commentPreviewList.size())
+            .listSize(comments.getContent().size())
             .totalPage(comments.getTotalPages())
             .totalElements(comments.getTotalElements())
             .isFirst(comments.isFirst())

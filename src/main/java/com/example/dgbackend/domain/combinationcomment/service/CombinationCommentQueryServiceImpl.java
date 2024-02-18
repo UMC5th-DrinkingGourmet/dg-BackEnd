@@ -23,8 +23,8 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
     @Override
     public CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page) {
 
-        Page<CombinationComment> comments = combinationCommentRepository.findAllByCombinationIdAndState(
-            combinationId, true, PageRequest.of(page, 10));
+        Page<CombinationComment> comments = combinationCommentRepository.findAllByCombinationIdAndStateIsTrue(
+            combinationId, PageRequest.of(page, 10));
 
         return toCommentPreViewResult(comments);
 

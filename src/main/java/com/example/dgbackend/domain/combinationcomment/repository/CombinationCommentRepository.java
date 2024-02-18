@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CombinationCommentRepository extends JpaRepository<CombinationComment, Long> {
 
-    Page<CombinationComment> findAllByCombinationIdAndState(Long combinationId, boolean state,
+    Page<CombinationComment> findAllByCombinationIdAndStateIsTrue(Long combinationId,
         Pageable pageable);
 
 }

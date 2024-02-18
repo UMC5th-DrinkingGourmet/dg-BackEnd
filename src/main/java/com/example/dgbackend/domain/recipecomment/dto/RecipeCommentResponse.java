@@ -27,8 +27,8 @@ public class RecipeCommentResponse {
     @Schema(description = "댓글 내용", example = "맛있어요")
     private String content;
 
-    @Schema(description = "작성자", example = "김동규")
-    private String MemberName;
+    @Schema(description = "작성자 닉니임 ", example = "mason")
+    private String memberNickName;
 
     @Schema(description = "작성일", example = "2021-08-01 12:00:00")
     private LocalDateTime createdDate;
@@ -51,7 +51,7 @@ public class RecipeCommentResponse {
                 .id(recipeComment.getId())
                 .content(recipeComment.getContent())
                 .childCommentList(getList(recipeComment))
-                .MemberName(recipeComment.getMember().getName())
+                .memberNickName(recipeComment.getMember().getNickName())
                 .createdDate(recipeComment.getCreatedAt())
                 .updatedDate(recipeComment.getUpdatedAt())
                 .build();

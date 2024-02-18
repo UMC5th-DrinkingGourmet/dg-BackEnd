@@ -30,5 +30,5 @@ public interface RecipeService {
 
     RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member, Integer Page);
 
-    List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword);
+    RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword);
 }

@@ -19,7 +19,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.state = true")
     Page<Recipe> findRecipesByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    List<Recipe> findRecipesByTitleContaining(String keyword);
+    Page<Recipe> findRecipesByTitleContaining(String keyword, Pageable pageable);
 
     Page<Recipe> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);
 }

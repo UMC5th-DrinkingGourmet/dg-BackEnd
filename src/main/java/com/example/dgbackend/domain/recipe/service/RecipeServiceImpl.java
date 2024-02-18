@@ -114,10 +114,11 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeResponse> findRecipesByKeyword(Integer page, String keyword) {
-        return recipeRepository.findRecipesByTitleContaining(keyword).stream()
-                .map(RecipeResponse::toResponse)
-                .toList();
+    public RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword) {
+
+        Pageable pageable = Pageable.ofSize(10).withPage(page);
+
+        return RecipeResponse.toRecipeResponseList(recipeRepository.findRecipesByTitleContaining(keyword, pageable));
     }
 
     @Override

@@ -91,7 +91,7 @@ public class RecipeController {
 
     @Operation(summary = "레시피북 검색", description = "레시피북 목록을 검색합니다.")
     @GetMapping("/search")
-    public ApiResponse<List<RecipeResponse>> findRecipesByKeyword(
+    public ApiResponse<RecipeResponse.RecipeResponseList> findRecipesByKeyword(
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "keyword") String keyword) {
         return ApiResponse.onSuccess(recipeServiceImpl.findRecipesByKeyword(page, keyword));

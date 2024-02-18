@@ -70,7 +70,7 @@ public class CombinationController {
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "오늘의 조합 작성 성공")
     })
-    @PostMapping("/recommends/{recommendId}")
+    @PostMapping("/recommends")
     public ApiResponse<CombinationResponse.CombinationProcResult> writeCombination(
         @Parameter(hidden = true) @MemberObject Member loginMember,
         @RequestBody CombinationRequest.WriteCombination request)

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,12 @@ public class RecipeCommentResponse {
     @Schema(description = "작성자", example = "김동규")
     private String MemberName;
 
+    @Schema(description = "작성일", example = "2021-08-01 12:00:00")
+    private LocalDateTime createdDate;
+
+    @Schema(description = "수정일", example = "2021-08-01 12:00:00")
+    private LocalDateTime updatedDate;
+
     @Builder.Default
     @Schema(description = "자식 댓글 목록", example = "[]")
     private List<RecipeCommentResponse> childCommentList = new ArrayList<>();
@@ -45,6 +52,8 @@ public class RecipeCommentResponse {
                 .content(recipeComment.getContent())
                 .childCommentList(getList(recipeComment))
                 .MemberName(recipeComment.getMember().getName())
+                .createdDate(recipeComment.getCreatedAt())
+                .updatedDate(recipeComment.getUpdatedAt())
                 .build();
     }
 

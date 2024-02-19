@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipe.dto;
 
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe_hashtag.dto.RecipeHashTagResponse;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
@@ -59,8 +60,8 @@ public class RecipeResponse {
     @Schema(description = "존재 여부", example = "true")
     private boolean state = true; //true : 존재, false : 삭제
 
-    @Schema(description = "작성자 닉네임", example = "mason")
-    private String memberNickName;
+    @Schema(description = "작성자 정보")
+    private MemberResponse.MemberResult member;
 
     @Schema(description = "레시피 이미지 목록")
     private List<String> recipeImageList;
@@ -108,7 +109,7 @@ public class RecipeResponse {
                 .recipeInstruction(recipe.getRecipeInstruction())
                 .recommendCombination(recipe.getRecommendCombination())
                 .state(recipe.isState())
-                .memberNickName(recipe.getMember().getNickName())
+                .member(MemberResponse.toMemberResult(recipe.getMember()))
                 .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
                 .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
                 .isLike(isLike)

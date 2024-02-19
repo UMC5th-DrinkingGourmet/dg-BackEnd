@@ -16,7 +16,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     Page<Recipe> findAllByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.state = true")
+    @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.state = true AND rl.state = true")
     Page<Recipe> findRecipesByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
     Page<Recipe> findRecipesByTitleContainingAndStateIsTrue(String keyword, Pageable pageable);

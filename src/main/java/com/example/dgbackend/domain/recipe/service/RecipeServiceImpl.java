@@ -134,7 +134,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContaining(keyword, pageable);
+        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContainingAndStateIsTrue(keyword, pageable);
 
         List<RecipeResponse> recipeResponseList = recipesByKeyword.getContent().stream()
                 .map(recipe -> {

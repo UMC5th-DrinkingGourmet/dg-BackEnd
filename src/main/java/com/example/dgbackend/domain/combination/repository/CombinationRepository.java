@@ -24,7 +24,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     @Query("SELECT cl.combination FROM CombinationLike cl WHERE cl.member.id = :memberId AND cl.combination.state = true")
     Page<Combination> findCombinationsByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    Page<Combination> findCombinationsByTitleContaining(String keyword, PageRequest pageRequest);
+    Page<Combination> findCombinationsByTitleContainingAndStateIsTrue(String keyword, PageRequest pageRequest);
 
     Page<Combination> findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
         String keyword, PageRequest pageRequest, Long likeCount);

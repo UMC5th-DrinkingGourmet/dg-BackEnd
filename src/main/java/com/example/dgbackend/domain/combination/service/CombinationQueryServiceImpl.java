@@ -1,6 +1,14 @@
 package com.example.dgbackend.domain.combination.service;
 
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.*;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationEditResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.CombinationResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationDetailResult;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMyPageList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationPreviewResultList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationResult;
 import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse.CommentPreViewResult;
 import static com.example.dgbackend.domain.member.dto.MemberResponse.toMemberResult;
 
@@ -9,17 +17,14 @@ import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentQueryService;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
-import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeQueryService;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
-import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionQueryService;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -141,8 +146,9 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      */
     @Override
     public CombinationResponse.CombinationMyPageList getCombinationMyPageList(Member member,
-                                                                              Integer page) {
-        Page<Combination> combinations = combinationRepository.findAllByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
+        Integer page) {
+        Page<Combination> combinations = combinationRepository.findAllByMemberIdAndStateIsTrue(
+            member.getId(), PageRequest.of(page, 21));
 
         return toCombinationMyPageList(combinations);
     }
@@ -171,8 +177,9 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
      */
     @Override
     public CombinationMyPageList getCombinationLikeList(Member member,
-                                                        Integer page) {
-        Page<Combination> combinations = combinationRepository.findCombinationsByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
+        Integer page) {
+        Page<Combination> combinations = combinationRepository.findCombinationsByMemberIdAndStateIsTrue(
+            member.getId(), PageRequest.of(page, 21));
 
         return toCombinationMyPageList(combinations);
     }
@@ -184,7 +191,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
-        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContaining(
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndStateIsTrue(
             keyword, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();
@@ -206,16 +213,16 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-                keyword, pageRequest, 30L);
+            keyword, pageRequest, 30L);
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
-                .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
-                .toList();
+            .map(hashTagOptionQueryService::getAllHashTagOptionByCombination)
+            .toList();
 
         List<Boolean> isLikeList = combinationList.stream()
-                .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
-                .toList();
+            .map(cb -> combinationLikeQueryService.isCombinationLike(cb, loginMember))
+            .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
     }

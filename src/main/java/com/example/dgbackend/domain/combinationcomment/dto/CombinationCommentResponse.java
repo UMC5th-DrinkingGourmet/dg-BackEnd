@@ -59,6 +59,7 @@ public class CombinationCommentResponse {
 
         private Long id;
         private String content;
+        private Long memberId;
         private String memberNickName;
         private String memberProfile;
         private String createdAt;
@@ -71,6 +72,7 @@ public class CombinationCommentResponse {
         return CommentResult.builder()
             .id(combinationComment.getId())
             .content(combinationComment.getContent())
+            .memberId(combinationComment.getMember().getId())
             .memberNickName(combinationComment.getMember().getNickName())
             .memberProfile(combinationComment.getMember().getProfileImageUrl())
             .createdAt(DateTimeUtils.formatLocalDateTime(combinationComment.getCreatedAt()))

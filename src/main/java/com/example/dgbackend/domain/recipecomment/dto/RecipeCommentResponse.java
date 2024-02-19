@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.dto;
 
+import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -28,11 +29,8 @@ public class RecipeCommentResponse {
     @Schema(description = "댓글 내용", example = "맛있어요")
     private String content;
 
-    @Schema(description = "작성자 닉니임 ", example = "mason")
-    private String memberNickName;
-
-    @Schema(description = "작성자 이미지", example = "https://image.com")
-    private String memberImage;
+    @Schema(description = "작성자 정보")
+    private MemberResponse.MemberResult member;
 
     @Schema(description = "작성일", example = "2021-08-01 12:00:00")
     private LocalDateTime createdDate;
@@ -88,8 +86,7 @@ public class RecipeCommentResponse {
                 .id(recipeComment.getId())
                 .content(recipeComment.getContent())
                 .childCommentList(getList(recipeComment))
-                .memberNickName(recipeComment.getMember().getNickName())
-                .memberImage(recipeComment.getMember().getProfileImageUrl())
+                .member(MemberResponse.toMemberResult(recipeComment.getMember()))
                 .createdDate(recipeComment.getCreatedAt())
                 .updatedDate(recipeComment.getUpdatedAt())
                 .childCommentCount(childCommentCount)

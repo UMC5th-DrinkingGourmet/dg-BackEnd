@@ -36,7 +36,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<Recipe> allByState = recipeRepository.findAllByState(true, pageable);
+        Page<Recipe> allByState = recipeRepository.findAllByStateOrderByCreatedAtDesc(true, pageable);
 
         List<RecipeResponse> recipeResponseList = allByState.getContent().stream()
                 .map(recipe -> {

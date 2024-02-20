@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CombinationRepository extends JpaRepository<Combination, Long> {
 
-    Page<Combination> findAllByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
+    Page<Combination> findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(Long memberId, PageRequest pageRequest);
 
     List<Combination> findAllByMember(Member member);
 

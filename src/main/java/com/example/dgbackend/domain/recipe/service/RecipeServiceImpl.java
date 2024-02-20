@@ -147,7 +147,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
                                                                Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(member.getId(), PageRequest.of(page, 21));
 
         return toRecipeMyPageList(recipePage);
     }

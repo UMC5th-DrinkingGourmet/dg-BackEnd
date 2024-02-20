@@ -59,7 +59,7 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     @Override
     public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        Page<Recommend> pageList = recommendRepository.findAllByMemberId(member.getId(), pageable);
+        Page<Recommend> pageList = recommendRepository.findAllByMemberIdOrderByCreatedAtDesc(member.getId(), pageable);
 
         return RecommendResponse.RecommendListResult.builder()
                 .recommendResponseDTOList(pageList.map(RecommendResponse::toRecommendResult).toList())

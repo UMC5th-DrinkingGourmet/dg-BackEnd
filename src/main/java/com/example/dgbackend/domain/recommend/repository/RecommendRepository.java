@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecommendRepository extends JpaRepository<Recommend, Long> {
-    Page<Recommend> findAllByMemberId(Long memberId, Pageable pageable);
+    Page<Recommend> findAllByMemberIdOrderByCreatedAtDesc(Long memberId, Pageable pageable);
 }

@@ -47,7 +47,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationPreviewResultList getCombinationPreviewResultList(Integer page,
         Member loginMember) {
-        Page<Combination> combinations = combinationRepository.findAllByState(true,
+        Page<Combination> combinations = combinationRepository.findAllByStateOrderByCreatedAtDesc(true,
             PageRequest.of(page, 10));
         List<Combination> combinationList = combinations.getContent();
 

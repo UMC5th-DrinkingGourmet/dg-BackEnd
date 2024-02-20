@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    Page<Recipe> findAllByState(boolean state, Pageable pageable);
+    Page<Recipe> findAllByStateOrderByCreatedAtDesc(boolean state, Pageable pageable);
 
     List<Recipe> findAllByTitleAndMember_Name(String name, String memberName);
 

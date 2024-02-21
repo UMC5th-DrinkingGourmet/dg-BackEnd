@@ -65,7 +65,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member memberEntity) {
 
-        isAlreadyCreate(recipeRequest.getTitle(), memberEntity.getName());
 
         //레시피 저장
         Recipe save = recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity));

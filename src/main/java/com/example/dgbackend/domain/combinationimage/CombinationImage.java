@@ -18,6 +18,7 @@ public class CombinationImage extends BaseTimeEntity {
     private Long id;
 
     @NotNull
+    @Column(length = 5000000)
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

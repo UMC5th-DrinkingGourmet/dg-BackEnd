@@ -65,7 +65,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member memberEntity) {
 
-        isAlreadyCreate(recipeRequest.getTitle(), memberEntity.getName());
 
         //레시피 저장
         Recipe save = recipeRepository.save(RecipeRequest.toEntity(recipeRequest, memberEntity));
@@ -147,7 +146,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
                                                                Integer page) {
-        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrue(member.getId(), PageRequest.of(page, 21));
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(member.getId(), PageRequest.of(page, 21));
 
         return toRecipeMyPageList(recipePage);
     }

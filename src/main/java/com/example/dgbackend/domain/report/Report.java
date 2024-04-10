@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.report;
 import com.example.dgbackend.domain.enums.ReportReason;
 import com.example.dgbackend.domain.enums.ReportTarget;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.report.dto.ReportRequest.ReportReq;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -48,5 +49,15 @@ public class Report {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
+
+	public static Report toEntity(ReportReq reportReq, Member member) {
+		return Report.builder()
+			.resourceId(reportReq.getResourceId())
+			.content(reportReq.getContent())
+			.reportTarget(reportReq.getReportTarget())
+			.reportReason(reportReq.getReportReason())
+			.member(member)
+			.build();
+	}
 
 }

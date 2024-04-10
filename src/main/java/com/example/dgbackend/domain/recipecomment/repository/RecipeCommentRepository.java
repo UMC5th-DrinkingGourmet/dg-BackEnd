@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipecomment.repository;
 
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Lo
     Page<RecipeComment> findAllByRecipe(Recipe recipe, Pageable pageable);
 
     Page<RecipeComment> findByRecipeAndParentCommentIsNullAndStateIsTrue(Recipe recipe, Pageable pageable);
+
+    Optional<RecipeComment> findByIdAndStateIsTrue(Long id);
 }

@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.dto;
 
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
@@ -16,7 +17,7 @@ public class RecipeCommentRequest {
     public static RecipeComment toEntity(Member member, Recipe recipe, String comment, RecipeComment parentComment) {
         return RecipeComment.builder()
                 .content(comment)
-                .state(true)
+                .state(State.TRUE)
                 .member(member)
                 .parentComment(parentComment)
                 .recipe(recipe)

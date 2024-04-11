@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.service;
 
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.service.MemberService;
 import com.example.dgbackend.domain.recipe.Recipe;
@@ -34,7 +35,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<RecipeComment> recipeCommentPage = recipeCommentRepository.findByRecipeAndParentCommentIsNullAndStateIsTrue(recipe, pageable);
+        Page<RecipeComment> recipeCommentPage = recipeCommentRepository.findByRecipeAndParentCommentIsNullAndStateIsTrueOrReported(recipe, pageable);
 
         return RecipeCommentResponse.toResponseList(recipeCommentPage);
     }
@@ -95,7 +96,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     public RecipeCommentResponse deleteRecipeComment(Long recipeCommentId) {
         RecipeComment entityById = getEntityById(recipeCommentId);
 
-        if (!entityById.isState()) {
+        if (!entityById.getState().equals(State.FALSE)) {
             throw new ApiException(ErrorStatus._Already_DELETE_RECIPE_COMMENT);
         }
 

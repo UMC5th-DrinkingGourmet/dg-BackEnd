@@ -184,4 +184,10 @@ public class JwtProvider {
     }
 
 
+    //Access Token 만료 시간 반환
+    public Date getAccessTokenExpiration(String accessToken) {
+        SecretKey secretKey = generateKey();
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken).getBody();
+        return claims.getExpiration();
+    }
 }

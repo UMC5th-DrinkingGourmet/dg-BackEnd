@@ -13,6 +13,8 @@ import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,16 +81,38 @@ public class AuthService {
     /**
      * 로그아웃
      */
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        // Access Token 추출
+        String authorizationHeader = request.getHeader("Authorization");
+        String accessToken = authorizationHeader.substring(7);
+
+        String refreshToken = request.getHeader("RefreshToken");
+
+        // Access Token 만료
+        Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
+
+        // Access Token에서 provider 추출
+        String id = jwtProvider.getMemberIdFromToken(refreshToken);
+
+        // Redis에서 해당 Refresh Token 삭제
+        redisUtil.deleteData(id);
 
         // Header에 Access Token 삭제
         response.setHeader("Authorization", "");
 
         // Redis에 Refresh Token 삭제
-        String refreshToken = request.getHeader("RefreshToken");
-        String id = jwtProvider.getMemberIdFromToken(refreshToken);
-        redisUtil.deleteData(id);
         response.setHeader("RefreshToken", "");
+
+        // 현재 시간
+        Date currentDate = new Date();
+
+        // 만료 기한과 현재 시간 사이의 밀리초 단위 차이 계산
+        long milliseconds = accessTokenExpirationDate.getTime() - currentDate.getTime();
+
+        // Access Token 블랙리스트 추가
+        redisUtil.setDataExpire( accessToken,"logout", milliseconds);
+
+        return "로그아웃 하였습니다";
     }
 
     /**

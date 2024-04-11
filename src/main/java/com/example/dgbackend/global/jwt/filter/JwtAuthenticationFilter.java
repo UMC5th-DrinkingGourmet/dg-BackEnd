@@ -48,11 +48,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // 검증이 필요없는 URI 작성 (추후 변경)
     private boolean isPublicUri(String requestURI) {
         return
-                requestURI.startsWith("/swagger-ui/**") ||
-                        requestURI.startsWith("/**") ||
+                requestURI.startsWith("/swagger-ui/") ||
+//                        requestURI.startsWith("/") ||
+                        requestURI.startsWith("/v3/api-docs") ||
                         requestURI.startsWith("/favicon.ico") ||
                         requestURI.startsWith("/auth/");
     }
+
 
     // "Bearer "로 시작하는지 확인
     private boolean isBearer(String authorizationHeader) {

@@ -82,25 +82,25 @@ public class AuthService {
      * 로그아웃
      */
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-
+        // Access Token 추출
         String authorizationHeader = request.getHeader("Authorization");
         String accessToken = authorizationHeader.substring(7);
 
+        String refreshToken = request.getHeader("RefreshToken");
+
+        // Access Token 만료
         Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
 
-        String refreshToken = request.getHeader("RefreshToken");
-        log.info("accessToken id ------- : ", refreshToken);
+        // Access Token에서 provider 추출
+        String id = jwtProvider.getMemberIdFromToken(refreshToken);
 
-        String id = jwtProvider.getMemberIdFromToken(accessToken);
-
-
+        // Redis에서 해당 Refresh Token 삭제
         redisUtil.deleteData(id);
 
         // Header에 Access Token 삭제
         response.setHeader("Authorization", "");
 
         // Redis에 Refresh Token 삭제
-
         response.setHeader("RefreshToken", "");
 
         // 현재 시간
@@ -109,6 +109,7 @@ public class AuthService {
         // 만료 기한과 현재 시간 사이의 밀리초 단위 차이 계산
         long milliseconds = accessTokenExpirationDate.getTime() - currentDate.getTime();
 
+        // Access Token 블랙리스트 추가
         redisUtil.setDataExpire( accessToken,"logout", milliseconds);
 
         return "로그아웃 하였습니다";

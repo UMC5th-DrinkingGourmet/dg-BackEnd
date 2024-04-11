@@ -114,9 +114,10 @@ public class ReportServiceImpl implements ReportService {
 		long reportMember = member.getId();
 		long resourceId = reportReq.getResourceId();
 		String reportTarget = reportReq.getReportTarget().getName();
-		String reportContent = reportReq.getContent();
+		String content = reportReq.getContent(); // 신고 사유(내용)
 		String reportReason = reportReq.getReportReason().getName();
 		String suspensionDuration = reportReq.getReportReason().getSuspensionDuration();
+		String reportContent = reportReq.getReportContent(); // 신고 대상 내용
 
 		return
 			"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -368,6 +369,8 @@ public class ReportServiceImpl implements ReportService {
 				+ "</span></p>\n"
 				+ "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-size: 18px; line-height: 25.2px; color: #666666;\">해당 내용 : "
 				+ reportContent + " </span></p>\n"
+				+ "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-size: 18px; line-height: 25.2px; color: #666666;\">신고 사유 : "
+				+ content + " </span></p>\n"
 				+ "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-size: 18px; line-height: 25.2px; color: #666666;\">삭제 이유 : "
 				+ reportReason + "</span></p>\n"
 				+ "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-size: 18px; line-height: 25.2px; color: #666666;\">정지 기간 : "

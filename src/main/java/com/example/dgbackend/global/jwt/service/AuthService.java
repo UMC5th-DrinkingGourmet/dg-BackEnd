@@ -83,17 +83,25 @@ public class AuthService {
      */
     public String logout(HttpServletRequest request, HttpServletResponse response) {
 
+        String authorizationHeader = request.getHeader("Authorization");
+        String accessToken = authorizationHeader.substring(7);
+
+        Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
+
+        String refreshToken = request.getHeader("RefreshToken");
+        log.info("accessToken id ------- : ", refreshToken);
+
+        String id = jwtProvider.getMemberIdFromToken(accessToken);
+
+
+        redisUtil.deleteData(id);
+
         // Header에 Access Token 삭제
         response.setHeader("Authorization", "");
 
         // Redis에 Refresh Token 삭제
-        String refreshToken = request.getHeader("RefreshToken");
-        String id = jwtProvider.getMemberIdFromToken(refreshToken);
-        redisUtil.deleteData(id);
-        response.setHeader("RefreshToken", "");
 
-        String accessToken = jwtProvider.getJwtTokenFromHeader(request);
-        Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
+        response.setHeader("RefreshToken", "");
 
         // 현재 시간
         Date currentDate = new Date();

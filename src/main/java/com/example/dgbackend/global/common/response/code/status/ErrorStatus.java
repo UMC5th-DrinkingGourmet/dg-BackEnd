@@ -66,7 +66,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _NOTHING_RECIPE_IMAGE(HttpStatus.BAD_REQUEST, "RECIPE_IMAGE_001", "레시피 이미지가 없습니다."),
 
     //새로 출시된 주류
-    _EMPTY_DRINK_LIST(HttpStatus.CONFLICT, "DRINK_001", "존재하지 않는 주류입니다.");
+    _EMPTY_DRINK_LIST(HttpStatus.CONFLICT, "DRINK_001", "존재하지 않는 주류입니다."),
+
+    _DUPLICATE_REPORT(HttpStatus.CONFLICT, "REPORT_001", "이미 존재하는 신고 내용입니다"),
+    _FAIL_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REPORT_002", "메일 전송에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

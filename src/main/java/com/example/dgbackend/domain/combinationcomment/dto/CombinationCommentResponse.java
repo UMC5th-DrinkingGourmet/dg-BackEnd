@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.combinationcomment.dto;
 
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.global.util.DateTimeUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class CombinationCommentResponse {
         private String createdAt;
         private Integer childCount;
         private List<CommentResult> childComments = new ArrayList<>();
+        private State state;
     }
 
     public static CommentResult toCommentResult(CombinationComment combinationComment) {
@@ -78,6 +80,7 @@ public class CombinationCommentResponse {
             .createdAt(DateTimeUtils.formatLocalDateTime(combinationComment.getCreatedAt()))
             .childCount(getChildCount(combinationComment))
             .childComments(getChildComments(combinationComment))
+            .state(combinationComment.getState())
             .build();
 
     }
@@ -88,7 +91,7 @@ public class CombinationCommentResponse {
         return Optional.ofNullable(combinationComment.getChildComments())
             .orElse(new ArrayList<>()) // 자식 댓글 없는 경우
             .stream()
-            .filter(CombinationComment::isState) // 존재하는 댓글만 필터링
+            .filter(comment -> comment.getState().equals(State.TRUE)) // 존재하는 댓글만 필터링
             .map(CombinationCommentResponse::toCommentResult)
             .toList();
     }
@@ -97,7 +100,7 @@ public class CombinationCommentResponse {
 
         return Optional.ofNullable(combinationComment.getChildComments())
             .map(childComments -> (int) childComments.stream()
-                .filter(CombinationComment::isState)
+                .filter(comment -> comment.getState().equals(State.TRUE))
                 .count())
             .orElse(null);
     }

@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recipe.repository;
 
 import com.example.dgbackend.domain.recipe.Recipe;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Page<Recipe> findRecipesByTitleContainingAndStateIsTrue(String keyword, Pageable pageable);
 
     Page<Recipe> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);
+
+    Optional<Recipe> findByIdAndStateIsTrue(Long id);
 }

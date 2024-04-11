@@ -192,7 +192,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
-        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndStateIsTrue(
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
             keyword, pageRequest);
 
         List<Combination> combinationList = combinations.getContent();

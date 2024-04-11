@@ -5,6 +5,7 @@ import static com.example.dgbackend.domain.combinationcomment.dto.CombinationCom
 
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
     @Override
     public CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page) {
 
-        Page<CombinationComment> comments = combinationCommentRepository.findAllByCombinationIdAndStateIsTrue(
+        Page<CombinationComment> comments = combinationCommentRepository.findByCombinationIdAndStateTrueOrReported(
             combinationId, PageRequest.of(page, 10));
 
         return toCommentPreViewResult(comments);
@@ -54,7 +55,7 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
     @Override
     public CombinationComment isDelete(CombinationComment comment) {
 
-        if (!comment.isState()) {
+        if (!comment.getState().equals(State.FALSE)) {
             throw new ApiException(ErrorStatus._DELETE_COMBINATION_COMMENT);
         }
         return comment;

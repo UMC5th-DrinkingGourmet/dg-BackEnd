@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Jwt Token", description = "로그아웃 및 토큰 재발행 API")
 @RestController
@@ -46,5 +43,11 @@ public class JwtController {
     public ApiResponse<AuthResponse> naverLoign(@RequestBody AuthRequest authRequest,
         HttpServletResponse response) throws IOException {
         return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
+    }
+
+    @PatchMapping("/logout")
+    public ApiResponse<String> logout(HttpServletResponse response,
+                                                HttpServletRequest request) throws IOException {
+        return ApiResponse.onSuccess(authService.logout(request, response));
     }
 }

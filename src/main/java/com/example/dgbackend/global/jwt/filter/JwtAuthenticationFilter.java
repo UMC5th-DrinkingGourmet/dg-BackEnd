@@ -1,6 +1,7 @@
 package com.example.dgbackend.global.jwt.filter;
 
 import com.example.dgbackend.global.jwt.JwtProvider;
+import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final RedisUtil redisUtil;
 
     // JWT를 이용하여 사용자 인증 및 권한 부여를 처리
     @Override
@@ -24,12 +26,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         if (isPublicUri(requestURI)) {
             filterChain.doFilter(request, response);
-            return;
+            return ;
         }
 
         String authorizationHeader = request.getHeader("Authorization");
+        String accessToken = jwtProvider.getJwtTokenFromHeader(request);
 
-        if (authorizationHeader != null && isBearer(authorizationHeader)) {
+        if (authorizationHeader != null && isBearer(authorizationHeader) && doNotLogout(accessToken)) {
             String jwtToken = authorizationHeader.substring(7);
 
             // token 유효성 검증
@@ -48,11 +51,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 requestURI.startsWith("/swagger-ui/**") ||
                         requestURI.startsWith("/**") ||
                         requestURI.startsWith("/favicon.ico") ||
-                        requestURI.startsWith("/auth/**");
+                        requestURI.startsWith("/auth/");
     }
 
     // "Bearer "로 시작하는지 확인
     private boolean isBearer(String authorizationHeader) {
         return authorizationHeader.startsWith("Bearer ");
+    }
+
+    private boolean doNotLogout(String accessToken) {
+        String isLogout = redisUtil.getData(accessToken);
+        return isLogout.equals("false");
     }
 }

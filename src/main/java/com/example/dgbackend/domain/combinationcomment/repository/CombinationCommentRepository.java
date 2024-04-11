@@ -14,4 +14,7 @@ public interface CombinationCommentRepository extends JpaRepository<CombinationC
 	Page<CombinationComment> findByCombinationIdAndStateTrueOrReported(@Param("combinationId") Long combinationId, Pageable pageable);
 
 	Optional<CombinationComment> findByIdAndStateIsTrue(Long id);
+
+	@Query("SELECT c FROM CombinationComment c WHERE c.id = :id AND c.state = 'TRUE'")
+	Optional<CombinationComment> findByIdAndStateTrue(@Param("id") Long id);
 }

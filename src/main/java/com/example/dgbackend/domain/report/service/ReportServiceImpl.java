@@ -80,7 +80,7 @@ public class ReportServiceImpl implements ReportService {
 				sendReportMail(reportReq, member);
 			}
 			case COMBINATION_COMMENT -> {
-				CombinationComment combinationComment = combinationCommentRepository.findByIdAndStateIsTrue(
+				CombinationComment combinationComment = combinationCommentRepository.findByIdAndStateTrue(
 						reportReq.getResourceId())
 					.orElseThrow(
 						() -> new ApiException(ErrorStatus._COMBINATION_COMMENT_NOT_FOUND));
@@ -89,7 +89,7 @@ public class ReportServiceImpl implements ReportService {
 				sendReportMail(reportReq, member);
 			}
 			case RECIPE_COMMENT -> {
-				RecipeComment recipeComment = recipeCommentRepository.findByIdAndStateIsTrue(
+				RecipeComment recipeComment = recipeCommentRepository.findByIdAndStateTrue(
 						reportReq.getResourceId())
 					.orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE_COMMENT));
 				recipeComment.updateState();

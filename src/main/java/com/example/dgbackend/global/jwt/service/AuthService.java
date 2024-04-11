@@ -13,6 +13,8 @@ import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +81,7 @@ public class AuthService {
     /**
      * 로그아웃
      */
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
 
         // Header에 Access Token 삭제
         response.setHeader("Authorization", "");
@@ -89,6 +91,19 @@ public class AuthService {
         String id = jwtProvider.getMemberIdFromToken(refreshToken);
         redisUtil.deleteData(id);
         response.setHeader("RefreshToken", "");
+
+        String accessToken = jwtProvider.getJwtTokenFromHeader(request);
+        Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
+
+        // 현재 시간
+        Date currentDate = new Date();
+
+        // 만료 기한과 현재 시간 사이의 밀리초 단위 차이 계산
+        long milliseconds = accessTokenExpirationDate.getTime() - currentDate.getTime();
+
+        redisUtil.setDataExpire( accessToken,"logout", milliseconds);
+
+        return "로그아웃 하였습니다";
     }
 
     /**

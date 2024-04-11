@@ -16,6 +16,9 @@ public class RedisUtil {
     // Redis에서 특정 Key를 가진 Value 얻기
     public String getData(String key) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+        if (valueOperations.get(key) == null) {
+            return "false";
+        }
         return valueOperations.get(key);
     }
 
@@ -29,5 +32,6 @@ public class RedisUtil {
     public void deleteData(String key) {
         stringRedisTemplate.delete(key);
     }
+
 
 }

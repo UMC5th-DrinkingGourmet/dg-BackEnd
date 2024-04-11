@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Long> {
     List<RecipeComment> findAllByRecipe(Recipe recipe);
@@ -18,4 +19,7 @@ public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Lo
     Page<RecipeComment> findByRecipeAndParentCommentIsNullAndStateIsTrueOrReported(Recipe recipe, Pageable pageable);
 
     Optional<RecipeComment> findByIdAndStateIsTrue(Long id);
+
+    @Query("SELECT r FROM RecipeComment r WHERE r.id = :id AND r.state = 'TRUE'")
+    Optional<RecipeComment> findByIdAndStateTrue(@Param("id")Long id);
 }

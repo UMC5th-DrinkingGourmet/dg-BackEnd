@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment;
 
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.global.common.BaseTimeEntity;
@@ -28,8 +29,8 @@ public class RecipeComment extends BaseTimeEntity {
 	@JoinColumn(name = "parent_id")
 	private RecipeComment parentComment; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
-	@Builder.Default
-	private boolean state = true; //true : 존재, false : 삭제
+	@Enumerated(EnumType.STRING)
+	private State state; //true : 존재, false : 삭제, reported: 신고
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
@@ -49,12 +50,12 @@ public class RecipeComment extends BaseTimeEntity {
 
 	public RecipeComment delete() {
 		this.recipe.changeCommentCount(false);
-		this.state = false;
+		this.state = State.FALSE;
 		return this;
 	}
 
 	public void updateState() {
-        this.state = false;
+        this.state = State.REPORTED;
 	}
 
 }

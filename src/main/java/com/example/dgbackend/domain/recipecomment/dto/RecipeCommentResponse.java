@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.dto;
 
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,6 +45,9 @@ public class RecipeCommentResponse {
 
     @Schema(description = "자식 댓글 수", example = "5")
     private int childCommentCount = 0;
+
+    @Schema(description = "댓글 상태", example = "TRUE")
+    private State state;
 
     @AllArgsConstructor
     @NoArgsConstructor
@@ -90,6 +94,7 @@ public class RecipeCommentResponse {
                 .createdDate(recipeComment.getCreatedAt())
                 .updatedDate(recipeComment.getUpdatedAt())
                 .childCommentCount(childCommentCount)
+                .state(recipeComment.getState())
                 .build();
     }
 
@@ -101,7 +106,7 @@ public class RecipeCommentResponse {
 
                 //자식있을 때, 존재하는 것 만 반환
                 .stream()
-                .filter(RecipeComment::isState)
+                .filter(comment -> comment.getState().equals(State.TRUE))
                 .map(RecipeCommentResponse::toResponse).toList();
     }
 

@@ -55,7 +55,7 @@ public class CombinationCommentQueryServiceImpl implements CombinationCommentQue
     @Override
     public CombinationComment isDelete(CombinationComment comment) {
 
-        if (!comment.getState().equals(State.FALSE)) {
+        if (comment.getState().equals(State.FALSE)) {
             throw new ApiException(ErrorStatus._DELETE_COMBINATION_COMMENT);
         }
         return comment;

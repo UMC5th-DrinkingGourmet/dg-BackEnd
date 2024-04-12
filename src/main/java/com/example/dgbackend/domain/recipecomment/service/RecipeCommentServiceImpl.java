@@ -96,7 +96,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     public RecipeCommentResponse deleteRecipeComment(Long recipeCommentId) {
         RecipeComment entityById = getEntityById(recipeCommentId);
 
-        if (!entityById.getState().equals(State.FALSE)) {
+        if (entityById.getState().equals(State.FALSE)) {
             throw new ApiException(ErrorStatus._Already_DELETE_RECIPE_COMMENT);
         }
 

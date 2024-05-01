@@ -5,6 +5,7 @@
 맞춤형 음식과 주류 추천을 통해 개인의 취향에 맞는 음주 추천 &  커뮤니티를 통해 다른 미식가들과 소통하여 레시피를 공유할 수 있는 애플리케이션입니다.
 
 ## 🛠️ 개발 환경
+
 * JAVA 17
 * Framework : SpringBoot 3.2.1, SpringSecurity 6.2, Spring Data JPA, Swagger 3.x, Jwt
 * DataBase : MySQL

@@ -48,7 +48,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     public CombinationPreviewResultList getCombinationPreviewResultList(Integer page,
         Member loginMember) {
         Page<Combination> combinations = combinationRepository.findAllByStateOrderByCreatedAtDesc(true,
-            PageRequest.of(page, 10));
+            PageRequest.of(page, 10), loginMember.getId());
         List<Combination> combinationList = combinations.getContent();
 
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
@@ -71,6 +71,9 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // Combination
         Combination combination = getCombination(combinationId);
+
+        // 차단된 글인지 검증
+        isBlocked(combinationId,loginMember.getId());
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,
@@ -159,7 +162,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         Member loginMember, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Combination> combinations = combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            30L, pageRequest);
+            30L, pageRequest, loginMember.getId());
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
@@ -193,7 +196,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
-            keyword, pageRequest);
+            keyword, pageRequest, loginMember.getId());
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
@@ -214,7 +217,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
         Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
-            keyword, pageRequest, 30L);
+            keyword, pageRequest, 30L, loginMember.getId());
 
         List<Combination> combinationList = combinations.getContent();
         List<List<HashTagOption>> hashTagOptionList = combinationList.stream()
@@ -226,6 +229,12 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
             .toList();
 
         return toCombinationPreviewResultList(combinations, hashTagOptionList, isLikeList);
+    }
+
+    private void isBlocked(Long combinationId, Long memberId) {
+        Combination blockedCombination = combinationRepository.findCombinationByIdAndStateIsTrue(
+                combinationId, memberId)
+            .orElseThrow(() -> new ApiException(ErrorStatus._BLOCKED_MEMBER));
     }
 }
 

@@ -11,7 +11,8 @@ import java.util.List;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    Page<Recipe> findAllByStateOrderByCreatedAtDesc(boolean state, Pageable pageable);
+    @Query("SELECT r FROM Recipe r WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND r.state = :state ORDER BY r.createdAt DESC")
+    Page<Recipe> findAllByStateOrderByCreatedAtDesc(boolean state, Pageable pageable, Long memberId);
 
     List<Recipe> findAllByTitleAndMember_Name(String name, String memberName);
 
@@ -20,9 +21,13 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.state = true AND rl.state = true")
     Page<Recipe> findRecipesByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    Page<Recipe> findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(String keyword, Pageable pageable);
+    @Query("SELECT r FROM Recipe r WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND r.title LIKE %:keyword% AND r.state = true ORDER BY r.createdAt DESC")
+    Page<Recipe> findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(String keyword, Pageable pageable, Long memberId);
 
     Page<Recipe> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);
 
     Optional<Recipe> findByIdAndStateIsTrue(Long id);
+
+    @Query("SELECT r FROM Recipe r WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND r.id = :id AND r.state = true")
+    Optional<Recipe> findByIdAndMemberAndStateIsTrue(Long id, Long memberId);
 }

@@ -28,6 +28,7 @@ public class MemberBlockController {
 	public ApiResponse<MemberBlockResponse.MemberBlockResult> block(
 		@RequestBody MemberBlockReq memberBlockReq, @MemberObject Member loginMember) {
 		return ApiResponse.onSuccess(memberBlockService.block(memberBlockReq, loginMember));
+
 	}
 
 

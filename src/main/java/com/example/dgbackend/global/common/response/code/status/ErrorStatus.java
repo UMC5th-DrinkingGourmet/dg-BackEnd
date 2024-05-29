@@ -68,8 +68,13 @@ public enum ErrorStatus implements BaseErrorCode {
     //새로 출시된 주류
     _EMPTY_DRINK_LIST(HttpStatus.CONFLICT, "DRINK_001", "존재하지 않는 주류입니다."),
 
-    _DUPLICATE_REPORT(HttpStatus.CONFLICT, "REPORT_001", "이미 존재하는 신고 내용입니다"),
-    _FAIL_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REPORT_002", "메일 전송에 실패했습니다.");
+    // 신고
+    _DUPLICATE_REPORT(HttpStatus.CONFLICT, "REPORT_001", "이미 존재하는 신고 내용입니다."),
+    _FAIL_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REPORT_002", "메일 전송에 실패했습니다."),
+
+    //차단
+    _DUPLICATE_MEMBER_BLOCK(HttpStatus.CONFLICT,"MEMBER_BLOCK_001", "이미 차단된 멤버입니다."),
+    _BLOCKED_MEMBER(HttpStatus.CONFLICT,"MEMBER_BLOCK_002", "차단된 멤버입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

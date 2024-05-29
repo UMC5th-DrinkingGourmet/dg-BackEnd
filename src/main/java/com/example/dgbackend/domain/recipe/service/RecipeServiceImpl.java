@@ -1,5 +1,7 @@
 package com.example.dgbackend.domain.recipe.service;
 
+import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
+
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
@@ -11,16 +13,13 @@ import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
 
 
 @Service
@@ -36,7 +35,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<Recipe> allByState = recipeRepository.findAllByStateOrderByCreatedAtDesc(true, pageable);
+        Page<Recipe> allByState = recipeRepository.findAllByStateOrderByCreatedAtDesc(true, pageable, member.getId());
 
         List<RecipeResponse> recipeResponseList = allByState.getContent().stream()
                 .map(recipe -> {
@@ -49,6 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeResponse getRecipeDetail(Long id, Member member) {
         Recipe recipe = getRecipe(id);
+		isBlocked(id, member.getId());
         return getRecipeDetailResponse(recipe, member);
     }
 
@@ -133,7 +133,8 @@ public class RecipeServiceImpl implements RecipeService {
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(keyword, pageable);
+        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(keyword, pageable,
+			member.getId());
 
         List<RecipeResponse> recipeResponseList = recipesByKeyword.getContent().stream()
                 .map(recipe -> {
@@ -158,4 +159,9 @@ public class RecipeServiceImpl implements RecipeService {
 
         return toRecipeMyPageList(recipePage);
     }
+
+	private void isBlocked(Long recipeId, Long memberId) {
+		Recipe blockedRecipe = recipeRepository.findByIdAndMemberAndStateIsTrue(recipeId, memberId)
+			.orElseThrow(() -> new ApiException(ErrorStatus._BLOCKED_MEMBER));
+	}
 }

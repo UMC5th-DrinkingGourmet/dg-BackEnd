@@ -26,7 +26,7 @@ public class MemberBlockServiceImpl implements MemberBlockService {
 		Member blockedMember = memberRepository.findMemberById(memberBlockReq.getBlockedMemberId())
 			.orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
-		MemberBlock prevMemberBlock = memberBlockRepository.findMemberBlockByMemberAndBlockedMember(blockedMember, member);
+		MemberBlock prevMemberBlock = memberBlockRepository.findMemberBlockByMemberAndBlockedMember(member, blockedMember);
 
 		duplicateMemberBlock(prevMemberBlock);
 

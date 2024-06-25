@@ -53,6 +53,8 @@ public class AuthService {
             Member newMember = MemberRequest.toEntity(authRequest);
             memberCommandService.saveMember(newMember);
             memberId = newMember.getId();
+
+            response.addHeader("newMember", "true");
         } else {
             memberId = loginMember.get().getId();
 

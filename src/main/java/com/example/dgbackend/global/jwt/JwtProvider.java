@@ -20,6 +20,7 @@ import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -89,6 +90,7 @@ public class JwtProvider {
         return now.getTime() + ACCESS_TOKEN_VALID_TIME;
     }
 
+    //TODO: 여기 Exception 넘겨버리기
     // JWT Key 생성
     private SecretKey generateKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
@@ -97,18 +99,33 @@ public class JwtProvider {
     /**
      * Token 유효성 검사
      */
-    public void isValidToken(final String token) {
+    public boolean isValidToken(final String token) {
         try {
             SecretKey secretKey = generateKey();
             Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token);
+            return true;
         } catch (ExpiredJwtException e) {
-            throw new ApiException(ErrorStatus._INVALID_JWT);
+            return false;
+            //throw new ApiException(ErrorStatus._INVALID_JWT);
         } catch (Exception e) {
-            throw new ApiException(ErrorStatus._INVALID_JWT);
+            return false;
+            //throw new ApiException(ErrorStatus._INVALID_JWT);
         }
+    }
+
+    /**
+     * Refresh Token Redis 검사
+     */
+    public boolean validateRefreshToken(String key, HttpServletRequest request) {
+        if(redisUtil.getData(key).equals("false")) {
+            request.setAttribute("exception", ErrorStatus._REFRESH_TOKEN_NOT_FOUND);
+            throw new RuntimeException(String.valueOf(ErrorStatus._REFRESH_TOKEN_NOT_FOUND));
+            //return false;
+        }
+        return true;
     }
 
     // Jwt Token으로 Authentication에 사용자 등록

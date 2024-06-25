@@ -24,6 +24,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReportServiceImpl implements ReportService {
 
 	private final JavaMailSender javaMailSender;
@@ -490,6 +492,8 @@ public class ReportServiceImpl implements ReportService {
 				() -> new ApiException(ErrorStatus._EMPTY_MEMBER)
 		);
 		String id = member.getProvider() + "_" + member.getProviderId();
+		log.info(
+				"============================================= 신고당한 멤버 Provider : " + id );
 		redisUtil.deleteData(id);
 	}
 

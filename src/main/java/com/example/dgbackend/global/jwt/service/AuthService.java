@@ -14,7 +14,6 @@ import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

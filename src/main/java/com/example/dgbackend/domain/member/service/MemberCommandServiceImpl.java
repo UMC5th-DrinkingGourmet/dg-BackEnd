@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.member.service;
 import com.example.dgbackend.domain.combination.service.CombinationCommandService;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentCommandService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
@@ -64,6 +65,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         }
         String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
         member.updateProfileImageUrl(profileImageUrl);
+
+        return MemberResponse.toGetMember(member);
+    }
+
+    @Override
+    public MemberResponse.GetMember reportedMember(Member member) {
+        member.setState(State.REPORTED);
 
         return MemberResponse.toGetMember(member);
     }

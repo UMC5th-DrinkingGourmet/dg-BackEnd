@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.member;
 
 import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -26,7 +27,6 @@ public class Member extends BaseTimeEntity {
     @NotNull
     private String email;
 
-
     private String birthDate; //생일은 String으로 받도록 하였습니다.
 
     @NotNull
@@ -36,7 +36,6 @@ public class Member extends BaseTimeEntity {
     private String nickName;
 
     @NotNull@Enumerated(EnumType.STRING)
-
     private Gender gender;
 
     @NotNull
@@ -51,7 +50,8 @@ public class Member extends BaseTimeEntity {
     private String profileImageUrl;
 
     @Builder.Default
-    private boolean state = true; //true: 존재, false: 탈퇴
+    @Enumerated(EnumType.STRING)
+    private State state = State.TRUE; //true: 존재, false: 탈퇴
 
     //주류 추천 정보 입력 내용 변경됨
     private String preferredAlcoholType;  //선호 주종
@@ -121,4 +121,6 @@ public class Member extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
         return profileImageUrl;
     }
+
+    public void setState(State state) { this.state = state; }
 }

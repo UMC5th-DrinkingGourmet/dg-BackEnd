@@ -1,5 +1,6 @@
 package com.example.dgbackend.global.jwt.service;
 
+import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.service.MemberCommandService;
@@ -13,7 +14,6 @@ import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -43,15 +43,25 @@ public class AuthService {
         String id = authRequest.getProvider() + "_" + authRequest.getProviderId();
 
         Long memberId;
+
+        // Provider / Provider 아이디로 가입한 멤버를 찾아옴
         Optional<Member> loginMember = memberQueryService.findByProviderAndProviderId(
             authRequest.getProvider(),
             authRequest.getProviderId());
+
         if (loginMember.isEmpty()) {
             Member newMember = MemberRequest.toEntity(authRequest);
             memberCommandService.saveMember(newMember);
             memberId = newMember.getId();
         } else {
             memberId = loginMember.get().getId();
+
+            if (loginMember.get().getState() == State.REPORTED) {
+                throw new ApiException(ErrorStatus._PERMANENTLY_REPORTED_MEMBER);
+            } else if (redisUtil.getData(String.valueOf(memberId)).equals("reported")) {
+                log.info("일시 정지 -----------", redisUtil.getData(String.valueOf(memberId)));
+                throw new ApiException(ErrorStatus._TEMPORARILY_REPORTED_MEMBER);
+            }
         }
 
         // 인증이 성공했을 때, Header에 Access Token, RefreshToken 생성 및 저장

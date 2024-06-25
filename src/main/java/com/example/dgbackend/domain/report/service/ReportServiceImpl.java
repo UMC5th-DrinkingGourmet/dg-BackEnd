@@ -4,8 +4,10 @@ import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
+import com.example.dgbackend.domain.enums.ReportReason;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.domain.member.service.MemberCommandService;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
@@ -15,17 +17,23 @@ import com.example.dgbackend.domain.report.dto.ReportRequest.ReportReq;
 import com.example.dgbackend.domain.report.repository.ReportRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+import com.example.dgbackend.global.util.RedisUtil;
 import jakarta.mail.Message.RecipientType;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReportServiceImpl implements ReportService {
 
 	private final JavaMailSender javaMailSender;
@@ -35,6 +43,8 @@ public class ReportServiceImpl implements ReportService {
 	private final CombinationCommentRepository combinationCommentRepository;
 	private final RecipeRepository recipeRepository;
 	private final RecipeCommentRepository recipeCommentRepository;
+	private final RedisUtil redisUtil;
+	private final MemberCommandService memberCommandService;
 
 	private static final String dgEmail = "drinkgourmet.official@gmail.com";
 
@@ -96,6 +106,7 @@ public class ReportServiceImpl implements ReportService {
 				sendReportMail(reportReq, member);
 			}
 		}
+		memberReported(reportReq.getReportReason(), reportReq.getReportedMemberId());
 	}
 
 	private void sendReportMail(ReportReq reportReq, Member member) throws MessagingException {
@@ -452,5 +463,38 @@ public class ReportServiceImpl implements ReportService {
 				+ "</html>\n";
 	}
 
+	private void memberReported(ReportReason reportReason, Long memberId) {
+		switch (reportReason) {
+			case ABUSIVE_LANGUAGE -> {
+				// 현재 시간
+				long oneDayMillis = 24L * 60 * 60 * 1000;
+				redisUtil.setDataExpire(String.valueOf(memberId), "reported", oneDayMillis);
+			}
+			case DEFAMATION -> {
+				long sevenDayMillis = 24L * 7 * 60 * 60 * 1000;
+				redisUtil.setDataExpire(String.valueOf(memberId), "reported", sevenDayMillis);
+			}
+			case PORNOGRAPHY_ILLEGAL_CONTENT -> {
+				long thirtyDayMillis = 24L * 30 * 60 * 60 * 1000;
+				redisUtil.setDataExpire(String.valueOf(memberId), "reported", thirtyDayMillis);
+			}
+			default -> {
+				// 멤버 State Reported로 변경
+				Member member = memberRepository.findById(memberId).orElseThrow(
+						() -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+				);
+				memberCommandService.reportedMember(member);
+			}
+		}
+		// 멤버에서 provider 아이디 갖고와서 redis에 해당 리프레시 토큰 삭제
+		// 강제 로그아웃
+		Member member = memberRepository.findById(memberId).orElseThrow(
+				() -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+		);
+		String id = member.getProvider() + "_" + member.getProviderId();
+		log.info(
+				"============================================= 신고당한 멤버 Provider : " + id );
+		redisUtil.deleteData(id);
+	}
 
 }

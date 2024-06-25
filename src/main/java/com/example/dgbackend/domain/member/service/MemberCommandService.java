@@ -12,6 +12,8 @@ public interface MemberCommandService {
 
     MemberResponse.GetMember patchProfileImage(Member member, MultipartFile multipartFile);
 
+    MemberResponse.GetMember reportedMember(Member member);
+
     MemberResponse.GetMember getMember(Member member);
 
     void saveMember(Member member);

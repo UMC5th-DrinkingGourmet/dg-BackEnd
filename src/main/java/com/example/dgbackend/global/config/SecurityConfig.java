@@ -1,5 +1,6 @@
 package com.example.dgbackend.global.config;
 
+import com.example.dgbackend.global.jwt.filter.CustomAuthenticationEntryPoint;
 import com.example.dgbackend.global.jwt.filter.JwtAuthenticationFilter;
 import com.example.dgbackend.global.jwt.handler.CustomLogoutHandler;
 import java.util.List;
@@ -46,12 +47,17 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/v3/api-docs/**"
                         , "/swagger-ui/**"
-                        , "/**"
+                        //, "/**"
                         , "/favicon.ico"
                         , "/auth/**"
                         , "/logout"
                     ).permitAll()
-                    .anyRequest().permitAll());
+                        .anyRequest().authenticated())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
+
+        //.anyRequest().permitAll());
+
         http
             .logout((logout) ->
                 logout

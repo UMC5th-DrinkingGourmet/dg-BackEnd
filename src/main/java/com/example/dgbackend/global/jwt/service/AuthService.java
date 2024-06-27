@@ -57,6 +57,7 @@ public class AuthService {
             response.addHeader("newMember", "true");
         } else {
             memberId = loginMember.get().getId();
+            response.addHeader("newMember", "false");
 
             if (loginMember.get().getState() == State.REPORTED) {
                 throw new ApiException(ErrorStatus._PERMANENTLY_REPORTED_MEMBER);

@@ -74,7 +74,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //차단
     _DUPLICATE_MEMBER_BLOCK(HttpStatus.CONFLICT,"MEMBER_BLOCK_001", "이미 차단된 멤버입니다."),
-    _BLOCKED_MEMBER(HttpStatus.CONFLICT,"MEMBER_BLOCK_002", "차단된 멤버입니다.");
+    _BLOCKED_MEMBER(HttpStatus.CONFLICT,"MEMBER_BLOCK_002", "차단된 멤버입니다."),
+    _INVALID_MEMBER_BLOCK(HttpStatus.BAD_REQUEST,"MEMBER_BLOCK_002","본인 차단은 불가능합니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

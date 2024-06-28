@@ -26,6 +26,8 @@ public class MemberBlockServiceImpl implements MemberBlockService {
 		Member blockedMember = memberRepository.findMemberById(memberBlockReq.getBlockedMemberId())
 			.orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
+		validateMemberBlock(blockedMember, member);
+
 		MemberBlock prevMemberBlock = memberBlockRepository.findMemberBlockByMemberAndBlockedMember(member, blockedMember);
 
 		duplicateMemberBlock(prevMemberBlock);
@@ -40,6 +42,12 @@ public class MemberBlockServiceImpl implements MemberBlockService {
 	private void duplicateMemberBlock(MemberBlock prevMemberBlock) {
 		if (prevMemberBlock != null) {
 			throw new ApiException(ErrorStatus._DUPLICATE_MEMBER_BLOCK);
+		}
+	}
+
+	private void validateMemberBlock(Member blockedMember, Member loginMember) {
+		if (blockedMember.getId().equals(loginMember.getId())) {
+			throw new ApiException(ErrorStatus._INVALID_MEMBER_BLOCK);
 		}
 	}
 

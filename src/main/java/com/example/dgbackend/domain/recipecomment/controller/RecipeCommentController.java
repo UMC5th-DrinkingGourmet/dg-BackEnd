@@ -23,39 +23,45 @@ import java.util.List;
 @RequestMapping("/recipe-comments")
 public class RecipeCommentController {
 
-    private final RecipeCommentServiceImpl recipeCommentService;
+	private final RecipeCommentServiceImpl recipeCommentService;
 
-    private final MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 
-    @Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")
-    @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
-    @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)
-    @GetMapping("/{recipeId}")
-    public ApiResponse<RecipeCommentResponse.RecipeCommentResponseList> getRecipeComments(@PathVariable Long recipeId, @RequestParam("page") int page) {
-        return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId, page));
-    }
+	@Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")
+	@Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
+	@Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)
+	@GetMapping("/{recipeId}")
+	public ApiResponse<RecipeCommentResponse.RecipeCommentResponseList> getRecipeComments(
+		@PathVariable Long recipeId, @RequestParam("page") int page,
+		@Parameter(hidden = true) @MemberObject Member loginMember) {
+		return ApiResponse.onSuccess(recipeCommentService.getRecipeComment(recipeId, page, loginMember));
+	}
 
-    @Operation(summary = "레시피북 댓글 등록", description = "레시피북 댓글을 등록합니다.")
-    @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
-    @PostMapping("/{recipeId}")
-    public ApiResponse<RecipeCommentResponse> saveRecipeComment(@PathVariable Long recipeId,
-                                                                @RequestBody RecipeCommentRequest.Post recipeCommentRequest,
-                                                                @MemberObject Member member) {
-        RecipeCommentVO paramVO = RecipeCommentVO.of(recipeCommentRequest, recipeId, member.getName());
-        return ApiResponse.onSuccess(recipeCommentService.saveRecipeComment(paramVO));
-    }
+	@Operation(summary = "레시피북 댓글 등록", description = "레시피북 댓글을 등록합니다.")
+	@Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)
+	@PostMapping("/{recipeId}")
+	public ApiResponse<RecipeCommentResponse> saveRecipeComment(@PathVariable Long recipeId,
+		@RequestBody RecipeCommentRequest.Post recipeCommentRequest,
+		@MemberObject Member member) {
+		RecipeCommentVO paramVO = RecipeCommentVO.of(recipeCommentRequest, recipeId,
+			member.getName());
+		return ApiResponse.onSuccess(recipeCommentService.saveRecipeComment(paramVO));
+	}
 
-    @Operation(summary = "레시피북 댓글 수정", description = "레시피북 댓글을 수정합니다.")
-    @PatchMapping
-    public ApiResponse<RecipeCommentResponse> updateRecipeComment(@RequestBody RecipeCommentRequest.Patch recipeCommentRequest) {
-        return ApiResponse.onSuccess(recipeCommentService.updateRecipeComment(recipeCommentRequest));
-    }
+	@Operation(summary = "레시피북 댓글 수정", description = "레시피북 댓글을 수정합니다.")
+	@PatchMapping
+	public ApiResponse<RecipeCommentResponse> updateRecipeComment(
+		@RequestBody RecipeCommentRequest.Patch recipeCommentRequest) {
+		return ApiResponse.onSuccess(
+			recipeCommentService.updateRecipeComment(recipeCommentRequest));
+	}
 
-    @Operation(summary = "레시피북 댓글 삭제", description = "레시피북 댓글을 삭제합니다.")
-    @Parameter(name = "recipeCommentId", description = "레시피북 댓글 Id, Query Param 입니다.", required = true, example = "1", in = ParameterIn.QUERY)
-    @DeleteMapping
-    public ApiResponse<RecipeCommentResponse> deleteRecipeComment(@RequestParam Long recipeCommentId) {
-        return ApiResponse.onSuccess(recipeCommentService.deleteRecipeComment(recipeCommentId));
-    }
+	@Operation(summary = "레시피북 댓글 삭제", description = "레시피북 댓글을 삭제합니다.")
+	@Parameter(name = "recipeCommentId", description = "레시피북 댓글 Id, Query Param 입니다.", required = true, example = "1", in = ParameterIn.QUERY)
+	@DeleteMapping
+	public ApiResponse<RecipeCommentResponse> deleteRecipeComment(
+		@RequestParam Long recipeCommentId) {
+		return ApiResponse.onSuccess(recipeCommentService.deleteRecipeComment(recipeCommentId));
+	}
 
 }

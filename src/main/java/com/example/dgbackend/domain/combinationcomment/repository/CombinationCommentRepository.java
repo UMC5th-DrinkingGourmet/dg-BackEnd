@@ -10,8 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface CombinationCommentRepository extends JpaRepository<CombinationComment, Long> {
 
-	@Query("SELECT c FROM CombinationComment c WHERE c.combination.id = :combinationId AND (c.state = 'TRUE' OR c.state = 'REPORTED')")
-	Page<CombinationComment> findByCombinationIdAndStateTrueOrReported(@Param("combinationId") Long combinationId, Pageable pageable);
+	@Query("SELECT c FROM CombinationComment c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.combination.id = :combinationId AND (c.state = 'TRUE' OR c.state = 'REPORTED')")
+	Page<CombinationComment> findByCombinationIdAndStateTrueOrReported(
+		@Param("combinationId") Long combinationId, Pageable pageable, Long memberId);
 
 	Optional<CombinationComment> findByIdAndStateIsTrue(Long id);
 

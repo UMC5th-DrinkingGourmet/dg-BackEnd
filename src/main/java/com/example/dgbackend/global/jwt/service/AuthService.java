@@ -50,6 +50,9 @@ public class AuthService {
             authRequest.getProviderId());
 
         if (loginMember.isEmpty()) {
+            if (memberQueryService.existsByNickname(authRequest.getNickName())) {
+                throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
+            }
             Member newMember = MemberRequest.toEntity(authRequest);
             memberCommandService.saveMember(newMember);
             memberId = newMember.getId();

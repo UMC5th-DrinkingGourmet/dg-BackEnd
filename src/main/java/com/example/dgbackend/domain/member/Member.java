@@ -63,6 +63,7 @@ public class Member extends BaseTimeEntity {
     private String drinkingTimes; // 음주 횟수
 
 
+
     //주류 추천 정보 관련 setter
     /*
     Setter: preferredAlcoholType (선호 주종)

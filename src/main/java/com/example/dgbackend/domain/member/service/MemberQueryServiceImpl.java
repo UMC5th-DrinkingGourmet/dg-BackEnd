@@ -20,6 +20,11 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     }
 
     @Override
+    public Boolean existsByNickname(String nickname) {
+        return memberRepository.existsByNickName(nickname);
+    }
+
+    @Override
     public Optional<Member> findByProviderAndProviderId(String provider, String providerId) {
         return memberRepository.findByProviderAndProviderId(provider, providerId);
     }

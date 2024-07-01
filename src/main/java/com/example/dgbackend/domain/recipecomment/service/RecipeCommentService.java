@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.service;
 
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface RecipeCommentService {
 
-    RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page);
+    RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page, Member loginMember);
 
     RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO);
 

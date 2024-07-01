@@ -39,6 +39,12 @@ public class JwtController {
         return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
     }
 
+    @PostMapping("/apple")
+    public ApiResponse<AuthResponse> appleLoign(@RequestBody AuthRequest authRequest,
+        HttpServletResponse response) throws IOException {
+        return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
+    }
+
     @PostMapping("/naver")
     public ApiResponse<AuthResponse> naverLoign(@RequestBody AuthRequest authRequest,
         HttpServletResponse response) throws IOException {

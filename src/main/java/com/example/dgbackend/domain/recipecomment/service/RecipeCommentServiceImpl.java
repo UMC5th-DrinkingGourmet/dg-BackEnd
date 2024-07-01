@@ -29,13 +29,13 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     private final RecipeRepository recipeRepository;
 
     @Override
-    public RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page) {
+    public RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page, Member loginMember) {
 
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-        Page<RecipeComment> recipeCommentPage = recipeCommentRepository.findByRecipeAndParentCommentIsNullAndStateIsTrueOrReported(recipe, pageable);
+        Page<RecipeComment> recipeCommentPage = recipeCommentRepository.findByRecipeAndParentCommentIsNullAndStateIsTrueOrReported(recipe, pageable, loginMember.getId());
 
         return RecipeCommentResponse.toResponseList(recipeCommentPage);
     }

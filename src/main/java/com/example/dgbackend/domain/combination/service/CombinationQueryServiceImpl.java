@@ -91,7 +91,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
 
         // CombinationComment
         CommentPreViewResult combinationCommentResult = combinationCommentQueryService.getCommentsFromCombination(
-            combinationId, 0);
+            combinationId, 0, loginMember);
 
         return toCombinationDetailResult(combinationResult, memberResult, combinationCommentResult);
     }

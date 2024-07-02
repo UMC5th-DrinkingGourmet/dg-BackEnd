@@ -49,6 +49,8 @@ public class AuthService {
             authRequest.getProvider(),
             authRequest.getProviderId());
 
+        boolean isNewMember = true;
+
         if (loginMember.isEmpty()) {
             if (memberQueryService.existsByNickname(authRequest.getNickName())) {
                 throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
@@ -57,10 +59,9 @@ public class AuthService {
             memberCommandService.saveMember(newMember);
             memberId = newMember.getId();
 
-            response.addHeader("newMember", "true");
         } else {
             memberId = loginMember.get().getId();
-            response.addHeader("newMember", "false");
+            isNewMember = false;
 
             if (loginMember.get().getState() == State.REPORTED) {
                 throw new ApiException(ErrorStatus._PERMANENTLY_REPORTED_MEMBER);
@@ -74,7 +75,7 @@ public class AuthService {
         registerHeaderToken(response, id, "Authorization");
         registerHeaderToken(response, id, "RefreshToken");
 
-        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName(),
+        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName(),isNewMember,
             memberId);
 
     }

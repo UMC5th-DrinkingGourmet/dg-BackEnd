@@ -24,9 +24,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     MemberRepository memberRepository;
 
     private final S3Service s3Service;
-    private final CombinationCommandService combinationCommandService;
-    private final CombinationCommentCommandService combinationCommentCommandService;
-    private final CombinationLikeCommandService combinationLikeCommandService;
 
     @Override
     public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,

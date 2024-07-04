@@ -58,9 +58,9 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
     @Override
     public Optional<CombinationLike> getCombinationLikeEntity(Member member, Long combinationId) {
 
-        Member memberByName = memberService.findMemberByName(member.getName());
+        Member memberById = memberService.findMemberById(member.getId());
 
         return combinationLikeRepository.findByCombinationAndMember(
-            getCombinationEntity(combinationId), memberByName);
+            getCombinationEntity(combinationId), memberById);
     }
 }

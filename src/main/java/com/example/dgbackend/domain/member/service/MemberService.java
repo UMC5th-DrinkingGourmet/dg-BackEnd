@@ -18,4 +18,9 @@ public class MemberService {
                 .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
     }
 
+    public Member findMemberById(Long id) {
+        return memberRepository.findMemberById(id)
+                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+    }
+
 }

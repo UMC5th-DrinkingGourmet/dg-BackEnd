@@ -39,6 +39,7 @@ public class MemberResponse {
         String birthDate;
         String profileImageUrl;
         String phoneNumber;
+        String provider;
     }
 
     public static GetMember toGetMember(Member member) {
@@ -50,6 +51,7 @@ public class MemberResponse {
                 .birthDate(member.getBirthDate())
                 .profileImageUrl(member.getProfileImageUrl())
                 .phoneNumber(member.getPhoneNumber())
+                .provider(member.getProvider())
                 .build();
     }
 

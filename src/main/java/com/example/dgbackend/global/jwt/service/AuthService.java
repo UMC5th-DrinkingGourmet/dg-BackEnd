@@ -144,10 +144,11 @@ public class AuthService {
         }
 
         String id = jwtProvider.getMemberIdFromToken(refreshToken);
-        boolean isExists = redisUtil.getData(id).isEmpty();
+        String data = redisUtil.getData(id);
+
 
         // Redis에 refresh token이 만료되어 사라진 경우
-        if (!isExists) {
+        if (data.equals("false")) {
             log.info("-----------------------발급되면 안됨");
             throw new ApiException(ErrorStatus._REDIS_NOT_FOUND);
         }

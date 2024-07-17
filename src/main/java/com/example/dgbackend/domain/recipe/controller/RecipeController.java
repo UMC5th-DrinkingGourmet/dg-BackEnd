@@ -33,11 +33,8 @@ public class RecipeController {
     private final RecipeServiceImpl recipeServiceImpl;
     private final RecipeScheduler recipeScheduler;
 
-    //TODO: @AutenticationPrincipal로 변경
-
-
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
-    @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0s", in = ParameterIn.QUERY)
+    @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)
     @GetMapping
     public ApiResponse<RecipeResponse.RecipeResponseList> getRecipes(@RequestParam("page") int page,
                                                                      @MemberObject Member member) {

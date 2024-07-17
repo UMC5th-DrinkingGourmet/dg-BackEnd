@@ -26,7 +26,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 	Page<Combination> findCombinationsByLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
 		Long likeCount, PageRequest pageRequest, Long memberId);
 
-	@Query("SELECT cl.combination FROM CombinationLike cl WHERE cl.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND cl.member.id = :memberId AND cl.combination.state = true AND cl.state = true")
+	@Query("SELECT cl.combination FROM CombinationLike cl WHERE cl.combination.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND cl.member.id = :memberId AND cl.combination.state = true AND cl.state = true")
 	Page<Combination> findCombinationsByMemberIdAndStateIsTrue(Long memberId,
 		PageRequest pageRequest);
 

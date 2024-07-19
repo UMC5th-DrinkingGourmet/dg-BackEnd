@@ -21,7 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _PERMANENTLY_REPORTED_MEMBER(HttpStatus.FORBIDDEN, "MEMBER_003", "해당 사용자는 영구 정지되었습니다."),
     _TEMPORARILY_REPORTED_MEMBER(HttpStatus.FORBIDDEN, "MEMBER_004", "해당 사용자는 일시 정지되었습니다."),
     _DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "MEMBER_005", "해당 닉네임은 중복된 닉네임입니다."),
-    _INVALID_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER_006", "유효하지 않은 사용자Feat: Add _INVALID_MEMBE입니다."),
+    _INVALID_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER_006", "유효하지 않은 사용자입니다."),
 
     //오늘의 조합 관련
     _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),

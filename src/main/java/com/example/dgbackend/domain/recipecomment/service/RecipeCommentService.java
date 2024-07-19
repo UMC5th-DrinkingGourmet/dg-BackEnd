@@ -6,21 +6,21 @@ import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
 
-import java.util.List;
-
 public interface RecipeCommentService {
 
-    RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page, Member loginMember);
+	RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page,
+		Member loginMember);
 
-    RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO);
+	RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO, Member loginMember);
 
-    RecipeComment getEntity(RecipeCommentVO paramVO);
+	RecipeComment getEntity(RecipeCommentVO paramVO, Member loginMember);
 
-    RecipeComment getParentEntityById(Long id);
+	RecipeComment getParentEntityById(Long id);
 
-    RecipeComment getEntityById(Long id);
+	RecipeComment getEntityById(Long id);
 
-    RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO);
+	RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO,
+		Member loginMember);
 
-    RecipeCommentResponse deleteRecipeComment(Long recipeCommentId);
+	RecipeCommentResponse deleteRecipeComment(Long recipeCommentId, Member loginMember);
 }

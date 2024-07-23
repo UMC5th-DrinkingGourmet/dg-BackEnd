@@ -7,6 +7,6 @@ import jakarta.mail.MessagingException;
 
 public interface ReportService {
 
-	String report(ReportReq reportReq, Member member) throws MessagingException;
+    String report(ReportReq reportReq, Member member) throws MessagingException;
 
 }

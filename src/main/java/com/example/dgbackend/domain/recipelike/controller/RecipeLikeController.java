@@ -1,9 +1,7 @@
 package com.example.dgbackend.domain.recipelike.controller;
 
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
-import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
@@ -12,7 +10,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "레시피북 좋아요 API")
 @RestController
@@ -27,7 +29,7 @@ public class RecipeLikeController {
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1")
     @GetMapping("/{recipeId}")
     public ApiResponse<RecipeLikeResponse> getRecipeLikes(@PathVariable Long recipeId,
-                                                          @MemberObject Member member) {
+        @MemberObject Member member) {
         return ApiResponse.onSuccess(recipeLikeServiceImpl.getRecipeLike(recipeId, member));
     }
 
@@ -35,7 +37,7 @@ public class RecipeLikeController {
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1")
     @PostMapping("/{recipeId}")
     public ApiResponse<RecipeLikeResponse> createRecipeLike(@PathVariable Long recipeId,
-                                                            @MemberObject Member member) {
+        @MemberObject Member member) {
         return ApiResponse.onSuccess(recipeLikeServiceImpl.changeRecipeLike(recipeId, member));
     }
 

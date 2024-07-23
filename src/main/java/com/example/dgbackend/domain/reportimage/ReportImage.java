@@ -22,16 +22,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReportImage {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull
-	private String imageUrl;
+    @NotNull
+    private String imageUrl;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_id")
-	private Report report;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id")
+    private Report report;
 
 
 }

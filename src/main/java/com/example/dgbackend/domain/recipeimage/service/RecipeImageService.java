@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.recipeimage.service;
 
 import com.example.dgbackend.domain.recipe.Recipe;
-import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.service.RecipeService;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageRequest;
@@ -13,12 +12,11 @@ import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
 import com.example.dgbackend.global.s3.dto.S3Result;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -32,8 +30,8 @@ public class RecipeImageService {
 
     public List<String> getRecipeImages(Long recipeId) {
         return recipeImageRepository.findAllByRecipeId(recipeId).stream()
-                .map(RecipeImage::getImageUrl)
-                .toList();
+            .map(RecipeImage::getImageUrl)
+            .toList();
     }
 
     @Transactional
@@ -45,13 +43,13 @@ public class RecipeImageService {
 
         //S3에 이미지 업로드하고 URL 받아오기
         List<String> imageURLs = s3Service.uploadFile(multipartFiles).stream()
-                .map(S3Result::getImgUrl)
-                .toList();
+            .map(S3Result::getImgUrl)
+            .toList();
 
         //RecipeImage(url 리스트, recipe) 엔티티 생성
         List<RecipeImage> recipeImages = imageURLs.stream()
-                .map(imageURL -> RecipeImageRequest.toEntity(recipe, imageURL))
-                .toList();
+            .map(imageURL -> RecipeImageRequest.toEntity(recipe, imageURL))
+            .toList();
 
         //RecipeImage 엔티티 모두 저장
         recipeImageRepository.saveAll(recipeImages);
@@ -83,10 +81,10 @@ public class RecipeImageService {
         //삭제 요청 이미지 삭제
         if (deleteFileUrlList != null && !deleteFileUrlList.isEmpty()) {
             deleteFileUrlList.forEach(
-                    deleteFileUrl -> {
-                        deleteRecipeImage(deleteFileUrl);
-                        s3Service.deleteFile(deleteFileUrl);
-                    }
+                deleteFileUrl -> {
+                    deleteRecipeImage(deleteFileUrl);
+                    s3Service.deleteFile(deleteFileUrl);
+                }
             );
         }
 
@@ -97,13 +95,13 @@ public class RecipeImageService {
     //없다면 예외처리
     public void deleteRecipeImage(String imageUrl) {
         recipeImageRepository.findByImageUrl(imageUrl)
-                .ifPresentOrElse(recipeImageEntity -> {
-                            recipeImageRepository.delete(recipeImageEntity);
-                            s3Service.deleteFile(recipeImageEntity.getImageUrl());
-                        },
-                        () -> {
-                            throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);
-                        });
+            .ifPresentOrElse(recipeImageEntity -> {
+                    recipeImageRepository.delete(recipeImageEntity);
+                    s3Service.deleteFile(recipeImageEntity.getImageUrl());
+                },
+                () -> {
+                    throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);
+                });
     }
 
     public void deleteAllRecipeImage(Long recipeId) {

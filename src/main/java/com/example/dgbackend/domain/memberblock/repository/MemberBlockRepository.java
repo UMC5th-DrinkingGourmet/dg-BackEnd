@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberBlockRepository extends JpaRepository<MemberBlock, Long> {
 
-	MemberBlock findMemberBlockByMemberAndBlockedMember(Member member, Member blockedMember);
+    MemberBlock findMemberBlockByMemberAndBlockedMember(Member member, Member blockedMember);
 }

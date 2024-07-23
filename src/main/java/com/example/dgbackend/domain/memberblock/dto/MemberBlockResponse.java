@@ -8,21 +8,21 @@ import lombok.NoArgsConstructor;
 
 public class MemberBlockResponse {
 
-	@Builder
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@Getter
-	public static class MemberBlockResult {
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class MemberBlockResult {
 
-		Long memberId;
-		Long blockedMemberId;
-	}
+        Long memberId;
+        Long blockedMemberId;
+    }
 
-	public static MemberBlockResult toMemberBlockResult(Member blockedMember, Member member) {
-		return MemberBlockResult.builder()
-			.blockedMemberId(blockedMember.getId())
-			.memberId(member.getId())
-			.build();
-	}
+    public static MemberBlockResult toMemberBlockResult(Member blockedMember, Member member) {
+        return MemberBlockResult.builder()
+            .blockedMemberId(blockedMember.getId())
+            .memberId(member.getId())
+            .build();
+    }
 
 }

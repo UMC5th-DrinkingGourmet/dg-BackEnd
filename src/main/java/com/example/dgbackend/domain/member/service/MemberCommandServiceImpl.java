@@ -1,8 +1,5 @@
 package com.example.dgbackend.domain.member.service;
 
-import com.example.dgbackend.domain.combination.service.CombinationCommandService;
-import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentCommandService;
-import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
@@ -41,7 +38,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     // 회원 정보 수정
     @Override
     public MemberResponse.GetMember patchMember(Member member,
-                                                MemberRequest.PatchMember patchMember) {
+        MemberRequest.PatchMember patchMember) {
         member.setName(patchMember.getName());
         member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());
@@ -54,7 +51,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     //회원 사진 수정
     @Override
     public MemberResponse.GetMember patchProfileImage(Member member,
-                                                      MultipartFile multipartFile) {
+        MultipartFile multipartFile) {
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {

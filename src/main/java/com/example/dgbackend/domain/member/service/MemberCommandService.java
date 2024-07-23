@@ -6,7 +6,9 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberCommandService {
-    MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member, MemberRequest.RecommendInfoDTO recommendInfoDTO);
+
+    MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,
+        MemberRequest.RecommendInfoDTO recommendInfoDTO);
 
     MemberResponse.GetMember patchMember(Member member, MemberRequest.PatchMember patchMember);
 

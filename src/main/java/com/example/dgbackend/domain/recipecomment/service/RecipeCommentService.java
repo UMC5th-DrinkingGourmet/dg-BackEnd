@@ -8,19 +8,19 @@ import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
 
 public interface RecipeCommentService {
 
-	RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page,
-		Member loginMember);
+    RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page,
+        Member loginMember);
 
-	RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO, Member loginMember);
+    RecipeCommentResponse saveRecipeComment(RecipeCommentVO paramVO, Member loginMember);
 
-	RecipeComment getEntity(RecipeCommentVO paramVO, Member loginMember);
+    RecipeComment getEntity(RecipeCommentVO paramVO, Member loginMember);
 
-	RecipeComment getParentEntityById(Long id);
+    RecipeComment getParentEntityById(Long id);
 
-	RecipeComment getEntityById(Long id);
+    RecipeComment getEntityById(Long id);
 
-	RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO,
-		Member loginMember);
+    RecipeCommentResponse updateRecipeComment(RecipeCommentRequest.Patch requestDTO,
+        Member loginMember);
 
-	RecipeCommentResponse deleteRecipeComment(Long recipeCommentId, Member loginMember);
+    RecipeCommentResponse deleteRecipeComment(Long recipeCommentId, Member loginMember);
 }

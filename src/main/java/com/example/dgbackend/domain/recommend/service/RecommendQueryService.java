@@ -8,12 +8,15 @@ import com.example.dgbackend.domain.recommend.dto.RecommendResponse.RecommendRes
 
 public interface RecommendQueryService {
 
-    Recommend addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl);
+    Recommend addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO,
+        String drinkName, String drinkInfo, String imageUrl);
 
     RecommendResponseDTO getRecommendResult(Long recommendId);
+
     Recommend getRecommend(Long recommendId);
 
-    RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size);
+    RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page,
+        Integer size);
 
     RecommendResponseDTO deleteRecommend(Long recommendId);          //추천 삭제
 }

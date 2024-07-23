@@ -4,10 +4,19 @@ import com.example.dgbackend.domain.enums.Gender;
 import com.example.dgbackend.domain.enums.Role;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.global.common.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -27,7 +36,7 @@ public class Member extends BaseTimeEntity {
     @NotNull
     private String email;
 
-    private String birthDate; //생일은 String으로 받도록 하였습니다.
+    private String birthDate;
 
     @NotNull
     private String phoneNumber;
@@ -35,7 +44,8 @@ public class Member extends BaseTimeEntity {
     @NotNull
     private String nickName;
 
-    @NotNull@Enumerated(EnumType.STRING)
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @NotNull
@@ -61,7 +71,6 @@ public class Member extends BaseTimeEntity {
     private String drinkingLimit; //주량
 
     private String drinkingTimes; // 음주 횟수
-
 
 
     //주류 추천 정보 관련 setter
@@ -96,32 +105,44 @@ public class Member extends BaseTimeEntity {
     /*
     Setter: name (이름)
      */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /*
     Setter: nickName (닉네임)
      */
-    public void setNickName(String nickName) { this.nickName = nickName; }
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     /*
     Setter: birthDate (생일)
      */
-    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
 
     /*
     Setter: birthDate (생일)
      */
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     /*
     Setter: gender (생일)
      */
-    public void setGender(Gender gender) { this.gender = gender; }
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
     public String updateProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
         return profileImageUrl;
     }
 
-    public void setState(State state) { this.state = state; }
+    public void setState(State state) {
+        this.state = state;
+    }
 }

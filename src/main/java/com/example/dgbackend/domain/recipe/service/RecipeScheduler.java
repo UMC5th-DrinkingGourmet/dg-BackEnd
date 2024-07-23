@@ -1,10 +1,16 @@
 package com.example.dgbackend.domain.recipe.service;
 
+import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMainList;
+
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.domain.recipeimage.repository.RecipeImageRepository;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -12,19 +18,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
-import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMainList;
-
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class RecipeScheduler {
+
     private final RecipeRepository recipeRepository;
     private final ReentrantLock combinationsLock = new ReentrantLock();
     private final RecipeImageRepository recipeImageRepository;
@@ -33,7 +33,8 @@ public class RecipeScheduler {
     @Transactional
     List<Recipe> get3TopRecipes() {
         List<Recipe> recipes = new ArrayList<>();
-        recipeRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(recipes::add);
+        recipeRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20))
+            .forEach(recipes::add);
 
         // 리스트가 3개보다 작을 경우, 전체 리스트를 반환
         if (recipes.size() <= 3) {
@@ -79,11 +80,11 @@ public class RecipeScheduler {
 
         // 이미지와 해시태그 옵션 리스트 가져오기
         List<RecipeImage> recipeImages = recipes.stream()
-                .map(recipe -> recipeImageRepository.findAllByRecipe(recipe)
-                        .stream()
-                        .findFirst() // 이미지 중 첫 번째 것만 가져옴
-                        .orElse(null))  // 만약 이미지가 없다면 null 반환
-                .toList();
+            .map(recipe -> recipeImageRepository.findAllByRecipe(recipe)
+                .stream()
+                .findFirst() // 이미지 중 첫 번째 것만 가져옴
+                .orElse(null))  // 만약 이미지가 없다면 null 반환
+            .toList();
 
         return toRecipeMainList(recipes, recipeImages);
     }

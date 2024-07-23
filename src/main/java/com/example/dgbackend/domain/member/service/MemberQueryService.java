@@ -4,6 +4,7 @@ import com.example.dgbackend.domain.member.Member;
 import java.util.Optional;
 
 public interface MemberQueryService {
+
     Boolean existsByProviderAndProviderId(String provider, String providerId);
 
     Boolean existsByNickname(String nickname);

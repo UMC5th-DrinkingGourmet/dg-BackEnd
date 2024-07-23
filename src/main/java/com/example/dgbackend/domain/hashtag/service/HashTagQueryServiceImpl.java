@@ -2,11 +2,10 @@ package com.example.dgbackend.domain.hashtag.service;
 
 import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.hashtag.repository.HashTagRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

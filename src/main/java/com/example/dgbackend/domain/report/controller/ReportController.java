@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReportController {
 
-	private final ReportServiceImpl reportService;
+    private final ReportServiceImpl reportService;
 
-	@PostMapping("/member/reports")
-	public ApiResponse<String> report(@MemberObject Member member, @RequestBody ReportReq reportReq)
-		throws MessagingException {
-		return ApiResponse.onSuccess(reportService.report(reportReq, member));
-	}
+    @PostMapping("/member/reports")
+    public ApiResponse<String> report(@MemberObject Member member, @RequestBody ReportReq reportReq)
+        throws MessagingException {
+        return ApiResponse.onSuccess(reportService.report(reportReq, member));
+    }
 
 
 }

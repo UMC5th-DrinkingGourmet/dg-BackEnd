@@ -5,16 +5,15 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
@@ -65,13 +64,13 @@ public class RecipeCommentResponse {
 
     public static RecipeCommentResponseList toResponseList(Page<RecipeComment> recipeCommentList) {
         return RecipeCommentResponseList.builder()
-                .commentList(recipeCommentList.stream().map(RecipeCommentResponse::toResponse).toList())
-                .listSize(recipeCommentList.getNumberOfElements())
-                .totalPage(recipeCommentList.getTotalPages())
-                .totalElements(recipeCommentList.getTotalElements())
-                .isFirst(recipeCommentList.isFirst())
-                .isLast(recipeCommentList.isLast())
-                .build();
+            .commentList(recipeCommentList.stream().map(RecipeCommentResponse::toResponse).toList())
+            .listSize(recipeCommentList.getNumberOfElements())
+            .totalPage(recipeCommentList.getTotalPages())
+            .totalElements(recipeCommentList.getTotalElements())
+            .isFirst(recipeCommentList.isFirst())
+            .isLast(recipeCommentList.isLast())
+            .build();
     }
 
 
@@ -79,35 +78,35 @@ public class RecipeCommentResponse {
 
         //부모 Comment가 null이면 0으로 설정, null이 아니면 부모 Comment의 id값으로 설정
         Long parentId = Optional.ofNullable(recipeComment.getParentComment())
-                .map(RecipeComment::getId)
-                .orElse(0L);
+            .map(RecipeComment::getId)
+            .orElse(0L);
 
         int childCommentCount = Optional.ofNullable(recipeComment.getChildCommentList())
-                .orElse(new ArrayList<>())
-                .size();
+            .orElse(new ArrayList<>())
+            .size();
 
         return RecipeCommentResponse.builder()
-                .id(recipeComment.getId())
-                .content(recipeComment.getContent())
-                .childCommentList(getList(recipeComment))
-                .member(MemberResponse.toMemberResult(recipeComment.getMember()))
-                .createdDate(recipeComment.getCreatedAt())
-                .updatedDate(recipeComment.getUpdatedAt())
-                .childCommentCount(childCommentCount)
-                .state(recipeComment.getState())
-                .build();
+            .id(recipeComment.getId())
+            .content(recipeComment.getContent())
+            .childCommentList(getList(recipeComment))
+            .member(MemberResponse.toMemberResult(recipeComment.getMember()))
+            .createdDate(recipeComment.getCreatedAt())
+            .updatedDate(recipeComment.getUpdatedAt())
+            .childCommentCount(childCommentCount)
+            .state(recipeComment.getState())
+            .build();
     }
 
     private static List<RecipeCommentResponse> getList(RecipeComment recipeComment) {
         return Optional.ofNullable(recipeComment.getChildCommentList())
 
-                //자식없을 때
-                .orElse(new ArrayList<>())
+            //자식없을 때
+            .orElse(new ArrayList<>())
 
-                //자식있을 때, 존재하는 것 만 반환
-                .stream()
-                .filter(comment -> comment.getState().equals(State.TRUE))
-                .map(RecipeCommentResponse::toResponse).toList();
+            //자식있을 때, 존재하는 것 만 반환
+            .stream()
+            .filter(comment -> comment.getState().equals(State.TRUE))
+            .map(RecipeCommentResponse::toResponse).toList();
     }
 
 }

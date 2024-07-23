@@ -9,9 +9,9 @@ public class RecipeImageRequest {
 
     public static RecipeImage toEntity(Recipe recipe, String imageUrl) {
         return RecipeImage.builder()
-                .recipe(recipe)
-                .imageUrl(imageUrl)
-                .build();
+            .recipe(recipe)
+            .imageUrl(imageUrl)
+            .build();
     }
 
 }

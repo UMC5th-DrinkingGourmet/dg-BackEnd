@@ -27,7 +27,8 @@ public class CombinationLikeQueryServiceImpl implements CombinationLikeQueryServ
     @Override
     public boolean isCombinationLike(Combination combination, Member member) {
 
-        return combinationLikeRepository.existsByCombinationAndMemberAndStateIsTrue(combination, member);
+        return combinationLikeRepository.existsByCombinationAndMemberAndStateIsTrue(combination,
+            member);
     }
 
     @Override

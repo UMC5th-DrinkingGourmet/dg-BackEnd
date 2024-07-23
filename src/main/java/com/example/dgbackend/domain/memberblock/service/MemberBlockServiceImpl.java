@@ -17,38 +17,39 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberBlockServiceImpl implements MemberBlockService {
 
-	private final MemberBlockRepository memberBlockRepository;
-	private final MemberRepository memberRepository;
+    private final MemberBlockRepository memberBlockRepository;
+    private final MemberRepository memberRepository;
 
-	@Transactional
-	public MemberBlockResult block(MemberBlockReq memberBlockReq, Member member) {
+    @Transactional
+    public MemberBlockResult block(MemberBlockReq memberBlockReq, Member member) {
 
-		Member blockedMember = memberRepository.findMemberById(memberBlockReq.getBlockedMemberId())
-			.orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+        Member blockedMember = memberRepository.findMemberById(memberBlockReq.getBlockedMemberId())
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
-		validateMemberBlock(blockedMember, member);
+        validateMemberBlock(blockedMember, member);
 
-		MemberBlock prevMemberBlock = memberBlockRepository.findMemberBlockByMemberAndBlockedMember(member, blockedMember);
+        MemberBlock prevMemberBlock = memberBlockRepository.findMemberBlockByMemberAndBlockedMember(
+            member, blockedMember);
 
-		duplicateMemberBlock(prevMemberBlock);
+        duplicateMemberBlock(prevMemberBlock);
 
-		MemberBlock memberBlock = MemberBlock.toEntity(blockedMember, member);
+        MemberBlock memberBlock = MemberBlock.toEntity(blockedMember, member);
 
-		memberBlockRepository.save(memberBlock);
+        memberBlockRepository.save(memberBlock);
 
-		return MemberBlockResponse.toMemberBlockResult(blockedMember, member);
-	}
+        return MemberBlockResponse.toMemberBlockResult(blockedMember, member);
+    }
 
-	private void duplicateMemberBlock(MemberBlock prevMemberBlock) {
-		if (prevMemberBlock != null) {
-			throw new ApiException(ErrorStatus._DUPLICATE_MEMBER_BLOCK);
-		}
-	}
+    private void duplicateMemberBlock(MemberBlock prevMemberBlock) {
+        if (prevMemberBlock != null) {
+            throw new ApiException(ErrorStatus._DUPLICATE_MEMBER_BLOCK);
+        }
+    }
 
-	private void validateMemberBlock(Member blockedMember, Member loginMember) {
-		if (blockedMember.getId().equals(loginMember.getId())) {
-			throw new ApiException(ErrorStatus._INVALID_MEMBER_BLOCK);
-		}
-	}
+    private void validateMemberBlock(Member blockedMember, Member loginMember) {
+        if (blockedMember.getId().equals(loginMember.getId())) {
+            throw new ApiException(ErrorStatus._INVALID_MEMBER_BLOCK);
+        }
+    }
 
 }

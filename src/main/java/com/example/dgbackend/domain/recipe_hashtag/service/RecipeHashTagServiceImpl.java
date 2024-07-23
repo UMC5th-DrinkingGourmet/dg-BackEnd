@@ -7,11 +7,10 @@ import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipe_hashtag.repository.RecipeHashTagRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -29,16 +28,17 @@ public class RecipeHashTagServiceImpl implements RecipeHashTagService {
         List<HashTag> hashTags = hashTagCommandService.getHashTags(hashTagName);
 
         return hashTags.stream().map(hashTag -> {
-                    RecipeHashTag recipeHashTag = RecipeHashTag.builder()
-                            .recipe(recipe)
-                            .hashtag(hashTag)
-                            .build();
+                RecipeHashTag recipeHashTag = RecipeHashTag.builder()
+                    .recipe(recipe)
+                    .hashtag(hashTag)
+                    .build();
 
-                    //있으면 그대로 반환, 없으면 저장 후 반환
-                    return recipeHashTagRepository.findByRecipe_IdAndHashtag_Id(recipe.getId(), hashTag.getId())
-                            .orElseGet(() -> recipeHashTagRepository.save(recipeHashTag));
-                })
-                .toList();
+                //있으면 그대로 반환, 없으면 저장 후 반환
+                return recipeHashTagRepository.findByRecipe_IdAndHashtag_Id(recipe.getId(),
+                        hashTag.getId())
+                    .orElseGet(() -> recipeHashTagRepository.save(recipeHashTag));
+            })
+            .toList();
     }
 
     @Override

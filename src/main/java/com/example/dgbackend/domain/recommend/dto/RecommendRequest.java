@@ -16,6 +16,7 @@ public class RecommendRequest {
     @NoArgsConstructor
     @Getter
     public static class RecommendRequestDTO {
+
         @NotNull
         private Integer desireLevel;    //취하고 싶은 정도
         @NotNull
@@ -30,6 +31,7 @@ public class RecommendRequest {
     @Builder
     @Getter
     public static class GPTMessage {
+
         private String role;
         private String content;
     }

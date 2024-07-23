@@ -7,14 +7,13 @@ import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -78,6 +77,7 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeResponseList {
+
         List<RecipeResponse> recipeList;
         Integer listSize;
         Integer totalPage;
@@ -86,34 +86,35 @@ public class RecipeResponse {
         Boolean isLast;
     }
 
-    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes, List<RecipeResponse> recipeResponses) {
+    public static RecipeResponseList toRecipeResponseList(Page<Recipe> recipes,
+        List<RecipeResponse> recipeResponses) {
         return RecipeResponseList.builder()
-                .recipeList(recipeResponses)
-                .listSize(recipeResponses.size())
-                .totalPage(recipes.getTotalPages())
-                .totalElements(recipes.getTotalElements())
-                .isFirst(recipes.isFirst())
-                .isLast(recipes.isLast())
-                .build();
+            .recipeList(recipeResponses)
+            .listSize(recipeResponses.size())
+            .totalPage(recipes.getTotalPages())
+            .totalElements(recipes.getTotalElements())
+            .isFirst(recipes.isFirst())
+            .isLast(recipes.isLast())
+            .build();
     }
 
     public static RecipeResponse toResponse(Recipe recipe, boolean isLike) {
         return RecipeResponse.builder()
-                .id(recipe.getId())
-                .title(recipe.getTitle())
-                .cookingTime(recipe.getCookingTime())
-                .calorie(recipe.getCalorie())
-                .likeCount(recipe.getLikeCount())
-                .commentCount(recipe.getCommentCount())
-                .ingredient(recipe.getIngredient())
-                .recipeInstruction(recipe.getRecipeInstruction())
-                .recommendCombination(recipe.getRecommendCombination())
-                .state(recipe.isState())
-                .member(MemberResponse.toMemberResult(recipe.getMember()))
-                .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
-                .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
-                .isLike(isLike)
-                .build();
+            .id(recipe.getId())
+            .title(recipe.getTitle())
+            .cookingTime(recipe.getCookingTime())
+            .calorie(recipe.getCalorie())
+            .likeCount(recipe.getLikeCount())
+            .commentCount(recipe.getCommentCount())
+            .ingredient(recipe.getIngredient())
+            .recipeInstruction(recipe.getRecipeInstruction())
+            .recommendCombination(recipe.getRecommendCombination())
+            .state(recipe.isState())
+            .member(MemberResponse.toMemberResult(recipe.getMember()))
+            .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
+            .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
+            .isLike(isLike)
+            .build();
     }
 
     @Builder
@@ -121,6 +122,7 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeMyPageList {
+
         List<RecipeMyPage> recipeList;
         Integer listSize;
         Integer totalPage;
@@ -134,6 +136,7 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeMyPage {
+
         private Long id;
         private String name;
         private String recipeImageUrl;
@@ -142,34 +145,34 @@ public class RecipeResponse {
     public static RecipeResponse.RecipeMyPageList toRecipeMyPageList(Page<Recipe> recipes) {
 
         List<RecipeResponse.RecipeMyPage> recipeMyPages = recipes.getContent()
-                .stream()
-                .map(rc -> toRecipeMyPage(rc))
-                .collect(Collectors.toList());
+            .stream()
+            .map(rc -> toRecipeMyPage(rc))
+            .collect(Collectors.toList());
 
         return RecipeResponse.RecipeMyPageList.builder()
-                .recipeList(recipeMyPages)
-                .listSize(recipeMyPages.size())
-                .totalPage(recipes.getTotalPages())
-                .totalElements(recipes.getTotalElements())
-                .isFirst(recipes.isFirst())
-                .isLast(recipes.isLast())
-                .build();
+            .recipeList(recipeMyPages)
+            .listSize(recipeMyPages.size())
+            .totalPage(recipes.getTotalPages())
+            .totalElements(recipes.getTotalElements())
+            .isFirst(recipes.isFirst())
+            .isLast(recipes.isLast())
+            .build();
     }
 
 
     public static RecipeMyPage toRecipeMyPage(Recipe recipe) {
         // TODO: 대표 이미지 정하기
         String imageUrl = recipe.getRecipeImageList()
-                .stream()
-                .findFirst()
-                .map(RecipeImage::getImageUrl)
-                .orElse(null);
+            .stream()
+            .findFirst()
+            .map(RecipeImage::getImageUrl)
+            .orElse(null);
 
         return RecipeMyPage.builder()
-                .id(recipe.getId())
-                .name(recipe.getTitle())
-                .recipeImageUrl(imageUrl)
-                .build();
+            .id(recipe.getId())
+            .name(recipe.getTitle())
+            .recipeImageUrl(imageUrl)
+            .build();
     }
 
     @Builder
@@ -177,6 +180,7 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeMain {
+
         private Long id;
         private String recipeName;
         private String cookingTime;
@@ -189,37 +193,38 @@ public class RecipeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecipeMainList {
+
         List<RecipeMain> recipeList;
     }
 
     public static RecipeMainList toRecipeMainList(List<Recipe> recipes, List<RecipeImage> imgList) {
 
         List<RecipeMain> recipeMains = recipes
-                .stream()
-                .map(rc -> toRecipeMain(rc, imgList))
-                .collect(Collectors.toList());
+            .stream()
+            .map(rc -> toRecipeMain(rc, imgList))
+            .collect(Collectors.toList());
 
         return RecipeResponse.RecipeMainList.builder()
-                .recipeList(recipeMains)
-                .build();
+            .recipeList(recipeMains)
+            .build();
     }
 
 
     public static RecipeMain toRecipeMain(Recipe recipe, List<RecipeImage> imgList) {
         // TODO: 대표 이미지 정하기
         String imageUrl = imgList.stream()
-                .filter(img -> img != null && img.getRecipe().getId().equals(recipe.getId()))
-                .findAny()  // 이미지 중 첫 번째 것만 가져옴
-                .map(img -> img.getImageUrl())
-                .orElse(null);  // 만약 이미지가 없다면 null 반환
+            .filter(img -> img != null && img.getRecipe().getId().equals(recipe.getId()))
+            .findAny()  // 이미지 중 첫 번째 것만 가져옴
+            .map(img -> img.getImageUrl())
+            .orElse(null);  // 만약 이미지가 없다면 null 반환
 
         return RecipeMain.builder()
-                .id(recipe.getId())
-                .recipeName(recipe.getTitle())
-                .cookingTime(recipe.getCookingTime())
-                .ingredient(recipe.getIngredient())
-                .recipeImageUrl(imageUrl)
-                .build();
+            .id(recipe.getId())
+            .recipeName(recipe.getTitle())
+            .cookingTime(recipe.getCookingTime())
+            .ingredient(recipe.getIngredient())
+            .recipeImageUrl(imageUrl)
+            .build();
     }
 
 }

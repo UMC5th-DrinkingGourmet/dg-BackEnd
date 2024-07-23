@@ -3,8 +3,6 @@ package com.example.dgbackend.domain.recipelike.service;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipelike.RecipeLike;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
-import com.example.dgbackend.domain.recipelike.dto.RecipeLikeVO;
-
 import java.util.Optional;
 
 public interface RecipeLikeService {

@@ -47,7 +47,8 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
     @Override
     public CombinationPreviewResultList getCombinationPreviewResultList(Integer page,
         Member loginMember) {
-        Page<Combination> combinations = combinationRepository.findAllByStateOrderByCreatedAtDesc(true,
+        Page<Combination> combinations = combinationRepository.findAllByStateOrderByCreatedAtDesc(
+            true,
             PageRequest.of(page, 10), loginMember.getId());
         List<Combination> combinationList = combinations.getContent();
 
@@ -73,7 +74,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         Combination combination = getCombination(combinationId);
 
         // 차단된 글인지 검증
-        isBlocked(combinationId,loginMember.getId());
+        isBlocked(combinationId, loginMember.getId());
 
         // CombinationLike
         boolean isCombinationLike = combinationLikeQueryService.isCombinationLike(combination,

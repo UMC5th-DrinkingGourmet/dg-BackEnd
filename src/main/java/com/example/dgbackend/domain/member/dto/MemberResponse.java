@@ -14,6 +14,7 @@ public class MemberResponse {
     @NoArgsConstructor
     @Getter
     public static class MemberResult {
+
         Long memberId;
         String nickName;
         String profileImageUrl;
@@ -21,10 +22,10 @@ public class MemberResponse {
 
     public static MemberResult toMemberResult(Member member) {
         return MemberResult.builder()
-                .memberId(member.getId())
-                .nickName(member.getNickName())
-                .profileImageUrl(member.getProfileImageUrl())
-                .build();
+            .memberId(member.getId())
+            .nickName(member.getNickName())
+            .profileImageUrl(member.getProfileImageUrl())
+            .build();
     }
 
     @Builder
@@ -32,6 +33,7 @@ public class MemberResponse {
     @NoArgsConstructor
     @Getter
     public static class GetMember {
+
         Long memberId;
         String name;
         String nickName;
@@ -44,15 +46,15 @@ public class MemberResponse {
 
     public static GetMember toGetMember(Member member) {
         return GetMember.builder()
-                .memberId(member.getId())
-                .name(member.getName())
-                .nickName(member.getNickName())
-                .gender(member.getGender())
-                .birthDate(member.getBirthDate())
-                .profileImageUrl(member.getProfileImageUrl())
-                .phoneNumber(member.getPhoneNumber())
-                .provider(member.getProvider())
-                .build();
+            .memberId(member.getId())
+            .name(member.getName())
+            .nickName(member.getNickName())
+            .gender(member.getGender())
+            .birthDate(member.getBirthDate())
+            .profileImageUrl(member.getProfileImageUrl())
+            .phoneNumber(member.getPhoneNumber())
+            .provider(member.getProvider())
+            .build();
     }
 
 
@@ -61,6 +63,7 @@ public class MemberResponse {
     @NoArgsConstructor
     @Getter
     public static class RecommendInfoDTO {
+
         // 주류 추천 정보 입력 DTO
         private String preferredAlcoholType;  //선호 주종
         private String preferredAlcoholDegree; // 선호 도수
@@ -70,10 +73,10 @@ public class MemberResponse {
 
     public static MemberResponse.RecommendInfoDTO toRecommendInfoDTO(Member member) {
         return MemberResponse.RecommendInfoDTO.builder()
-                .preferredAlcoholType(member.getPreferredAlcoholType())
-                .preferredAlcoholDegree(member.getPreferredAlcoholDegree())
-                .drinkingTimes(member.getDrinkingTimes())
-                .drinkingLimit(member.getDrinkingLimit())
-                .build();
+            .preferredAlcoholType(member.getPreferredAlcoholType())
+            .preferredAlcoholDegree(member.getPreferredAlcoholDegree())
+            .drinkingTimes(member.getDrinkingTimes())
+            .drinkingLimit(member.getDrinkingLimit())
+            .build();
     }
 }

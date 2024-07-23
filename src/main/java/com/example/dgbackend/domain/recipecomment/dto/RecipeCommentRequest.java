@@ -14,14 +14,15 @@ import lombok.RequiredArgsConstructor;
 
 public class RecipeCommentRequest {
 
-    public static RecipeComment toEntity(Member member, Recipe recipe, String comment, RecipeComment parentComment) {
+    public static RecipeComment toEntity(Member member, Recipe recipe, String comment,
+        RecipeComment parentComment) {
         return RecipeComment.builder()
-                .content(comment)
-                .state(State.TRUE)
-                .member(member)
-                .parentComment(parentComment)
-                .recipe(recipe)
-                .build();
+            .content(comment)
+            .state(State.TRUE)
+            .member(member)
+            .parentComment(parentComment)
+            .recipe(recipe)
+            .build();
     }
 
     @Getter

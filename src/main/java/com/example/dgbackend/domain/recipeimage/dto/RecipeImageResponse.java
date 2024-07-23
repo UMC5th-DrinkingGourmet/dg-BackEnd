@@ -3,12 +3,11 @@ package com.example.dgbackend.domain.recipeimage.dto;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -22,14 +21,14 @@ public class RecipeImageResponse {
 
     public static RecipeImageResponse toURLResponse(Recipe recipe) {
         return RecipeImageResponse.builder()
-                .imageUrlList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
-                .build();
+            .imageUrlList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
+            .build();
     }
 
     public static List<String> toStringResponse(List<RecipeImage> recipeList) {
         return recipeList.stream()
-                .map(RecipeImage::getImageUrl)
-                .toList();
+            .map(RecipeImage::getImageUrl)
+            .toList();
     }
 
 }

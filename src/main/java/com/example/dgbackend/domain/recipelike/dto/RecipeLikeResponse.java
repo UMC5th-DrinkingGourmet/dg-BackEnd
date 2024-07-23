@@ -18,14 +18,14 @@ public class RecipeLikeResponse {
 
     public static RecipeLikeResponse toResponseByState(boolean state) {
         return RecipeLikeResponse.builder()
-                .state(state)
-                .build();
+            .state(state)
+            .build();
     }
 
     public static RecipeLikeResponse toResponseByEntity(RecipeLike recipeLike) {
         return RecipeLikeResponse.builder()
-                .state(recipeLike.isState())
-                .build();
+            .state(recipeLike.isState())
+            .build();
     }
 
 }

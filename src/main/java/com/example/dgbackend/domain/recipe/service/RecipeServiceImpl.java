@@ -28,158 +28,158 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
 
-	private final RecipeRepository recipeRepository;
-	private final RecipeHashTagService recipeHashTagService;
-	private final RecipeLikeService recipeLikeService;
+    private final RecipeRepository recipeRepository;
+    private final RecipeHashTagService recipeHashTagService;
+    private final RecipeLikeService recipeLikeService;
 
-	@Override
-	public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
-		Pageable pageable = Pageable.ofSize(10).withPage(page);
+    @Override
+    public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
+        Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-		Page<Recipe> allByState = recipeRepository.findAllByStateOrderByCreatedAtDesc(true,
-			pageable, member.getId());
+        Page<Recipe> allByState = recipeRepository.findAllByStateOrderByCreatedAtDesc(true,
+            pageable, member.getId());
 
-		List<RecipeResponse> recipeResponseList = allByState.getContent().stream()
-			.map(recipe -> {
-				return getRecipeDetailResponse(recipe, member);
-			}).toList();
+        List<RecipeResponse> recipeResponseList = allByState.getContent().stream()
+            .map(recipe -> {
+                return getRecipeDetailResponse(recipe, member);
+            }).toList();
 
-		return RecipeResponse.toRecipeResponseList(allByState, recipeResponseList);
-	}
+        return RecipeResponse.toRecipeResponseList(allByState, recipeResponseList);
+    }
 
-	@Override
-	public RecipeResponse getRecipeDetail(Long id, Member member) {
-		Recipe recipe = getRecipe(id);
-		isBlocked(id, member.getId());
-		return getRecipeDetailResponse(recipe, member);
-	}
+    @Override
+    public RecipeResponse getRecipeDetail(Long id, Member member) {
+        Recipe recipe = getRecipe(id);
+        isBlocked(id, member.getId());
+        return getRecipeDetailResponse(recipe, member);
+    }
 
-	//like 상태를 추가 (좋아요 누른 상태인지 확인)
-	@Override
-	public RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member) {
+    //like 상태를 추가 (좋아요 누른 상태인지 확인)
+    @Override
+    public RecipeResponse getRecipeDetailResponse(Recipe recipes, Member member) {
 
-		boolean state = recipeLikeService.getRecipeLike(recipes.getId(), member).isState();
+        boolean state = recipeLikeService.getRecipeLike(recipes.getId(), member).isState();
 
-		return RecipeResponse.toResponse(recipes, state);
-	}
+        return RecipeResponse.toResponse(recipes, state);
+    }
 
-	@Override
-	@Transactional
-	public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member loginMember) {
+    @Override
+    @Transactional
+    public RecipeResponse createRecipe(RecipeRequest recipeRequest, Member loginMember) {
 
-		//레시피 저장
-		Recipe save = recipeRepository.save(RecipeRequest.toEntity(recipeRequest, loginMember));
+        //레시피 저장
+        Recipe save = recipeRepository.save(RecipeRequest.toEntity(recipeRequest, loginMember));
 
-		//해시태그 저장
-		List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(save,
-			recipeRequest.getHashTagNameList());
+        //해시태그 저장
+        List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(save,
+            recipeRequest.getHashTagNameList());
 
-		//레시피에 해시태그 저장
-		save.setHashTagList(hashTags);
+        //레시피에 해시태그 저장
+        save.setHashTagList(hashTags);
 
-		return getRecipeDetailResponse(save, loginMember);
-	}
+        return getRecipeDetailResponse(save, loginMember);
+    }
 
-	@Override
-	@Transactional
-	public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest, Member loginMember) {
-		Recipe recipe = getRecipe(id);
+    @Override
+    @Transactional
+    public RecipeResponse updateRecipe(Long id, RecipeRequest recipeRequest, Member loginMember) {
+        Recipe recipe = getRecipe(id);
 
-		if (isMatch(loginMember, recipe.getMember())) {
-			//해시태그 저장
-			List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(recipe,
-				recipeRequest.getHashTagNameList());
-			recipe.setHashTagList(hashTags);
-			return getRecipeDetailResponse(recipe.update(recipeRequest), recipe.getMember());
-		} else {
-			throw new ApiException(ErrorStatus._INVALID_MEMBER);
-		}
-	}
+        if (isMatch(loginMember, recipe.getMember())) {
+            //해시태그 저장
+            List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(recipe,
+                recipeRequest.getHashTagNameList());
+            recipe.setHashTagList(hashTags);
+            return getRecipeDetailResponse(recipe.update(recipeRequest), recipe.getMember());
+        } else {
+            throw new ApiException(ErrorStatus._INVALID_MEMBER);
+        }
+    }
 
-	@Override
-	@Transactional
-	public String deleteRecipe(Long id, Member loginMember) {
-		Recipe recipe = getRecipe(id);
+    @Override
+    @Transactional
+    public String deleteRecipe(Long id, Member loginMember) {
+        Recipe recipe = getRecipe(id);
 
-		if (isMatch(loginMember, recipe.getMember())) {
-			recipe.delete();
-			recipeHashTagService.deleteRecipeHashTag(id);
-			return "삭제 완료";
-		} else {
-			throw new ApiException(ErrorStatus._INVALID_MEMBER);
-		}
-	}
+        if (isMatch(loginMember, recipe.getMember())) {
+            recipe.delete();
+            recipeHashTagService.deleteRecipeHashTag(id);
+            return "삭제 완료";
+        } else {
+            throw new ApiException(ErrorStatus._INVALID_MEMBER);
+        }
+    }
 
-	//레시피 이름과 회원 이름으로 레시피 탐색
-	@Override
-	public Recipe getRecipe(Long id) {
+    //레시피 이름과 회원 이름으로 레시피 탐색
+    @Override
+    public Recipe getRecipe(Long id) {
 
-		Recipe recipe = recipeRepository.findById(id)
-			.orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
+        Recipe recipe = recipeRepository.findById(id)
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
-		return isDelete(recipe);
-	}
+        return isDelete(recipe);
+    }
 
-	//레시피가 삭제된 경우 예외처리
-	@Override
-	public Recipe isDelete(Recipe recipe) {
+    //레시피가 삭제된 경우 예외처리
+    @Override
+    public Recipe isDelete(Recipe recipe) {
 
-		if (!recipe.isState()) {
-			throw new ApiException(ErrorStatus._DELETE_RECIPE);
-		}
+        if (!recipe.isState()) {
+            throw new ApiException(ErrorStatus._DELETE_RECIPE);
+        }
 
-		return recipe;
-	}
+        return recipe;
+    }
 
-	@Override
-	public void isAlreadyCreate(String RecipeName, String memberName) {
+    @Override
+    public void isAlreadyCreate(String RecipeName, String memberName) {
 
-		recipeRepository.findAllByTitleAndMember_Name(RecipeName, memberName).stream()
-			.filter(Recipe::isState)
-			.findFirst()
-			.ifPresent(recipe -> {
-				throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
-			});
-	}
+        recipeRepository.findAllByTitleAndMember_Name(RecipeName, memberName).stream()
+            .filter(Recipe::isState)
+            .findFirst()
+            .ifPresent(recipe -> {
+                throw new ApiException(ErrorStatus._ALREADY_CREATE_RECIPE);
+            });
+    }
 
-	@Override
-	public RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword,
-		Member member) {
+    @Override
+    public RecipeResponse.RecipeResponseList findRecipesByKeyword(Integer page, String keyword,
+        Member member) {
 
-		Pageable pageable = Pageable.ofSize(10).withPage(page);
+        Pageable pageable = Pageable.ofSize(10).withPage(page);
 
-		Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
-			keyword, pageable,
-			member.getId());
+        Page<Recipe> recipesByKeyword = recipeRepository.findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
+            keyword, pageable,
+            member.getId());
 
-		List<RecipeResponse> recipeResponseList = recipesByKeyword.getContent().stream()
-			.map(recipe -> {
-				return getRecipeDetailResponse(recipe, member);
-			}).toList();
+        List<RecipeResponse> recipeResponseList = recipesByKeyword.getContent().stream()
+            .map(recipe -> {
+                return getRecipeDetailResponse(recipe, member);
+            }).toList();
 
-		return RecipeResponse.toRecipeResponseList(recipesByKeyword, recipeResponseList);
-	}
+        return RecipeResponse.toRecipeResponseList(recipesByKeyword, recipeResponseList);
+    }
 
-	@Override
-	public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
-		Integer page) {
-		Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(
-			member.getId(), PageRequest.of(page, 21));
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member member,
+        Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findAllByMemberIdAndStateIsTrueOrderByCreatedAtDesc(
+            member.getId(), PageRequest.of(page, 21));
 
-		return toRecipeMyPageList(recipePage);
-	}
+        return toRecipeMyPageList(recipePage);
+    }
 
-	@Override
-	public RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member,
-		Integer page) {
-		Page<Recipe> recipePage = recipeRepository.findRecipesByMemberIdAndStateIsTrue(
-			member.getId(), PageRequest.of(page, 21));
+    @Override
+    public RecipeResponse.RecipeMyPageList getRecipeLikeList(Member member,
+        Integer page) {
+        Page<Recipe> recipePage = recipeRepository.findRecipesByMemberIdAndStateIsTrue(
+            member.getId(), PageRequest.of(page, 21));
 
-		return toRecipeMyPageList(recipePage);
-	}
+        return toRecipeMyPageList(recipePage);
+    }
 
-	private void isBlocked(Long recipeId, Long memberId) {
-		Recipe blockedRecipe = recipeRepository.findByIdAndMemberAndStateIsTrue(recipeId, memberId)
-			.orElseThrow(() -> new ApiException(ErrorStatus._BLOCKED_MEMBER));
-	}
+    private void isBlocked(Long recipeId, Long memberId) {
+        Recipe blockedRecipe = recipeRepository.findByIdAndMemberAndStateIsTrue(recipeId, memberId)
+            .orElseThrow(() -> new ApiException(ErrorStatus._BLOCKED_MEMBER));
+    }
 }

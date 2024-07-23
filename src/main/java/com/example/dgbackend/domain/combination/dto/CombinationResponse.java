@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.transaction.annotation.Transactional;
 
 
 public class CombinationResponse {
@@ -108,6 +107,7 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationMyPageList {
+
         List<CombinationMyPage> combinationList;
         Integer listSize;
         Integer totalPage;
@@ -124,19 +124,19 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationMainList {
+
         List<CombinationMyPage> combinationList;
     }
 
     /**
-     * 내가 작성한 오늘의 조합
-     * 내가 좋아요한 오늘의 조합
-     * 메인 랜덤 5개 오늘의 조합
+     * 내가 작성한 오늘의 조합 내가 좋아요한 오늘의 조합 메인 랜덤 5개 오늘의 조합
      */
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class CombinationMyPage {
+
         Long combinationId;
         String title;
         String combinationImageUrl;
@@ -145,61 +145,63 @@ public class CombinationResponse {
     public static CombinationMyPageList toCombinationMyPageList(Page<Combination> combinations) {
 
         List<CombinationMyPage> combinationMyPages = combinations.getContent()
-                .stream()
-                .map(combo -> toCombinationMyPage(combo))
-                .collect(Collectors.toList());
+            .stream()
+            .map(combo -> toCombinationMyPage(combo))
+            .collect(Collectors.toList());
 
         return CombinationMyPageList.builder()
-                .combinationList(combinationMyPages)
-                .listSize(combinationMyPages.size())
-                .totalPage(combinations.getTotalPages())
-                .totalElements(combinations.getTotalElements())
-                .isFirst(combinations.isFirst())
-                .isLast(combinations.isLast())
-                .build();
+            .combinationList(combinationMyPages)
+            .listSize(combinationMyPages.size())
+            .totalPage(combinations.getTotalPages())
+            .totalElements(combinations.getTotalElements())
+            .isFirst(combinations.isFirst())
+            .isLast(combinations.isLast())
+            .build();
     }
 
-    public static CombinationMainList toCombinationMainList(List<Combination> combinations, List<CombinationImage> imgs) {
+    public static CombinationMainList toCombinationMainList(List<Combination> combinations,
+        List<CombinationImage> imgs) {
 
         List<CombinationMyPage> combinationMyPages = combinations
-                .stream()
-                .map(combo -> toCombinationMain(combo, imgs))
-                .collect(Collectors.toList());
+            .stream()
+            .map(combo -> toCombinationMain(combo, imgs))
+            .collect(Collectors.toList());
 
         return CombinationMainList.builder()
-                .combinationList(combinationMyPages)
-                .build();
+            .combinationList(combinationMyPages)
+            .build();
     }
 
     public static CombinationMyPage toCombinationMyPage(Combination combination) {
         // TODO: 대표 이미지 정하기
         String imageUrl = combination.getCombinationImages()
-                .stream()
-                .findFirst()
-                .map(CombinationImage::getImageUrl)
-                .orElse(null);
+            .stream()
+            .findFirst()
+            .map(CombinationImage::getImageUrl)
+            .orElse(null);
 
         return CombinationMyPage.builder()
-                .combinationId(combination.getId())
-                .title(combination.getTitle())
-                .combinationImageUrl(imageUrl)
-                .build();
+            .combinationId(combination.getId())
+            .title(combination.getTitle())
+            .combinationImageUrl(imageUrl)
+            .build();
     }
 
-    public static CombinationMyPage toCombinationMain(Combination combination, List<CombinationImage> imgList) {
+    public static CombinationMyPage toCombinationMain(Combination combination,
+        List<CombinationImage> imgList) {
         // TODO: 대표 이미지 정하기
 
         String imageUrl = imgList.stream()
-                .filter(img -> img != null && img.getCombination().getId().equals(combination.getId()))
-                .findAny()  // 이미지 중 첫 번째 것만 가져옴
-                .map(img -> img.getImageUrl())
-                .orElse(null);  // 만약 이미지가 없다면 null 반환
+            .filter(img -> img != null && img.getCombination().getId().equals(combination.getId()))
+            .findAny()  // 이미지 중 첫 번째 것만 가져옴
+            .map(img -> img.getImageUrl())
+            .orElse(null);  // 만약 이미지가 없다면 null 반환
 
         return CombinationMyPage.builder()
-                .combinationId(combination.getId())
-                .title(combination.getTitle())
-                .combinationImageUrl(imageUrl)
-                .build();
+            .combinationId(combination.getId())
+            .title(combination.getTitle())
+            .combinationImageUrl(imageUrl)
+            .build();
     }
 
 
@@ -329,6 +331,7 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationMainPreview {
+
         Long combinationId;
         String title;
         String combinationImageUrl;
@@ -343,45 +346,48 @@ public class CombinationResponse {
     @NoArgsConstructor
     @Getter
     public static class CombinationMainPreviewList {
+
         List<CombinationMainPreview> combinationList;
     }
 
-    public static CombinationMainPreviewList toCombinationMainPreviewList(List<Combination> combinations, List<CombinationImage> imgList, List<List<HashTagOption>> hashTagOptions) {
+    public static CombinationMainPreviewList toCombinationMainPreviewList(
+        List<Combination> combinations, List<CombinationImage> imgList,
+        List<List<HashTagOption>> hashTagOptions) {
 
         System.out.println("combinations = " + hashTagOptions);
 
         List<CombinationMainPreview> combinationMainPreviews = combinations
-                .stream()
-                .map(combo -> toCombinationMain(combo, imgList, hashTagOptions))
-                .collect(Collectors.toList());
+            .stream()
+            .map(combo -> toCombinationMain(combo, imgList, hashTagOptions))
+            .collect(Collectors.toList());
 
         return CombinationMainPreviewList.builder()
-                .combinationList(combinationMainPreviews)
-                .build();
+            .combinationList(combinationMainPreviews)
+            .build();
     }
 
-    public static CombinationMainPreview toCombinationMain(Combination combination, List<CombinationImage> imgList, List<List<HashTagOption>> hashTagOptions) {
+    public static CombinationMainPreview toCombinationMain(Combination combination,
+        List<CombinationImage> imgList, List<List<HashTagOption>> hashTagOptions) {
         // TODO: 대표 이미지 정하기
 
         String imageUrl = imgList.stream()
-                .filter(img -> img != null && img.getCombination().getId().equals(combination.getId()))
-                .findAny()  // 이미지 중 첫 번째 것만 가져옴
-                .map(img -> img.getImageUrl())
-                .orElse(null);  // 만약 이미지가 없다면 null 반환
-
+            .filter(img -> img != null && img.getCombination().getId().equals(combination.getId()))
+            .findAny()  // 이미지 중 첫 번째 것만 가져옴
+            .map(img -> img.getImageUrl())
+            .orElse(null);  // 만약 이미지가 없다면 null 반환
 
         List<String> hashTagList = hashTagOptions.stream()
-                .filter(htoList -> htoList.stream()
-                        .anyMatch(hto -> hto.getCombination().getId().equals(combination.getId())))
-                .flatMap(htoList -> htoList.stream()
-                        .map(hto -> hto.getHashTag().getName()))
-                .toList();
+            .filter(htoList -> htoList.stream()
+                .anyMatch(hto -> hto.getCombination().getId().equals(combination.getId())))
+            .flatMap(htoList -> htoList.stream()
+                .map(hto -> hto.getHashTag().getName()))
+            .toList();
 
         return CombinationMainPreview.builder()
-                .combinationId(combination.getId())
-                .title(combination.getTitle())
-                .combinationImageUrl(imageUrl)
-                .hashTagList(hashTagList)
-                .build();
+            .combinationId(combination.getId())
+            .title(combination.getTitle())
+            .combinationImageUrl(imageUrl)
+            .hashTagList(hashTagList)
+            .build();
     }
 }

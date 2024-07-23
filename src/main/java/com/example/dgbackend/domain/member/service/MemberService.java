@@ -15,12 +15,12 @@ public class MemberService {
 
     public Member findMemberByName(String name) {
         return memberRepository.findByName(name)
-                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
     }
 
     public Member findMemberById(Long id) {
         return memberRepository.findMemberById(id)
-                .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
     }
 
 }

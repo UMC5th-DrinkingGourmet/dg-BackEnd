@@ -2,12 +2,11 @@ package com.example.dgbackend.domain.recommend.dto;
 
 
 import com.example.dgbackend.domain.recommend.Recommend;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 public class RecommendResponse {
 
@@ -19,6 +18,7 @@ public class RecommendResponse {
     @NoArgsConstructor
     @Getter
     public static class RecommendResponseDTO {
+
         Long recommendID;           //추천 ID
         String foodName;            //음식 이름
         String drinkName;           //술 이름
@@ -29,6 +29,7 @@ public class RecommendResponse {
     @Builder
     @Getter
     public static class GPTResponse {
+
         private int index;
         private RecommendRequest.GPTMessage message;
     }
@@ -36,6 +37,7 @@ public class RecommendResponse {
     @Getter
     @Builder
     public static class RecommendListResult {
+
         List<RecommendResponseDTO> recommendResponseDTOList;
         Integer listSize;
         Integer totalPage;
@@ -46,11 +48,11 @@ public class RecommendResponse {
 
     public static RecommendResponseDTO toRecommendResult(Recommend recommend) {
         return RecommendResponseDTO.builder()
-                .recommendID(recommend.getId())
-                .foodName(recommend.getFoodName())
-                .drinkName(recommend.getDrinkName())
-                .recommendReason(recommend.getDrinkInfo())
-                .imageUrl(recommend.getImageUrl())
-                .build();
+            .recommendID(recommend.getId())
+            .foodName(recommend.getFoodName())
+            .drinkName(recommend.getDrinkName())
+            .recommendReason(recommend.getDrinkInfo())
+            .imageUrl(recommend.getImageUrl())
+            .build();
     }
 }

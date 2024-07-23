@@ -2,12 +2,11 @@ package com.example.dgbackend.domain.combinationimage.service;
 
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,10 +18,11 @@ public class CombinationImageQueryServiceImpl implements CombinationImageQuerySe
     @Override
     public List<String> getCombinationImageUrl(Long combinationId) {
 
-        List<CombinationImage> combinationImages = combinationImageRepository.findAllByCombinationId(combinationId);
+        List<CombinationImage> combinationImages = combinationImageRepository.findAllByCombinationId(
+            combinationId);
 
         return combinationImages.stream()
-                .map(CombinationImage::getImageUrl)
-                .collect(Collectors.toList());
+            .map(CombinationImage::getImageUrl)
+            .collect(Collectors.toList());
     }
 }

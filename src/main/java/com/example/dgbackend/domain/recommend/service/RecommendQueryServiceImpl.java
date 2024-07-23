@@ -25,23 +25,25 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     private final S3Service s3Service;
 
     @Override
-    public Recommend addRecommend(Member member, RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName, String drinkInfo, String imageUrl) {
+    public Recommend addRecommend(Member member,
+        RecommendRequest.RecommendRequestDTO recommendRequestDTO, String drinkName,
+        String drinkInfo, String imageUrl) {
         Recommend recommend = Recommend.builder()
-                .desireLevel(recommendRequestDTO.getDesireLevel())
-                .foodName(recommendRequestDTO.getFoodName())
-                .feeling(recommendRequestDTO.getFeeling())
-                .weather(recommendRequestDTO.getWeather())
-                .drinkName(drinkName)
-                .drinkInfo(drinkInfo)
-                .imageUrl(imageUrl)
-                .member(member)
+            .desireLevel(recommendRequestDTO.getDesireLevel())
+            .foodName(recommendRequestDTO.getFoodName())
+            .feeling(recommendRequestDTO.getFeeling())
+            .weather(recommendRequestDTO.getWeather())
+            .drinkName(drinkName)
+            .drinkInfo(drinkInfo)
+            .imageUrl(imageUrl)
+            .member(member)
 //                .deleted(false)
-                .build();
+            .build();
         recommendRepository.save(recommend);
 
         return recommend;
     }
-        
+
     @Override
     public RecommendResponse.RecommendResponseDTO getRecommendResult(Long recommendId) {
 
@@ -57,24 +59,26 @@ public class RecommendQueryServiceImpl implements RecommendQueryService {
     }
 
     @Override
-    public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page, Integer size) {
+    public RecommendResponse.RecommendListResult getRecommendListResult(Member member, Integer page,
+        Integer size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        Page<Recommend> pageList = recommendRepository.findAllByMemberIdOrderByCreatedAtDesc(member.getId(), pageable);
+        Page<Recommend> pageList = recommendRepository.findAllByMemberIdOrderByCreatedAtDesc(
+            member.getId(), pageable);
 
         return RecommendResponse.RecommendListResult.builder()
-                .recommendResponseDTOList(pageList.map(RecommendResponse::toRecommendResult).toList())
-                .listSize(pageList.getSize())
-                .totalPage(pageList.getTotalPages())
-                .totalElements(pageList.getTotalElements())
-                .isFirst(pageList.isFirst())
-                .isLast(pageList.isLast())
-                .build();
+            .recommendResponseDTOList(pageList.map(RecommendResponse::toRecommendResult).toList())
+            .listSize(pageList.getSize())
+            .totalPage(pageList.getTotalPages())
+            .totalElements(pageList.getTotalElements())
+            .isFirst(pageList.isFirst())
+            .isLast(pageList.isLast())
+            .build();
     }
 
     @Override
     public RecommendResponse.RecommendResponseDTO deleteRecommend(Long recommendId) {
         Recommend recommend = recommendRepository.findById(recommendId).orElseThrow(
-                () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
+            () -> new ApiException(ErrorStatus._RECOMMEND_NOT_FOUND)
         );
 
         s3Service.deleteFile(recommend.getImageUrl());

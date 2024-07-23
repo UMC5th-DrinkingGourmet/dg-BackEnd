@@ -21,7 +21,8 @@ public class CombinationRequest {
         List<String> combinationImageList;
     }
 
-    public static Combination createCombination(Member member, String title, String content, String... imageUrls) {
+    public static Combination createCombination(Member member, String title, String content,
+        String... imageUrls) {
         Combination combination = Combination.builder()
             .member(member)
             .title(title)

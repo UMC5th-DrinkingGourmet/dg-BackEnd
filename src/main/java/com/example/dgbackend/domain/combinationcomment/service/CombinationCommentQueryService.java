@@ -7,12 +7,12 @@ import com.example.dgbackend.domain.member.Member;
 
 public interface CombinationCommentQueryService {
 
-	CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page,
-		Member loginMember);
+    CommentPreViewResult getCommentsFromCombination(Long combinationId, Integer page,
+        Member loginMember);
 
-	CombinationComment getParentComment(Long parentId);
+    CombinationComment getParentComment(Long parentId);
 
-	CombinationComment getComment(Long commentId);
+    CombinationComment getComment(Long commentId);
 
-	CombinationComment isDelete(CombinationComment comment);
+    CombinationComment isDelete(CombinationComment comment);
 }

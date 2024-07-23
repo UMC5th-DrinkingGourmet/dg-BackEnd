@@ -6,6 +6,6 @@ import com.example.dgbackend.domain.memberblock.dto.MemberBlockResponse.MemberBl
 
 public interface MemberBlockService {
 
-	MemberBlockResult block(MemberBlockReq memberBlockReq, Member member);
+    MemberBlockResult block(MemberBlockReq memberBlockReq, Member member);
 
 }

@@ -27,41 +27,41 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Report {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull
-	private Long resourceId; //신고 대상 id
+    @NotNull
+    private Long resourceId; //신고 대상 id
 
-	@NotNull
-	private String content; // 신고 내용
+    @NotNull
+    private String content; // 신고 내용
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private ReportTarget reportTarget; // 신고 대상 type
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ReportTarget reportTarget; // 신고 대상 type
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private ReportReason reportReason; // 신고 사유
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ReportReason reportReason; // 신고 사유
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-	@NotNull
-	private String reportContent; // 신고 대상 내용
+    @NotNull
+    private String reportContent; // 신고 대상 내용
 
 
-	public static Report toEntity(ReportReq reportReq, Member member) {
-		return Report.builder()
-			.resourceId(reportReq.getResourceId())
-			.content(reportReq.getContent())
-			.reportTarget(reportReq.getReportTarget())
-			.reportReason(reportReq.getReportReason())
-			.reportContent(reportReq.getReportContent())
-			.member(member)
-			.build();
-	}
+    public static Report toEntity(ReportReq reportReq, Member member) {
+        return Report.builder()
+            .resourceId(reportReq.getResourceId())
+            .content(reportReq.getContent())
+            .reportTarget(reportReq.getReportTarget())
+            .reportReason(reportReq.getReportReason())
+            .reportContent(reportReq.getReportContent())
+            .member(member)
+            .build();
+    }
 
 }

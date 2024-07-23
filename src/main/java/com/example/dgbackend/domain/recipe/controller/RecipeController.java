@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeServiceImpl recipeServiceImpl;
-    private final RecipeScheduler recipeScheduler;
+	private final RecipeServiceImpl recipeServiceImpl;
+	private final RecipeScheduler recipeScheduler;
 
     @Operation(summary = "모든 레시피북 조회", description = "삭제되지 않은 레시피북 목록을 조회합니다.")
     @Parameter(name = "page", description = "페이지 번호, Query Param 입니다.", required = true, example = "0", in = ParameterIn.QUERY)

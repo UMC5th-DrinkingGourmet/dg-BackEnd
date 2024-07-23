@@ -30,6 +30,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Page<Combination> findCombinationsByMemberIdAndStateIsTrue(Long memberId,
         PageRequest pageRequest);
 
+
     @Query("SELECT c FROM Combination c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.title LIKE %:keyword% AND c.state = true ORDER BY c.createdAt DESC")
     Page<Combination> findCombinationsByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
         String keyword, PageRequest pageRequest, Long memberId);

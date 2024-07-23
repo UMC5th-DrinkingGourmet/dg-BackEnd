@@ -13,7 +13,6 @@ import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentReq
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
 import com.example.dgbackend.domain.member.Member;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

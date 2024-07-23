@@ -8,10 +8,10 @@ public class RecipeLikeRequest {
 
     public static RecipeLike toEntity(Recipe recipe, Member member) {
         return RecipeLike.builder()
-                .recipe(recipe)
-                .member(member)
-                .state(true)
-                .build();
+            .recipe(recipe)
+            .member(member)
+            .state(true)
+            .build();
     }
 
 }

@@ -1,5 +1,8 @@
 package com.example.dgbackend.domain.combination.service;
 
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMainList;
+import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMainPreviewList;
+
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
@@ -7,6 +10,10 @@ import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.combinationimage.repository.CombinationImageRepository;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -14,19 +21,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMainList;
-import static com.example.dgbackend.domain.combination.dto.CombinationResponse.toCombinationMainPreviewList;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class CombinationScheduler {
+
     private final ReentrantLock combinationsLock = new ReentrantLock();
     private final CombinationRepository combinationRepository;
     private final CombinationImageRepository combinationImageRepository;
@@ -41,8 +41,9 @@ public class CombinationScheduler {
     @Transactional
     List<Combination> get3TopCombinations() {
         List<Combination> combos = new ArrayList<>();
-        combinationRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20)).forEach(combos::add);
-      // 리스트가 3개보다 작을 경우, 전체 리스트를 반환
+        combinationRepository.findAllByStateIsTrueOrderByLikeCountDesc(PageRequest.of(0, 20))
+            .forEach(combos::add);
+        // 리스트가 3개보다 작을 경우, 전체 리스트를 반환
         if (combos.size() <= 3) {
             return combos;
         } else {
@@ -55,7 +56,8 @@ public class CombinationScheduler {
     @Transactional
     List<Combination> getWeeklyCombinations() {
         List<Combination> weeklyCombos = new ArrayList<>();
-        combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue().forEach(weeklyCombos::add);
+        combinationRepository.findCombinationsByLikeCountGreaterThanEqualAndStateIsTrue()
+            .forEach(weeklyCombos::add);
 
         return weeklyCombos;
     }
@@ -123,16 +125,15 @@ public class CombinationScheduler {
 
         // 이미지와 해시태그 옵션 리스트 가져오기
         List<CombinationImage> combinationImages = combinations.stream()
-                .map(combination -> combinationImageRepository.findAllByCombination(combination)
-                        .stream()
-                        .findFirst() // 이미지 중 첫 번째 것만 가져옴
-                        .orElse(null))  // 만약 이미지가 없다면 null 반환
-                .toList();
-
+            .map(combination -> combinationImageRepository.findAllByCombination(combination)
+                .stream()
+                .findFirst() // 이미지 중 첫 번째 것만 가져옴
+                .orElse(null))  // 만약 이미지가 없다면 null 반환
+            .toList();
 
         List<List<HashTagOption>> hashTagOptionList = combinations.stream()
-                .map(hashTagOptionRepository::findAllByCombinationWithFetch)
-                .toList();
+            .map(hashTagOptionRepository::findAllByCombinationWithFetch)
+            .toList();
 
         return toCombinationMainPreviewList(combinations, combinationImages, hashTagOptionList);
     }
@@ -144,11 +145,11 @@ public class CombinationScheduler {
 
         // 이미지와 해시태그 옵션 리스트 가져오기
         List<CombinationImage> combinationImages = combinations.stream()
-                .map(combination -> combinationImageRepository.findAllByCombination(combination)
-                        .stream()
-                        .findFirst() // 이미지 중 첫 번째 것만 가져옴
-                        .orElse(null))  // 만약 이미지가 없다면 null 반환
-                .toList();
+            .map(combination -> combinationImageRepository.findAllByCombination(combination)
+                .stream()
+                .findFirst() // 이미지 중 첫 번째 것만 가져옴
+                .orElse(null))  // 만약 이미지가 없다면 null 반환
+            .toList();
 
         return toCombinationMainList(combinations, combinationImages);
     }

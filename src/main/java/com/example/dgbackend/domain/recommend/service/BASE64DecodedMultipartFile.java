@@ -1,10 +1,9 @@
 package com.example.dgbackend.domain.recommend.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.springframework.web.multipart.MultipartFile;
 
 /*
  * BASE64DecodedMultipartFile.java
@@ -12,6 +11,7 @@ import java.io.InputStream;
  * S3에 이미지를 업로드하기 위해 사용
  */
 public class BASE64DecodedMultipartFile implements MultipartFile {
+
     private final byte[] imgContent;            // 이미지를 담을 바이트 배열(Based64로 인코딩된 이미지)
     private final String contentType;           // 이미지 타입 (예: "image/jpeg")
     private final String fileName;              // 파일명

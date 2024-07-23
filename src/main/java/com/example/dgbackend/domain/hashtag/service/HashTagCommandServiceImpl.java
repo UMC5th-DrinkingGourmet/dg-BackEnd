@@ -5,14 +5,11 @@ import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.hashtag.repository.HashTagRepository;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.hashtagoption.repository.HashTagOptionRepository;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -29,9 +26,9 @@ public class HashTagCommandServiceImpl implements HashTagCommandService {
 
         hashTags.forEach(hashTag -> {
             HashTagOption hashTagOption = HashTagOption.builder()
-                    .hashTag(hashTag)
-                    .combination(combination)
-                    .build();
+                .hashTag(hashTag)
+                .combination(combination)
+                .build();
 
             hashTagOptionRepository.save(hashTagOption);
         });
@@ -41,10 +38,10 @@ public class HashTagCommandServiceImpl implements HashTagCommandService {
     public List<HashTag> getHashTags(List<String> hashTageNames) {
 
         List<HashTag> hashTags = hashTageNames.stream()
-                .map(ht->{
-                    return hashTagRepository.save(getOrCreateHashTag(ht));
-                })
-                .toList();
+            .map(ht -> {
+                return hashTagRepository.save(getOrCreateHashTag(ht));
+            })
+            .toList();
 
         return hashTags;
     }
@@ -53,7 +50,7 @@ public class HashTagCommandServiceImpl implements HashTagCommandService {
         Optional<HashTag> optionalHashTag = hashTagRepository.findByName(hashTagName);
 
         return optionalHashTag.orElseGet(() -> HashTag.builder()
-                .name(hashTagName)
-                .build());
+            .name(hashTagName)
+            .build());
     }
 }

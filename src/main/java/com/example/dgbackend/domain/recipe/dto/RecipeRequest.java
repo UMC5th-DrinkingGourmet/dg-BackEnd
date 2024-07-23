@@ -4,12 +4,11 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -45,16 +44,16 @@ public class RecipeRequest {
 
     public static Recipe toEntity(RecipeRequest recipeRequest, Member member) {
         return Recipe.builder()
-                .title(recipeRequest.getTitle())
-                .cookingTime(recipeRequest.getCookingTime())
-                .calorie(recipeRequest.getCalorie())
-                .likeCount(0L)
-                .commentCount(0L)
-                .ingredient(recipeRequest.getIngredient())
-                .recipeInstruction(recipeRequest.getRecipeInstruction())
-                .recommendCombination(recipeRequest.getRecommendCombination())
-                .member(member)
-                .build();
+            .title(recipeRequest.getTitle())
+            .cookingTime(recipeRequest.getCookingTime())
+            .calorie(recipeRequest.getCalorie())
+            .likeCount(0L)
+            .commentCount(0L)
+            .ingredient(recipeRequest.getIngredient())
+            .recipeInstruction(recipeRequest.getRecipeInstruction())
+            .recommendCombination(recipeRequest.getRecommendCombination())
+            .member(member)
+            .build();
     }
 
 }

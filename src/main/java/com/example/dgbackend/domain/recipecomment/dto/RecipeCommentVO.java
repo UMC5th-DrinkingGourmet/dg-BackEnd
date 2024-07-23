@@ -18,13 +18,14 @@ public class RecipeCommentVO {
     private Long parentId;
 
 
-    public static RecipeCommentVO of(RecipeCommentRequest.Post recipeCommentRequest, Long recipeId, String memberName) {
+    public static RecipeCommentVO of(RecipeCommentRequest.Post recipeCommentRequest, Long recipeId,
+        String memberName) {
         return RecipeCommentVO.builder()
-                .memberName(memberName)
-                .recipeId(recipeId)
-                .content(recipeCommentRequest.getContent())
-                .parentId(recipeCommentRequest.getParentId())
-                .build();
+            .memberName(memberName)
+            .recipeId(recipeId)
+            .content(recipeCommentRequest.getContent())
+            .parentId(recipeCommentRequest.getParentId())
+            .build();
     }
 
 }

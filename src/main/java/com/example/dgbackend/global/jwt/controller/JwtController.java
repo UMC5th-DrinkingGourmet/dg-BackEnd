@@ -33,27 +33,37 @@ public class JwtController {
         return authService.reIssueAccessToken(request);
     }
 
+    @Operation(summary = "카카오 소셜 로그인")
     @PostMapping("/kakao")
-    public ApiResponse<AuthResponse> kakaoLoign(@RequestBody AuthRequest authRequest,
+    public ApiResponse<AuthResponse.AuthResult> kakaoLoign(@RequestBody AuthRequest.AuthDTO authRequest,
         HttpServletResponse response) throws IOException {
         return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
     }
 
+    @Operation(summary = "애플 소셜 로그인")
     @PostMapping("/apple")
-    public ApiResponse<AuthResponse> appleLoign(@RequestBody AuthRequest authRequest,
+    public ApiResponse<AuthResponse.AuthResult> appleLoign(@RequestBody AuthRequest.AuthDTO authRequest,
         HttpServletResponse response) throws IOException {
         return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
     }
 
+    @Operation(summary = "네이버 소셜 로그인")
     @PostMapping("/naver")
-    public ApiResponse<AuthResponse> naverLoign(@RequestBody AuthRequest authRequest,
+    public ApiResponse<AuthResponse.AuthResult> naverLoign(@RequestBody AuthRequest.AuthDTO authRequest,
         HttpServletResponse response) throws IOException {
         return ApiResponse.onSuccess(authService.loginOrJoin(response, authRequest));
     }
 
+    @Operation(summary = "로그아웃")
     @PatchMapping("/logout")
     public ApiResponse<String> logout(HttpServletResponse response,
                                                 HttpServletRequest request) throws IOException {
         return ApiResponse.onSuccess(authService.logout(request, response));
+    }
+
+    @Operation(summary = "새 유저/기존 유저 구분")
+    @PostMapping("/user-division")
+    public ApiResponse<AuthResponse.IsSignedUpResult> userDivision(@RequestBody AuthRequest.SignedUpDTO authRequest) throws IOException {
+        return ApiResponse.onSuccess(authService.isSignedUp(authRequest));
     }
 }

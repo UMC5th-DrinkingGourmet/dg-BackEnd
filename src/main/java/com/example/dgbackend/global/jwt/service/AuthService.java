@@ -37,7 +37,7 @@ public class AuthService {
     /**
      * 회원가입 및 로그인 진행
      */
-    public AuthResponse loginOrJoin(HttpServletResponse response, AuthRequest authRequest)
+    public AuthResponse.AuthResult loginOrJoin(HttpServletResponse response, AuthRequest.AuthDTO authRequest)
         throws IOException {
 
         String id = authRequest.getProvider() + "_" + authRequest.getProviderId();
@@ -75,7 +75,7 @@ public class AuthService {
         registerHeaderToken(response, id, "Authorization");
         registerHeaderToken(response, id, "RefreshToken");
 
-        return AuthResponse.toAuthResponse(authRequest.getProvider(), authRequest.getNickName(),isNewMember,
+        return AuthResponse.toAuthResult(authRequest.getProvider(), authRequest.getNickName(),isNewMember,
             memberId);
 
     }
@@ -165,5 +165,17 @@ public class AuthService {
             "============================================= Access Token 재발급 : " + newAcessToken);
 
         return ResponseEntity.ok().headers(httpHeaders).build();
+    }
+
+    /**
+     * 새 유저/기존 유저 구분
+     */
+    public AuthResponse.IsSignedUpResult isSignedUp(AuthRequest.SignedUpDTO authRequest) {
+        Boolean isSigned = false;
+
+        //Member Repository에서 있는지 검사
+        isSigned = memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(), authRequest.getProviderId());
+
+        return AuthResponse.toIsSignedUpResult(isSigned);
     }
 }

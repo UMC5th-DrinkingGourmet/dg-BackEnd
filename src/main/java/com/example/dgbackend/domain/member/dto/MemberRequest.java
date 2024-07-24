@@ -40,7 +40,7 @@ public class MemberRequest {
         private Gender gender;
     }
 
-    public static Member toEntity(AuthRequest authRequest) {
+    public static Member toEntity(AuthRequest.AuthDTO authRequest) {
         return Member.builder()
             .name(authRequest.getName())
             .nickName(authRequest.getNickName())

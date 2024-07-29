@@ -7,6 +7,9 @@ import com.example.dgbackend.domain.termagree.dto.TermResponseDTO.TermAgreeRespo
 import com.example.dgbackend.domain.termagree.dto.TermResponseDTO.TermDisagreeResponseDTO;
 
 public interface TermAgreeCommandService {
+
     TermAgreeResponseDTO termAgree(Member member, TermAgreeRequestDTO termAgreeRequestDTO);
-    TermDisagreeResponseDTO termDisagree(Member member, TermDisagreeRequestDTO termDisagreeRequestDTO);
+
+    TermDisagreeResponseDTO termDisagree(Member member,
+        TermDisagreeRequestDTO termDisagreeRequestDTO);
 }

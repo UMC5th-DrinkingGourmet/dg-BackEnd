@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 public class TermResponseDTO {
+
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TermAgreeResponseDTO {
+
         private Long memberID;
         private List<TermType> termList;
     }
@@ -23,6 +25,7 @@ public class TermResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TermDisagreeResponseDTO {
+
         private Long memberID;
         private List<TermType> termList;
     }
@@ -32,6 +35,7 @@ public class TermResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberTermAgreeResponseDTO {
+
         private Long memberID;
         private List<TermType> termList;
     }

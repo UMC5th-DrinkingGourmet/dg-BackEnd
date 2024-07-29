@@ -20,12 +20,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
+
     private final TermAgreeRepository termAgreeRepository;
     private final TermRepository termRepository;
 
     @Override
     public TermAgreeResponseDTO termAgree(Member member, TermAgreeRequestDTO termAgreeRequestDTO) {
-        List<Term> termList = termAgreeRequestDTO.getTermList().stream().map(termRepository::findByTermType).toList();
+        List<Term> termList = termAgreeRequestDTO.getTermList().stream()
+            .map(termRepository::findByTermType).toList();
 
         List<Term> alreadyAgreedTermList = new ArrayList<>();
         List<TermAgree> memberTermAgreeList = termAgreeRepository.findAllByMemberId(member.getId());
@@ -35,8 +37,9 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
 
         List<TermType> savedList = new ArrayList<>();
         for (Term term : termList) {
-            if(alreadyAgreedTermList.contains(term))
+            if (alreadyAgreedTermList.contains(term)) {
                 continue;
+            }
 
             savedList.add(term.getTermType());
             termAgreeRepository.save(termAgreeRepository.save(
@@ -55,9 +58,11 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
     @Override
     public TermDisagreeResponseDTO termDisagree(Member member,
         TermDisagreeRequestDTO termDisagreeRequestDTO) {
-        List<Term> deleteList = termDisagreeRequestDTO.getTermList().stream().map(termRepository::findByTermType).toList();
+        List<Term> deleteList = termDisagreeRequestDTO.getTermList().stream()
+            .map(termRepository::findByTermType).toList();
 
-        List<TermAgree> alreadyAgreedTermList = termAgreeRepository.findAllByMemberId(member.getId());
+        List<TermAgree> alreadyAgreedTermList = termAgreeRepository.findAllByMemberId(
+            member.getId());
         if (alreadyAgreedTermList == null) {
             return TermDisagreeResponseDTO.builder()
                 .memberID(member.getId())
@@ -66,9 +71,10 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
         }
 
         List<TermType> savedList = new ArrayList<>();
-        for (TermAgree termAgree : alreadyAgreedTermList){
-            if(!deleteList.contains(termAgree.getTerm()))
+        for (TermAgree termAgree : alreadyAgreedTermList) {
+            if (!deleteList.contains(termAgree.getTerm())) {
                 continue;
+            }
 
             savedList.add(termAgree.getTerm().getTermType());
             termAgreeRepository.delete(termAgree);

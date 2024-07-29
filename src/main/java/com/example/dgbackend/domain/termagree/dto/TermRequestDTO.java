@@ -14,6 +14,7 @@ public class TermRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TermAgreeRequestDTO {
+
         private List<TermType> termList;
     }
 
@@ -22,6 +23,7 @@ public class TermRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TermDisagreeRequestDTO {
+
         private List<TermType> termList;
     }
 

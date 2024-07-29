@@ -26,17 +26,22 @@ public class TermAgreeController {
     private final TermAgreeQueryService termAgreeQueryService;
 
     @PostMapping("/agree")
-    public ApiResponse<TermAgreeResponseDTO> termAgree(@MemberObject Member member, @RequestBody TermAgreeRequestDTO termAgreeRequestDTO){
-        return ApiResponse.onSuccess(termAgreeCommandService.termAgree(member, termAgreeRequestDTO));
+    public ApiResponse<TermAgreeResponseDTO> termAgree(@MemberObject Member member,
+        @RequestBody TermAgreeRequestDTO termAgreeRequestDTO) {
+        return ApiResponse.onSuccess(
+            termAgreeCommandService.termAgree(member, termAgreeRequestDTO));
     }
 
     @PostMapping("/disagree")
-    public ApiResponse<TermDisagreeResponseDTO> termDisagree(@MemberObject Member member, @RequestBody TermDisagreeRequestDTO termDisagreeRequestDTO){
-        return ApiResponse.onSuccess(termAgreeCommandService.termDisagree(member, termDisagreeRequestDTO));
+    public ApiResponse<TermDisagreeResponseDTO> termDisagree(@MemberObject Member member,
+        @RequestBody TermDisagreeRequestDTO termDisagreeRequestDTO) {
+        return ApiResponse.onSuccess(
+            termAgreeCommandService.termDisagree(member, termDisagreeRequestDTO));
     }
 
     @GetMapping("/list")
-    public ApiResponse<MemberTermAgreeResponseDTO> getMemberTermAgreeList(@MemberObject Member member){
+    public ApiResponse<MemberTermAgreeResponseDTO> getMemberTermAgreeList(
+        @MemberObject Member member) {
         return ApiResponse.onSuccess(termAgreeQueryService.getMemberTermAgree(member));
     }
 

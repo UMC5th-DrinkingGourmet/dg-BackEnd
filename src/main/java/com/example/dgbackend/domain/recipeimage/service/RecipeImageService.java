@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recipeimage.service;
 
 import com.example.dgbackend.domain.recipe.Recipe;
+import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipe.service.RecipeService;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageRequest;
@@ -24,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecipeImageService {
 
     private final RecipeImageRepository recipeImageRepository;
-    private final RecipeService recipeService;
+    private final RecipeRepository recipeRepository;
 
     private final S3Service s3Service;
 
@@ -36,7 +37,8 @@ public class RecipeImageService {
 
     @Transactional
     public RecipeImageResponse createRecipeImage(RecipeImageVO.FileVO request) {
-        Recipe recipe = recipeService.getRecipe(request.getRecipeId());
+        Recipe recipe = recipeRepository.findById(request.getRecipeId())
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         //파일 없을 시 예외처리
         List<MultipartFile> multipartFiles = validFileList(request.getFileList());
@@ -69,7 +71,8 @@ public class RecipeImageService {
 
     @Transactional
     public RecipeImageResponse updateRecipeImage(RecipeImageVO.FileVO request) {
-        Recipe recipe = recipeService.getRecipe(request.getRecipeId());
+        Recipe recipe = recipeRepository.findById(request.getRecipeId())
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
 
         //새로운 이미지 업로드
         if (request.getFileList() != null && !request.getFileList().isEmpty()) {
@@ -96,8 +99,9 @@ public class RecipeImageService {
     public void deleteRecipeImage(String imageUrl) {
         recipeImageRepository.findByImageUrl(imageUrl)
             .ifPresentOrElse(recipeImageEntity -> {
-                    recipeImageRepository.delete(recipeImageEntity);
                     s3Service.deleteFile(recipeImageEntity.getImageUrl());
+                    recipeImageRepository.delete(recipeImageEntity);
+                    ;
                 },
                 () -> {
                     throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);

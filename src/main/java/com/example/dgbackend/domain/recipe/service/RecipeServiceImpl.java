@@ -107,15 +107,15 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (isMatch(loginMember, recipe.getMember())) {
             deleteRecipeWithRelations(recipe);
-            //hard delete 수정 필요
-            recipe.delete();
+            //hard delete
+            recipeRepository.delete(recipe);
             return "삭제 완료";
         } else {
             throw new ApiException(ErrorStatus._INVALID_MEMBER);
         }
     }
 
-    //레시피 이름과 회원 이름으로 레시피 탐색
+    //레시피 id로 레시피 탐색
     @Override
     public Recipe getRecipe(Long id) {
 

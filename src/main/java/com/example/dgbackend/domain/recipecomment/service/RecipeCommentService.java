@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.recipecomment.service;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
@@ -23,4 +24,6 @@ public interface RecipeCommentService {
         Member loginMember);
 
     RecipeCommentResponse deleteRecipeComment(Long recipeCommentId, Member loginMember);
+
+    void deleteAllRecipeComment(Recipe recipe);
 }

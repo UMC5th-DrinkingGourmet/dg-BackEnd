@@ -10,6 +10,8 @@ import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipe_hashtag.RecipeHashTag;
 import com.example.dgbackend.domain.recipe_hashtag.service.RecipeHashTagService;
+import com.example.dgbackend.domain.recipecomment.service.RecipeCommentService;
+import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -31,6 +33,8 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeHashTagService recipeHashTagService;
     private final RecipeLikeService recipeLikeService;
+    private final RecipeImageService recipeImageService;
+    private final RecipeCommentService recipeCommentService;
 
     @Override
     public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
@@ -102,15 +106,16 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = getRecipe(id);
 
         if (isMatch(loginMember, recipe.getMember())) {
-            recipe.delete();
-            recipeHashTagService.deleteRecipeHashTag(id);
+            deleteRecipeWithRelations(recipe);
+            //hard delete
+            recipeRepository.delete(recipe);
             return "삭제 완료";
         } else {
             throw new ApiException(ErrorStatus._INVALID_MEMBER);
         }
     }
 
-    //레시피 이름과 회원 이름으로 레시피 탐색
+    //레시피 id로 레시피 탐색
     @Override
     public Recipe getRecipe(Long id) {
 
@@ -181,5 +186,13 @@ public class RecipeServiceImpl implements RecipeService {
     private void isBlocked(Long recipeId, Long memberId) {
         Recipe blockedRecipe = recipeRepository.findByIdAndMemberAndStateIsTrue(recipeId, memberId)
             .orElseThrow(() -> new ApiException(ErrorStatus._BLOCKED_MEMBER));
+    }
+
+    @Override
+    public void deleteRecipeWithRelations(Recipe recipe) {
+        recipeImageService.deleteRecipeImage(recipe);
+        recipeLikeService.deleteAllRecipeLike(recipe.getId());
+        recipeCommentService.deleteAllRecipeComment(recipe);
+        recipeHashTagService.deleteAllRecipeHashTag(recipe);
     }
 }

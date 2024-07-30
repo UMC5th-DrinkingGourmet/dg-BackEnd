@@ -46,4 +46,11 @@ public class RecipeHashTagServiceImpl implements RecipeHashTagService {
         recipeHashTagRepository.deleteByRecipe_Id(recipeId);
     }
 
+    @Override
+    @Transactional
+    public void deleteAllRecipeHashTag(Recipe recipe) {
+        recipeHashTagRepository.deleteAllByRecipeId(recipe.getId());
+
+    }
+
 }

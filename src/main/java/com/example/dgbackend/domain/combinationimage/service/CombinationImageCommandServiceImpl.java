@@ -91,4 +91,22 @@ public class CombinationImageCommandServiceImpl implements CombinationImageComma
 
         combinationImages.forEach(combination::addCombinationImage);
     }
+
+    @Override
+    public void deleteAllCombinationImage(Combination combination) {
+        List<CombinationImage> combinationImages = loadImage(combination.getId());
+
+        List<String> imageUrls = combinationImages.stream()
+            .map(CombinationImage::getImageUrl)
+            .toList();
+
+        imageUrls.forEach(s3Service::deleteFile);
+        combinationImageRepository.deleteAllByCombination(combination);
+
+    }
+
+    private List<CombinationImage> loadImage(Long combinationId) {
+        return combinationImageRepository.findAllByCombinationId(combinationId);
+    }
+
 }

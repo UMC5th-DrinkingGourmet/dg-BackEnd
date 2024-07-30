@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.combination.service;
 
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest.WriteCombination;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.member.Member;
@@ -15,4 +16,6 @@ public interface CombinationCommandService {
         WriteCombination request);
 
     boolean deleteAllCombination(Long memberId);
+
+    void deleteCombinationWithRelations(Combination combination);
 }

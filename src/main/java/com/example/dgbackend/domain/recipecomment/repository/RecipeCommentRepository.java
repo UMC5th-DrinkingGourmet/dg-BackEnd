@@ -24,4 +24,6 @@ public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Lo
 
     @Query("SELECT r FROM RecipeComment r WHERE r.id = :id AND r.state = 'TRUE'")
     Optional<RecipeComment> findByIdAndStateTrue(@Param("id") Long id);
+
+    void deleteAllByRecipe(Recipe recipe);
 }

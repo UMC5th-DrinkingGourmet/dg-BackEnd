@@ -16,4 +16,9 @@ public class CombinationLikeCommandServiceImpl implements CombinationLikeCommand
     public void deleteCombinationLike(Long combinationId) {
         combinationLikeRepository.deleteByCombinationId(combinationId);
     }
+
+    @Override
+    public void deleteAllCombinationLike(Long combinationId) {
+        combinationLikeRepository.deleteAllByCombinationId(combinationId);
+    }
 }

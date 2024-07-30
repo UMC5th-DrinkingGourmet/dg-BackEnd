@@ -12,4 +12,6 @@ public interface CombinationImageRepository extends JpaRepository<CombinationIma
     List<CombinationImage> findAllByCombination(Combination combination);
 
     void deleteByImageUrl(String imageUrl);
+
+    void deleteAllByCombination(Combination combination);
 }

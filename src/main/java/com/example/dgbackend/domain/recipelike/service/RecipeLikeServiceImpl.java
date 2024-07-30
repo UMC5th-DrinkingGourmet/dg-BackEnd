@@ -65,4 +65,10 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
             .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_RECIPE));
         return recipeLikeRepository.findByRecipeAndMember(recipe, member);
     }
+
+    @Override
+    public void deleteAllRecipeLike(Long recipeId) {
+        recipeLikeRepository.deleteAllByRecipeId(recipeId);
+
+    }
 }

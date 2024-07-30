@@ -118,4 +118,10 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
         }
 
     }
+
+    @Override
+    @Transactional
+    public void deleteAllRecipeComment(Recipe recipe) {
+        recipeCommentRepository.deleteAllByRecipe(recipe);
+    }
 }

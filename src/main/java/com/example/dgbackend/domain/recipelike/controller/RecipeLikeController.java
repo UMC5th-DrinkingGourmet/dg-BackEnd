@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipelike.controller;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipelike.dto.RecipeLikeResponse;
+import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
@@ -23,14 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class RecipeLikeController {
 
-    private final RecipeLikeServiceImpl recipeLikeServiceImpl;
+    private final RecipeLikeService recipeLikeService;
 
     @Operation(summary = "레시피북 좋아요 조회", description = "특정 레시피북의 좋아요를 조회합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1")
     @GetMapping("/{recipeId}")
     public ApiResponse<RecipeLikeResponse> getRecipeLikes(@PathVariable Long recipeId,
         @MemberObject Member member) {
-        return ApiResponse.onSuccess(recipeLikeServiceImpl.getRecipeLike(recipeId, member));
+        return ApiResponse.onSuccess(recipeLikeService.getRecipeLike(recipeId, member));
     }
 
     @Operation(summary = "레시피북 좋아요 등록", description = "레시피북 좋아요를 등록합니다.")
@@ -38,7 +39,7 @@ public class RecipeLikeController {
     @PostMapping("/{recipeId}")
     public ApiResponse<RecipeLikeResponse> createRecipeLike(@PathVariable Long recipeId,
         @MemberObject Member member) {
-        return ApiResponse.onSuccess(recipeLikeServiceImpl.changeRecipeLike(recipeId, member));
+        return ApiResponse.onSuccess(recipeLikeService.changeRecipeLike(recipeId, member));
     }
 
 }

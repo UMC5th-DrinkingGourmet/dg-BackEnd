@@ -22,8 +22,8 @@ public class HashTagOptionCommandServiceImpl implements HashTagOptionCommandServ
     private final HashTagRepository hashTagRepository;
 
     @Override
-    public void deleteHashTagOption(Long combinationId) {
-        hashTagOptionRepository.deleteByCombinationId(combinationId);
+    public void deleteAllHashTagOption(Long combinationId) {
+        hashTagOptionRepository.deleteAllByCombinationId(combinationId);
     }
 
     @Override

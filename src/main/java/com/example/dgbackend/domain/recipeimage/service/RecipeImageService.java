@@ -110,4 +110,21 @@ public class RecipeImageService {
         });
     }
 
+    public void deleteRecipeImage(Recipe recipe) {
+        List<RecipeImage> recipeImages = loadImage(recipe.getId());
+
+        List<String> imageUrls = recipeImages.stream()
+            .map(RecipeImage::getImageUrl)
+            .toList();
+
+        imageUrls.forEach(s3Service::deleteFile);
+        recipeImageRepository.deleteAllByRecipe(recipe);
+
+    }
+
+    private List<RecipeImage> loadImage(Long recipeId) {
+        return recipeImageRepository.findAllByRecipeId(recipeId);
+    }
+
+
 }

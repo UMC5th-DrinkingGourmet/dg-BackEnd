@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface HashTagOptionCommandService {
 
-    void deleteHashTagOption(Long combinationId);
+    void deleteAllHashTagOption(Long combinationId);
 
     void updateHashTagOption(Combination combination, List<String> hashTagNames);
 }

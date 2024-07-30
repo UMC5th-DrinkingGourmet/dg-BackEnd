@@ -10,7 +10,7 @@ public interface RecipeService {
     RecipeResponse.RecipeResponseList getExistRecipes(int page, Member loginMember);
 
 
-	RecipeResponse getRecipeDetail(Long id, Member member);
+    RecipeResponse getRecipeDetail(Long id, Member member);
 
     RecipeResponse createRecipe(RecipeRequest recipeRequest, Member loginMember);
 
@@ -19,13 +19,13 @@ public interface RecipeService {
     String deleteRecipe(Long id, Member loginMember);
 
 
-	//레시피 이름과 회원 이름으로 레시피 탐색
-	Recipe getRecipe(Long id);
+    //레시피 이름과 회원 이름으로 레시피 탐색
+    Recipe getRecipe(Long id);
 
-	//레시피가 삭제된 경우 예외처리
-	Recipe isDelete(Recipe recipe);
+    //레시피가 삭제된 경우 예외처리
+    Recipe isDelete(Recipe recipe);
 
-	void isAlreadyCreate(String RecipeName, String memberName);
+    void isAlreadyCreate(String RecipeName, String memberName);
 
     RecipeResponse.RecipeMyPageList getRecipeMyPageList(Member loginMember, Integer Page);
 
@@ -36,5 +36,5 @@ public interface RecipeService {
 
     RecipeResponse getRecipeDetailResponse(Recipe recipes, Member loginMember);
 
-
+    void deleteRecipeWithRelations(Recipe recipe);
 }

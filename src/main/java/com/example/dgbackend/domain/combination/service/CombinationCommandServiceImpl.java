@@ -6,6 +6,7 @@ import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combination.dto.CombinationRequest;
 import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
+import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentCommandService;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageCommandService;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
@@ -38,6 +39,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     private final CombinationImageQueryService combinationImageQueryService;
     private final CombinationImageCommandService combinationImageCommandService;
     private final MemberRepository memberRepository;
+    private final CombinationCommentCommandService combinationCommentCommandService;
 
     /**
      * 오늘의 조합 작성
@@ -75,8 +77,10 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     @Override
     public CombinationResponse.CombinationProcResult deleteCombination(Long combinationId) {
 
-        // soft delete 적용
-        combinationQueryService.getCombination(combinationId).delete();
+        Combination combination = combinationQueryService.getCombination(combinationId);
+        deleteCombinationWithRelations(combination);
+        //hard delete 로 수정 필요
+        combination.delete();
 
         return CombinationResponse.toCombinationProcResult(combinationId);
     }
@@ -119,5 +123,14 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
             deleteCombination(combination.getId());
         }
         return true;
+    }
+
+    @Override
+    public void deleteCombinationWithRelations(Combination combination) {
+        combinationImageCommandService.deleteAllCombinationImage(combination);
+        combinationLikeCommandService.deleteAllCombinationLike(combination.getId());
+        combinationCommentCommandService.deleteAllCombinationComment(combination);
+        hashTagOptionCommandService.deleteAllHashTagOption(combination.getId());
+
     }
 }

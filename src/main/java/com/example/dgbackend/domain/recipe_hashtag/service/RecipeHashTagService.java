@@ -10,4 +10,6 @@ public interface RecipeHashTagService {
 
     void deleteRecipeHashTag(Long recipeId);
 
+    void deleteAllRecipeHashTag(Recipe recipe);
+
 }

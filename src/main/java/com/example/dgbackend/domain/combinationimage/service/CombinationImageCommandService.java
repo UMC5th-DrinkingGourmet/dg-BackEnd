@@ -11,4 +11,6 @@ public interface CombinationImageCommandService {
     void updateCombinationImage(Combination combination, List<String> combinationImageList);
 
     CombinationImageResponse.CombinationImageResult uploadImage(List<MultipartFile> multipartFiles);
+
+    void deleteAllCombinationImage(Combination combination);
 }

@@ -4,7 +4,6 @@ import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageVO;
 import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.global.common.response.ApiResponse;
-import com.example.dgbackend.global.s3.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

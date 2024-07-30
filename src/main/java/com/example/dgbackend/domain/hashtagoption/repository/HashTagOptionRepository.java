@@ -13,7 +13,7 @@ public interface HashTagOptionRepository extends JpaRepository<HashTagOption, Lo
     List<HashTagOption> findAllByCombinationWithFetch(
         @Param("combination") Combination combination);
 
-    void deleteByCombinationId(Long combinationId);
+    void deleteAllByCombinationId(Long combinationId);
 
     HashTagOption findByCombinationAndHashTagName(Combination combination, String name);
 

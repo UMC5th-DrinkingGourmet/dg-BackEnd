@@ -4,7 +4,7 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentRequest;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentResponse;
 import com.example.dgbackend.domain.recipecomment.dto.RecipeCommentVO;
-import com.example.dgbackend.domain.recipecomment.service.RecipeCommentServiceImpl;
+import com.example.dgbackend.domain.recipecomment.service.RecipeCommentService;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/recipe-comments")
 public class RecipeCommentController {
 
-    private final RecipeCommentServiceImpl recipeCommentService;
+    private final RecipeCommentService recipeCommentService;
 
     @Operation(summary = "레시피북 댓글 조회", description = "특정 레시피북의 댓글을 조회합니다.")
     @Parameter(name = "recipeId", description = "레시피북 Id, Path Variable 입니다.", required = true, example = "1", in = ParameterIn.PATH)

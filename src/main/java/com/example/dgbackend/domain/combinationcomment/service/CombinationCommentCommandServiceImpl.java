@@ -81,4 +81,9 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
         return toCommentResult(combinationComment);
     }
 
+    @Override
+    public void deleteAllCombinationComment(Combination combination) {
+        combinationCommentRepository.deleteAllByCombination(combination);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe_hashtag;
 
 import com.example.dgbackend.domain.hashtag.HashTag;
 import com.example.dgbackend.domain.recipe.Recipe;
+import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RecipeHashTag {
+public class RecipeHashTag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

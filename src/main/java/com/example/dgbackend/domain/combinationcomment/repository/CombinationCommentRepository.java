@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.combinationcomment.repository;
 
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -18,4 +19,7 @@ public interface CombinationCommentRepository extends JpaRepository<CombinationC
 
     @Query("SELECT c FROM CombinationComment c WHERE c.id = :id AND c.state = 'TRUE'")
     Optional<CombinationComment> findByIdAndStateTrue(@Param("id") Long id);
+
+    void deleteAllByCombination(Combination combination);
+
 }

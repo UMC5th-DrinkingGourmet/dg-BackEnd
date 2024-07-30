@@ -13,4 +13,6 @@ public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> 
     List<RecipeImage> findAllByRecipe(Recipe recipe);
 
     Optional<RecipeImage> findByImageUrl(String imageUrl);
+
+    void deleteAllByRecipe(Recipe recipe);
 }

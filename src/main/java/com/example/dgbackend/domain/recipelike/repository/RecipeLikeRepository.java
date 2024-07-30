@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RecipeLikeRepository extends JpaRepository<RecipeLike, Long> {
 
     Optional<RecipeLike> findByRecipeAndMember(Recipe recipe, Member member);
+
+    void deleteAllByRecipeId(Long recipeId);
 }

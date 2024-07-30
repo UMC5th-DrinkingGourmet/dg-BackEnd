@@ -4,7 +4,6 @@ import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageVO;
 import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.global.common.response.ApiResponse;
-import com.example.dgbackend.global.s3.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/recipe-images")
 public class RecipeImageController {
 
-    private final S3Service s3Service;
     private final RecipeImageService recipeImageService;
 
     @Operation(summary = "레시피 이미지 조회", description = "레시피 이미지 조회")

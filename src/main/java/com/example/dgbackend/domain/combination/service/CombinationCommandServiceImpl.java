@@ -79,8 +79,8 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
         Combination combination = combinationQueryService.getCombination(combinationId);
         deleteCombinationWithRelations(combination);
-        //hard delete 로 수정 필요
-        combination.delete();
+        //hard delete
+        combinationRepository.delete(combination);
 
         return CombinationResponse.toCombinationProcResult(combinationId);
     }

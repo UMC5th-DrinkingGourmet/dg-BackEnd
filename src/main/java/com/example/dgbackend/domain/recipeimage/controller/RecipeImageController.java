@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/recipe-images")
 public class RecipeImageController {
 
-    private final S3Service s3Service;
     private final RecipeImageService recipeImageService;
 
     @Operation(summary = "레시피 이미지 조회", description = "레시피 이미지 조회")

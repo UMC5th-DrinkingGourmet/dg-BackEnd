@@ -23,8 +23,12 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT rl.recipe FROM RecipeLike rl WHERE rl.member.id = :memberId AND rl.recipe.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND rl.recipe.state = true AND rl.state = true")
     Page<Recipe> findRecipesByMemberIdAndStateIsTrue(Long memberId, PageRequest pageRequest);
 
-    @Query("SELECT r FROM Recipe r WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND r.title LIKE %:keyword% AND r.state = true ORDER BY r.createdAt DESC")
-    Page<Recipe> findRecipesByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(String keyword,
+    @Query("SELECT r FROM Recipe r "
+        + "WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) "
+        + "AND (r.title LIKE %:keyword% "
+        + "OR r.id IN (SELECT rht.recipe.id FROM RecipeHashTag rht WHERE rht.hashtag.name LIKE %:keyword%)) "
+        + "AND r.state = true ORDER BY r.createdAt DESC")
+    Page<Recipe> findRecipesByTitleOrHashTagAndStateIsTrueOrderByCreatedAtDesc(String keyword,
         Pageable pageable, Long memberId);
 
     Page<Recipe> findAllByStateIsTrueOrderByLikeCountDesc(PageRequest pageRequest);

@@ -196,7 +196,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
-        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleOrContentOrHashTagAndStateIsTrueOrderByCreatedAtDesc(
             keyword, pageRequest, loginMember.getId());
 
         List<Combination> combinationList = combinations.getContent();
@@ -217,7 +217,7 @@ public class CombinationQueryServiceImpl implements CombinationQueryService {
         String keyword) {
         PageRequest pageRequest = PageRequest.of(page, 10);
 
-        Page<Combination> combinations = combinationRepository.findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
+        Page<Combination> combinations = combinationRepository.findCombinationsByTitleOrContentOrHashTagAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
             keyword, pageRequest, 30L, loginMember.getId());
 
         List<Combination> combinationList = combinations.getContent();

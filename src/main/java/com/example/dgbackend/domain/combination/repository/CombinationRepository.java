@@ -31,13 +31,23 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
         PageRequest pageRequest);
 
 
-    @Query("SELECT c FROM Combination c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.title LIKE %:keyword% AND c.state = true ORDER BY c.createdAt DESC")
-    Page<Combination> findCombinationsByTitleContainingAndStateIsTrueOrderByCreatedAtDesc(
+    @Query("SELECT c FROM Combination c "
+        + "WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) "
+        + "AND (c.title LIKE %:keyword% "
+        + "OR c.content LIKE %:keyword% "
+        + "OR c.id IN (SELECT hto.combination.id FROM HashTagOption hto WHERE hto.hashTag.name LIKE %:keyword%)) "
+        + "AND c.state = true ORDER BY c.createdAt DESC")
+    Page<Combination> findCombinationsByTitleOrContentOrHashTagAndStateIsTrueOrderByCreatedAtDesc(
         String keyword, PageRequest pageRequest, Long memberId);
 
 
-    @Query("SELECT c FROM Combination c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.title LIKE %:keyword% AND c.likeCount >= :likeCount AND c.state = true ORDER BY c.createdAt DESC")
-    Page<Combination> findCombinationsByTitleContainingAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
+    @Query("SELECT c FROM Combination c "
+        + "WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) "
+        + "AND (c.title LIKE %:keyword% "
+        + "OR c.content LIKE %:keyword% "
+        + "OR c.id IN (SELECT hto.combination.id FROM HashTagOption hto WHERE hto.hashTag.name LIKE %:keyword%)) "
+        + "AND c.likeCount >= :likeCount AND c.state = true ORDER BY c.createdAt DESC")
+    Page<Combination> findCombinationsByTitleOrContentOrHashTagAndLikeCountGreaterThanEqualAndStateIsTrueOrderByCreatedAtDesc(
         String keyword, PageRequest pageRequest, Long likeCount, Long memberId);
 
     @Query("SELECT c FROM Combination c WHERE c.likeCount >= 30 AND c.state = true ORDER BY RAND() LIMIT 5")

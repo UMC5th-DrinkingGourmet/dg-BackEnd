@@ -132,4 +132,13 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
         hashTagOptionCommandService.deleteAllHashTagOption(combination.getId());
 
     }
+
+    @Override
+    public void deleteCombinationWithRelations(Combination combination) {
+        combinationImageCommandService.deleteAllCombinationImage(combination);
+        combinationLikeCommandService.deleteAllCombinationLike(combination.getId());
+        combinationCommentCommandService.deleteAllCombinationComment(combination);
+        hashTagOptionCommandService.deleteAllHashTagOption(combination.getId());
+
+    }
 }

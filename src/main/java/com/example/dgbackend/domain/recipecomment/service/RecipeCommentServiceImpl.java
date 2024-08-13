@@ -147,4 +147,10 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
 
         recipeCommentRepository.saveAll(recipeComments);
     }
+
+    @Override
+    @Transactional
+    public void deleteAllRecipeComment(Recipe recipe) {
+        recipeCommentRepository.deleteAllByRecipe(recipe);
+    }
 }

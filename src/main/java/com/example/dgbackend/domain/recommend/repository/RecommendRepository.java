@@ -14,6 +14,5 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
     List<Recommend> findAllByMemberId(Long memberId);
 
-    //@Query("DELETE FROM Recommend r WHERE r.member = :member")
     void deleteAllByMemberId(Long memberId);
 }

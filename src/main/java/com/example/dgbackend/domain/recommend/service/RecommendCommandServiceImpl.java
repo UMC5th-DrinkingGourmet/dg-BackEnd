@@ -242,9 +242,6 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
                 .filter(Objects::nonNull)
                 .toList();
 
-        for (String d : imageUrls)
-            log.debug("-----------------------dfdfdfdfdfdf", d);
-
         imageUrls.forEach(s3Service::deleteFile);
 
         recommendRepository.deleteAllByMemberId(memberId);

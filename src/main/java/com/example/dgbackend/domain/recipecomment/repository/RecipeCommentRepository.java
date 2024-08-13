@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipecomment.repository;
 
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import java.util.List;
@@ -26,4 +27,7 @@ public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Lo
     Optional<RecipeComment> findByIdAndStateTrue(@Param("id") Long id);
 
     void deleteAllByRecipe(Recipe recipe);
+
+    @Query("SELECT rc FROM RecipeComment rc WHERE rc.member = :member AND rc.state = 'TRUE'")
+    List<RecipeComment> findAllActiveCommentsByMember(@Param("member") Member member);
 }

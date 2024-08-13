@@ -13,7 +13,14 @@ import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentReq
 import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentResponse;
 import com.example.dgbackend.domain.combinationcomment.repository.CombinationCommentRepository;
 import com.example.dgbackend.domain.member.Member;
+
+import java.util.List;
 import java.util.Optional;
+
+import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.domain.recipecomment.RecipeComment;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +33,7 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     private final CombinationCommentRepository combinationCommentRepository;
     private final CombinationCommentQueryService combinationCommentQueryService;
     private final CombinationQueryService combinationQueryService;
+    private final MemberRepository memberRepository;
 
 
     @Override
@@ -84,6 +92,25 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     @Override
     public void deleteAllCombinationComment(Combination combination) {
         combinationCommentRepository.deleteAllByCombination(combination);
+    }
+
+    @Override
+    public void changeAllCombinationComment(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+
+        List<CombinationComment> comboComments = combinationCommentRepository.findAllActiveCommentsByMember(member);
+
+        Member deleteMember = memberRepository.findMemberById(0L).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+
+        for (CombinationComment comboComment : comboComments) {
+            comboComment.updateCancellation(deleteMember);
+        }
+
+        combinationCommentRepository.saveAll(comboComments);
     }
 
 }

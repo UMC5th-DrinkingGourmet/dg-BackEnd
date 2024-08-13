@@ -12,4 +12,5 @@ public interface RecommendCommandService {
     String makeCombinationImage(Member member, String drinkName,
         RecommendRequest.RecommendRequestDTO requestDTO);
 
+    void deleteCancellation(Member member);
 }

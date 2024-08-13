@@ -21,4 +21,5 @@ public interface CombinationCommentCommandService {
 
     void deleteAllCombinationComment(Combination combination);
 
+    void changeAllCombinationComment(Long memberId);
 }

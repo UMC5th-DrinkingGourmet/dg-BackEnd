@@ -23,6 +23,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "MEMBER_005", "해당 닉네임은 중복된 닉네임입니다."),
     _INVALID_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER_006", "유효하지 않은 사용자입니다."),
 
+    //탈퇴 관련
+    _CANCELLATION_NOT_FOUND(HttpStatus.NOT_FOUND, "CANCELLATION_001", "존재하지 않는 탈퇴 기록입니다."),
+    _CANCELLATION_ERROR(HttpStatus.CONFLICT, "CANCELLATION_002", "탈퇴 요청에 실패하였습니다."),
+
     //오늘의 조합 관련
     _COMBINATION_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_001", "존재하지 않는 오늘의 조합입니다."),
     _DELETE_COMBINATION(HttpStatus.BAD_REQUEST, "COMBINATION_002", "삭제된 오늘의 조합입니다."),

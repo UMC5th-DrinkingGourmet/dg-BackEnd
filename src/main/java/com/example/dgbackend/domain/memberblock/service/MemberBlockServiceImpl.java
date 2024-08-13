@@ -40,6 +40,11 @@ public class MemberBlockServiceImpl implements MemberBlockService {
         return MemberBlockResponse.toMemberBlockResult(blockedMember, member);
     }
 
+    @Override
+    public void deleteBlock(Member member) {
+        memberBlockRepository.deleteAllByMember(member);
+    }
+
     private void duplicateMemberBlock(MemberBlock prevMemberBlock) {
         if (prevMemberBlock != null) {
             throw new ApiException(ErrorStatus._DUPLICATE_MEMBER_BLOCK);

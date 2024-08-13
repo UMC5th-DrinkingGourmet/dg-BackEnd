@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recommend.service;
 
+import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.Recommend;
@@ -13,12 +14,9 @@ import com.example.dgbackend.global.s3.dto.S3Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -230,6 +228,26 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         List<S3Result> S3UploadResult = s3Service.uploadFile(Collections.singletonList(imageFile));
 
         return S3UploadResult.get(0).getImgUrl();
+    }
+
+    @Override
+    public void deleteCancellation(Member member) {
+
+        List<Recommend> recommends = recommendRepository.findAllByMember(member);
+        List<String> imageUrls = new ArrayList<>();
+
+        for (Recommend rc : recommends) {
+            imageUrls.add(rc.getImageUrl());
+        }
+
+//        List<String> imageUrls = recommends.stream()
+//                .map(Recommend::getImageUrl)
+//                .filter(Objects::nonNull)
+//                .toList();
+
+        imageUrls.forEach(s3Service::deleteFile);
+
+        recommendRepository.deleteAllByMember(member);
     }
 
     /*

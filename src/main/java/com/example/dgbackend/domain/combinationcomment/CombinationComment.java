@@ -6,6 +6,7 @@ import static com.example.dgbackend.domain.enums.State.REPORTED;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.global.common.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -78,4 +79,9 @@ public class CombinationComment extends BaseTimeEntity {
         this.state = REPORTED;
     }
 
+    public CombinationComment updateCancellation(Member member) {
+        this.member = member;
+        this.content = "탈퇴한 사용자의 댓글입니다.";
+        return this;
+    }
 }

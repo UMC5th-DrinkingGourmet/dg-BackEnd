@@ -75,7 +75,7 @@ public class MemberRestController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
     })
-    @GetMapping("/cancellation")
+    @PostMapping("/cancellations")
     public ApiResponse<Boolean> cancelMember(@MemberObject Member member) {
         return ApiResponse.onSuccess(memberCommandService.deleteMember(member));
     }

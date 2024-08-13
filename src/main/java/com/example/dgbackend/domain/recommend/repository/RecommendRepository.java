@@ -1,6 +1,6 @@
 package com.example.dgbackend.domain.recommend.repository;
 
-import com.example.dgbackend.domain.member.Member;
+
 import com.example.dgbackend.domain.recommend.Recommend;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,8 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
     Page<Recommend> findAllByMemberIdOrderByCreatedAtDesc(Long memberId, Pageable pageable);
 
-    List<Recommend> findAllByMember(Member member);
+    List<Recommend> findAllByMemberId(Long memberId);
 
-    void deleteAllByMember(Member member);
+    //@Query("DELETE FROM Recommend r WHERE r.member = :member")
+    void deleteAllByMemberId(Long memberId);
 }

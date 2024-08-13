@@ -1,8 +1,6 @@
 package com.example.dgbackend.domain.recommend.service;
 
-import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
@@ -17,7 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,10 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class RecommendCommandServiceImpl implements RecommendCommandService {
 
     private final RecommendRepository recommendRepository;
-    private final MemberRepository memberRepository;
     private final RecommendQueryService recommendQueryService;
     private final S3Service s3Service;
 
@@ -231,23 +233,21 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
     }
 
     @Override
-    public void deleteCancellation(Member member) {
+    public void deleteCancellation(Long memberId) {
 
-        List<Recommend> recommends = recommendRepository.findAllByMember(member);
-        List<String> imageUrls = new ArrayList<>();
+        List<Recommend> recommends = recommendRepository.findAllByMemberId(memberId);
 
-        for (Recommend rc : recommends) {
-            imageUrls.add(rc.getImageUrl());
-        }
+        List<String> imageUrls = recommends.stream()
+                .map(Recommend::getImageUrl)
+                .filter(Objects::nonNull)
+                .toList();
 
-//        List<String> imageUrls = recommends.stream()
-//                .map(Recommend::getImageUrl)
-//                .filter(Objects::nonNull)
-//                .toList();
+        for (String d : imageUrls)
+            log.debug("-----------------------dfdfdfdfdfdf", d);
 
         imageUrls.forEach(s3Service::deleteFile);
 
-        recommendRepository.deleteAllByMember(member);
+        recommendRepository.deleteAllByMemberId(memberId);
     }
 
     /*

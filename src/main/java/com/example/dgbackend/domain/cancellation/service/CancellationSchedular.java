@@ -53,16 +53,18 @@ public class CancellationSchedular {
             runCancellation(cancellation.getId());
         }
     }
+    
+    private void runCancellation(Long cancellationId) {
 
-    public Boolean runCancellation(Long cancellationId) {
+        Cancellation cancellation = cancellationRepository.findById(cancellationId)
+                .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND));
 
-        Optional<Cancellation> cancellation = Optional.ofNullable(cancellationRepository.findById(cancellationId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND)));
-
-        Member cancelMember = cancellation.get().getMember();
-        Long memberId =  cancellation.get().getMember().getId();
+        Member cancelMember = cancellation.getMember();
+        Long memberId =  cancellation.getMember().getId();
 
         // 탈퇴 로직 실행
+        // 추천 조합 삭제
+        recommendCommandService.deleteCancellation(memberId);
         // 작성한 오늘의 조합 삭제
         combinationCommandService.deleteAllCombination(memberId);
         // 작성한 레시피 삭제
@@ -75,19 +77,15 @@ public class CancellationSchedular {
         combinationLikeCommandService.deleteCancellation(cancelMember);
         // 레시피북 좋아요 기록 삭제
         recipeLikeService.deleteCancellation(cancelMember);
-        // 추천 조합 삭제
-        recommendCommandService.deleteCancellation(cancelMember);
         // 약관 기록 삭제
         termAgreeCommandService.deleteCancellation(cancelMember);
         // 차단 기록 삭제
         memberBlockService.deleteBlock(cancelMember);
 
         // 탈퇴 테이블에서 해당 엔티티 삭제
-        cancellationRepository.delete(cancellation.get());
+        cancellationRepository.delete(cancellation);
 
         // 멤버 삭제
         memberCommandService.finalDeleteMember(memberId);
-
-        return true;
     }
 }

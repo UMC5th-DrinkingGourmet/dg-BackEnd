@@ -16,4 +16,6 @@ public interface RecipeLikeService {
     Optional<RecipeLike> getRecipeLikeEntity(Long recipeId, Member member);
 
     void deleteAllRecipeLike(Long recipeId);
+
+    void deleteCancellation(Member member);
 }

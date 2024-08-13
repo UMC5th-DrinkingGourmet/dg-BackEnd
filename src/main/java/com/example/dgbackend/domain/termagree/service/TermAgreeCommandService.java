@@ -12,4 +12,6 @@ public interface TermAgreeCommandService {
 
     TermDisagreeResponseDTO termDisagree(Member member,
         TermDisagreeRequestDTO termDisagreeRequestDTO);
+
+    void deleteCancellation(Member member);
 }

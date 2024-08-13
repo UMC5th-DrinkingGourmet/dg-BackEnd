@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.member.service;
 
+import com.example.dgbackend.domain.cancellation.service.CancellationCommandService;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
@@ -21,10 +22,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     MemberRepository memberRepository;
 
     private final S3Service s3Service;
+    private final CancellationCommandService cancellationCommandService;
 
     @Override
-    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,
-        MemberRequest.RecommendInfoDTO requestInfoDTO) {
+    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member, MemberRequest.RecommendInfoDTO requestInfoDTO) {
         member.setPreferredAlcoholType(requestInfoDTO.getPreferredAlcoholType());
         member.setPreferredAlcoholDegree(requestInfoDTO.getPreferredAlcoholDegree());
         member.setDrinkingTimes(requestInfoDTO.getDrinkingTimes());
@@ -37,8 +38,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     // 회원 정보 수정
     @Override
-    public MemberResponse.GetMember patchMember(Member member,
-        MemberRequest.PatchMember patchMember) {
+    public MemberResponse.GetMember patchMember(Member member, MemberRequest.PatchMember patchMember) {
         member.setName(patchMember.getName());
         member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());
@@ -50,8 +50,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     //회원 사진 수정
     @Override
-    public MemberResponse.GetMember patchProfileImage(Member member,
-        MultipartFile multipartFile) {
+    public MemberResponse.GetMember patchProfileImage(Member member, MultipartFile multipartFile) {
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {
@@ -73,6 +72,18 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public MemberResponse.GetMember getMember(Member member) {
         return MemberResponse.toGetMember(member);
+    }
+
+    @Override
+    public Boolean deleteMember(Member member) { return cancellationCommandService.postCancellation(member); }
+
+    @Override
+    public void finalDeleteMember(Long memberId) {
+
+        String imageUrl = memberRepository.findImageUrlsByMember(memberId);
+        s3Service.deleteFile(imageUrl);
+
+        memberRepository.deleteById(memberId);
     }
 
     @Override

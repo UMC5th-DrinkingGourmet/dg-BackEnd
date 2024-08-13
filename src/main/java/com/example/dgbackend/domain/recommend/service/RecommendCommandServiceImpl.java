@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.recommend.service;
 
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
 import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
@@ -13,13 +12,13 @@ import com.example.dgbackend.global.s3.dto.S3Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,10 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class RecommendCommandServiceImpl implements RecommendCommandService {
 
     private final RecommendRepository recommendRepository;
-    private final MemberRepository memberRepository;
     private final RecommendQueryService recommendQueryService;
     private final S3Service s3Service;
 
@@ -230,6 +230,21 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         List<S3Result> S3UploadResult = s3Service.uploadFile(Collections.singletonList(imageFile));
 
         return S3UploadResult.get(0).getImgUrl();
+    }
+
+    @Override
+    public void deleteCancellation(Long memberId) {
+
+        List<Recommend> recommends = recommendRepository.findAllByMemberId(memberId);
+
+        List<String> imageUrls = recommends.stream()
+                .map(Recommend::getImageUrl)
+                .filter(Objects::nonNull)
+                .toList();
+
+        imageUrls.forEach(s3Service::deleteFile);
+
+        recommendRepository.deleteAllByMemberId(memberId);
     }
 
     /*

@@ -1,5 +1,6 @@
 package com.example.dgbackend.domain.recipe.repository;
 
+import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +38,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT r FROM Recipe r WHERE r.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND r.id = :id AND r.state = true")
     Optional<Recipe> findByIdAndMemberAndStateIsTrue(Long id, Long memberId);
+
+    List<Recipe> findAllByMember(Member member);
 }

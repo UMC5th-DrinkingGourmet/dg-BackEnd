@@ -16,4 +16,6 @@ public interface CombinationLikeRepository extends JpaRepository<CombinationLike
 
     void deleteAllByCombinationId(Long combinationId);
 
+    void deleteAllByMember(Member member);
+
 }

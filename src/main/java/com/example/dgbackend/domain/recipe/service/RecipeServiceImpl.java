@@ -3,7 +3,9 @@ package com.example.dgbackend.domain.recipe.service;
 import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
 import static com.example.dgbackend.global.common.MemberValidator.isMatch;
 
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeRequest;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
@@ -35,6 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeLikeService recipeLikeService;
     private final RecipeImageService recipeImageService;
     private final RecipeCommentService recipeCommentService;
+    private final MemberRepository memberRepository;
 
     @Override
     public RecipeResponse.RecipeResponseList getExistRecipes(int page, Member member) {
@@ -193,5 +196,16 @@ public class RecipeServiceImpl implements RecipeService {
         recipeLikeService.deleteAllRecipeLike(recipe.getId());
         recipeCommentService.deleteAllRecipeComment(recipe);
         recipeHashTagService.deleteAllRecipeHashTag(recipe);
+    }
+
+    @Override
+    public void deleteAllRecipe(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+        List<Recipe> recipeList = recipeRepository.findAllByMember(member);
+        for (Recipe recipe : recipeList) {
+            deleteRecipe(recipe.getId(), member);
+        }
     }
 }

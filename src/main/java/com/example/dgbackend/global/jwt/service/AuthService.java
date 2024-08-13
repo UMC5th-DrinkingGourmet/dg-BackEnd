@@ -1,5 +1,6 @@
 package com.example.dgbackend.global.jwt.service;
 
+import com.example.dgbackend.domain.cancellation.service.CancellationCommandService;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
@@ -33,6 +34,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
+    private final CancellationCommandService cancellationCommandService;
 
     /**
      * 회원가입 및 로그인 진행
@@ -61,6 +63,11 @@ public class AuthService {
 
         } else {
             memberId = loginMember.get().getId();
+
+            // 해당 멤버가 탈퇴 신청을 했는지 확인
+            Boolean isCancelled = cancellationCommandService.checkCancellation(memberId);
+            if (isCancelled) cancellationCommandService.deleteCancellation(memberId);
+
             isNewMember = false;
 
             if (loginMember.get().getState() == State.REPORTED) {

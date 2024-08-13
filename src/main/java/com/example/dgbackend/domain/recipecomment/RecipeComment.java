@@ -70,4 +70,9 @@ public class RecipeComment extends BaseTimeEntity {
         this.state = State.REPORTED;
     }
 
+    public RecipeComment updateCancellation(Member member) {
+        this.member = member;
+        this.content = "탈퇴한 사용자의 댓글입니다.";
+        return this;
+    }
 }

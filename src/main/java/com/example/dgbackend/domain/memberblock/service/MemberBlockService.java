@@ -8,4 +8,5 @@ public interface MemberBlockService {
 
     MemberBlockResult block(MemberBlockReq memberBlockReq, Member member);
 
+    void deleteBlock(Member member);
 }

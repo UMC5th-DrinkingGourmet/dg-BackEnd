@@ -26,4 +26,6 @@ public interface RecipeCommentService {
     RecipeCommentResponse deleteRecipeComment(Long recipeCommentId, Member loginMember);
 
     void deleteAllRecipeComment(Recipe recipe);
+
+    void changeAllRecipeComment(Long memberId);
 }

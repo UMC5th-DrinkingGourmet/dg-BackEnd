@@ -18,5 +18,9 @@ public interface MemberCommandService {
 
     MemberResponse.GetMember getMember(Member member);
 
+    Boolean deleteMember(Member member);
+
     void saveMember(Member member);
+
+    void finalDeleteMember(Long memberId);
 }

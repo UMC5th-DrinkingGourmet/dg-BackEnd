@@ -71,4 +71,9 @@ public class RecipeLikeServiceImpl implements RecipeLikeService {
         recipeLikeRepository.deleteAllByRecipeId(recipeId);
 
     }
+
+    @Override
+    public void deleteCancellation(Member member) {
+        recipeLikeRepository.deleteAllByMember(member);
+    }
 }

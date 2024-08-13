@@ -85,4 +85,9 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
             .termList(savedList)
             .build();
     }
+
+    @Override
+    public void deleteCancellation(Member member) {
+        termAgreeRepository.deleteAllByMember(member);
+    }
 }

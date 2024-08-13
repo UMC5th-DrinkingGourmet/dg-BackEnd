@@ -4,6 +4,7 @@ import static com.example.dgbackend.global.common.MemberValidator.isMatch;
 
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
 import com.example.dgbackend.domain.recipecomment.RecipeComment;
@@ -14,6 +15,8 @@ import com.example.dgbackend.domain.recipecomment.repository.RecipeCommentReposi
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import jakarta.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,7 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
 
     private final RecipeCommentRepository recipeCommentRepository;
     private final RecipeRepository recipeRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public RecipeCommentResponse.RecipeCommentResponseList getRecipeComment(Long recipeId, int page,
@@ -116,12 +120,31 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
         } else {
             throw new ApiException(ErrorStatus._INVALID_MEMBER);
         }
-
     }
 
     @Override
     @Transactional
     public void deleteAllRecipeComment(Recipe recipe) {
         recipeCommentRepository.deleteAllByRecipe(recipe);
+    }
+
+    @Override
+    @Transactional
+    public void changeAllRecipeComment(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+
+        List<RecipeComment> recipeComments = recipeCommentRepository.findAllActiveCommentsByMember(member);
+
+        Member deleteMember = memberRepository.findMemberById(0L).orElseThrow(
+                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+        );
+
+        for (RecipeComment recipeComment : recipeComments) {
+            recipeComment.updateCancellation(deleteMember);
+        }
+
+        recipeCommentRepository.saveAll(recipeComments);
     }
 }

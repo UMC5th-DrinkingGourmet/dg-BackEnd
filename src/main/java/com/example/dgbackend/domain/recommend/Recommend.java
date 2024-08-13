@@ -25,8 +25,8 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-@SQLDelete(sql = "UPDATE recommend SET deleted = true WHERE id = ?")
-@SQLRestriction("deleted = false")
+//@SQLDelete(sql = "UPDATE recommend SET deleted = true WHERE id = ?")
+//@SQLRestriction("deleted = false")
 @OnDelete(action = OnDeleteAction.CASCADE)
 public class Recommend extends BaseTimeEntity {
 

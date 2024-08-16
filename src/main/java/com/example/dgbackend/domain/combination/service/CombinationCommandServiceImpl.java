@@ -119,7 +119,7 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
         List<Combination> combinationList = combinationRepository.findAllByMember(member);
 
         for (Combination combination : combinationList) {
-            deleteCombination(combination.getId());
+            combinationRepository.deleteByMemberIdWithNativeQuery(combination.getId());
         }
     }
 

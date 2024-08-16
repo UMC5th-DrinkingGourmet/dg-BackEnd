@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface CombinationRepository extends JpaRepository<Combination, Long> {
@@ -61,4 +62,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     @Query("SELECT c FROM Combination c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.id = :id AND c.state = true")
     Optional<Combination> findCombinationByIdAndStateIsTrue(Long id, Long memberId);
+
+    @Modifying
+    @Query(value = "DELETE FROM combination WHERE member_id = :id", nativeQuery = true)
+    void deleteByMemberIdWithNativeQuery(Long id);
 }

@@ -93,6 +93,7 @@ public class CombinationCommentCommandServiceImpl implements CombinationCommentC
     }
 
     @Override
+    @Transactional
     public void changeAllCombinationComment(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new ApiException(ErrorStatus._EMPTY_MEMBER)

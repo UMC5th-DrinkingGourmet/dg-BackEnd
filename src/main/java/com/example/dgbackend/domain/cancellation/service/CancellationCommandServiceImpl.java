@@ -37,11 +37,13 @@ public class CancellationCommandServiceImpl implements CancellationCommandServic
     public void deleteCancellation(Long memberId) {
 
         Cancellation cancellation = cancellationRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND));
+            .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND));
 
         cancellationRepository.delete(cancellation);
     }
 
     @Override
-    public Boolean checkCancellation(Long memberId) { return cancellationRepository.existsByMemberId(memberId); }
+    public Boolean checkCancellation(Long memberId) {
+        return cancellationRepository.existsByMemberId(memberId);
+    }
 }

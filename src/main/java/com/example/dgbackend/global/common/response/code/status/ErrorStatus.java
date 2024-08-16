@@ -32,9 +32,12 @@ public enum ErrorStatus implements BaseErrorCode {
     _DELETE_COMBINATION(HttpStatus.BAD_REQUEST, "COMBINATION_002", "삭제된 오늘의 조합입니다."),
 
     //오늘의 조합 댓글
-    _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001", "존재하지 않는 오늘의 조합 댓글입니다."),
-    _OVER_DEPTH_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_002", "대댓글까지만 가능합니다."),
-    _DELETE_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_003", "이미 삭제된 오늘의 조합 댓글입니다."),
+    _COMBINATION_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_COMMENT_001",
+        "존재하지 않는 오늘의 조합 댓글입니다."),
+    _OVER_DEPTH_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_002",
+        "대댓글까지만 가능합니다."),
+    _DELETE_COMBINATION_COMMENT(HttpStatus.BAD_REQUEST, "COMBINATION_COMMENT_003",
+        "이미 삭제된 오늘의 조합 댓글입니다."),
 
     //CombinationImage 관련
     _COMBINATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "COMBINATION_IMAGE_001", "존재하지 않는 이미지입니다."),
@@ -58,7 +61,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _RECOMMEND_NOT_FOUND(HttpStatus.NOT_FOUND, "RECOMMEND_001", "존재하지 않는 추천 조합입니다."),
     _NULL_DESIRE_LEVEL(HttpStatus.BAD_REQUEST, "RECOMMEND_002", "취하고 싶은 정도를 입력해주세요."),
     _NULL_FOOD_NAME(HttpStatus.BAD_REQUEST, "RECOMMEND_003", "음식 이름을 입력해주세요."),
-  
+
     //레시피
     _EMPTY_RECIPE(HttpStatus.CONFLICT, "RECIPE_001", "존재하지 않는 레시피입니다."),
     _DELETE_RECIPE(HttpStatus.BAD_REQUEST, "RECIPE_002", "삭제된 레시피입니다."),
@@ -81,9 +84,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _FAIL_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "REPORT_002", "메일 전송에 실패했습니다."),
 
     //차단
-    _DUPLICATE_MEMBER_BLOCK(HttpStatus.CONFLICT,"MEMBER_BLOCK_001", "이미 차단된 멤버입니다."),
-    _BLOCKED_MEMBER(HttpStatus.CONFLICT,"MEMBER_BLOCK_002", "차단된 멤버입니다."),
-    _INVALID_MEMBER_BLOCK(HttpStatus.BAD_REQUEST,"MEMBER_BLOCK_002","본인 차단은 불가능합니다.");
+    _DUPLICATE_MEMBER_BLOCK(HttpStatus.CONFLICT, "MEMBER_BLOCK_001", "이미 차단된 멤버입니다."),
+    _BLOCKED_MEMBER(HttpStatus.CONFLICT, "MEMBER_BLOCK_002", "차단된 멤버입니다."),
+    _INVALID_MEMBER_BLOCK(HttpStatus.BAD_REQUEST, "MEMBER_BLOCK_002", "본인 차단은 불가능합니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
@@ -92,19 +95,19 @@ public enum ErrorStatus implements BaseErrorCode {
     @Override
     public ErrorReasonDto getReason() {
         return ErrorReasonDto.builder()
-                .message(message)
-                .code(code)
-                .isSuccess(false)
-                .build();
+            .message(message)
+            .code(code)
+            .isSuccess(false)
+            .build();
     }
 
     @Override
     public ErrorReasonDto getReasonHttpStatus() {
         return ErrorReasonDto.builder()
-                .message(message)
-                .code(code)
-                .isSuccess(false)
-                .httpStatus(httpStatus)
-                .build();
+            .message(message)
+            .code(code)
+            .isSuccess(false)
+            .httpStatus(httpStatus)
+            .build();
     }
 }

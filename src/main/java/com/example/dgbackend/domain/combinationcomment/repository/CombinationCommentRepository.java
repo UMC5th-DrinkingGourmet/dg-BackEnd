@@ -2,12 +2,11 @@ package com.example.dgbackend.domain.combinationcomment.repository;
 
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combinationcomment.CombinationComment;
+import com.example.dgbackend.domain.member.Member;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

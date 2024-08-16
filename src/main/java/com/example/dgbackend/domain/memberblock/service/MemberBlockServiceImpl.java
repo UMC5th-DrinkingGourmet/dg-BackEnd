@@ -9,6 +9,7 @@ import com.example.dgbackend.domain.memberblock.dto.MemberBlockResponse.MemberBl
 import com.example.dgbackend.domain.memberblock.repository.MemberBlockRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,4 @@ public class MemberBlockServiceImpl implements MemberBlockService {
             throw new ApiException(ErrorStatus._INVALID_MEMBER_BLOCK);
         }
     }
-
 }

@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.repository;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

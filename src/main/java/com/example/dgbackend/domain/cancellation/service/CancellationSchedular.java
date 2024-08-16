@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,20 +46,21 @@ public class CancellationSchedular {
     @Transactional
     public void processCancellations() {
         LocalDateTime now = LocalDateTime.now();
-        List<Cancellation> expiredCancellations = cancellationRepository.findAllByCancelledAtBefore(now);
+        List<Cancellation> expiredCancellations = cancellationRepository.findAllByCancelledAtBefore(
+            now);
 
         for (Cancellation cancellation : expiredCancellations) {
             runCancellation(cancellation.getId());
         }
     }
-    
+
     private void runCancellation(Long cancellationId) {
 
         Cancellation cancellation = cancellationRepository.findById(cancellationId)
-                .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND));
+            .orElseThrow(() -> new ApiException(ErrorStatus._CANCELLATION_NOT_FOUND));
 
         Member cancelMember = cancellation.getMember();
-        Long memberId =  cancellation.getMember().getId();
+        Long memberId = cancellation.getMember().getId();
 
         // 탈퇴 로직 실행
         // 추천 조합 삭제

@@ -132,13 +132,14 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
     @Transactional
     public void changeAllRecipeComment(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
 
-        List<RecipeComment> recipeComments = recipeCommentRepository.findAllActiveCommentsByMember(member);
+        List<RecipeComment> recipeComments = recipeCommentRepository.findAllActiveCommentsByMember(
+            member);
 
         Member deleteMember = memberRepository.findMemberById(0L).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
 
         for (RecipeComment recipeComment : recipeComments) {
@@ -146,11 +147,5 @@ public class RecipeCommentServiceImpl implements RecipeCommentService {
         }
 
         recipeCommentRepository.saveAll(recipeComments);
-    }
-
-    @Override
-    @Transactional
-    public void deleteAllRecipeComment(Recipe recipe) {
-        recipeCommentRepository.deleteAllByRecipe(recipe);
     }
 }

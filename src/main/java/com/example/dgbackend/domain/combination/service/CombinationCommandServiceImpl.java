@@ -19,6 +19,7 @@ import com.example.dgbackend.domain.recommend.service.RecommendQueryService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,6 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
     private final HashTagCommandService hashTagCommandService;
     private final HashTagOptionCommandService hashTagOptionCommandService;
     private final CombinationLikeCommandService combinationLikeCommandService;
-    private final CombinationImageQueryService combinationImageQueryService;
     private final CombinationImageCommandService combinationImageCommandService;
     private final MemberRepository memberRepository;
     private final CombinationCommentCommandService combinationCommentCommandService;
@@ -58,11 +58,10 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
             String recommendImageUrl = recommend.getImageUrl();
 
             newCombination = createCombination(loginMember, request.getTitle(),
-                request.getContent(),
-                recommendImageUrl);
+                request.getContent(), recommendImageUrl);
         } else {
-            newCombination = createCombination(loginMember, request.getTitle(), request.getContent()
-                , combinationImageList.toArray(String[]::new));
+            newCombination = createCombination(loginMember, request.getTitle(),
+                request.getContent(), combinationImageList.toArray(String[]::new));
         }
         Combination saveCombination = combinationRepository.save(newCombination);
         hashTagCommandService.uploadHashTag(saveCombination, request.getHashTagNameList());
@@ -115,22 +114,12 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
     @Override
     public void deleteAllCombination(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
-        );
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         List<Combination> combinationList = combinationRepository.findAllByMember(member);
         for (Combination combination : combinationList) {
             deleteCombination(combination.getId());
         }
-    }
-
-    @Override
-    public void deleteCombinationWithRelations(Combination combination) {
-        combinationImageCommandService.deleteAllCombinationImage(combination);
-        combinationLikeCommandService.deleteAllCombinationLike(combination.getId());
-        combinationCommentCommandService.deleteAllCombinationComment(combination);
-        hashTagOptionCommandService.deleteAllHashTagOption(combination.getId());
-
     }
 
     @Override

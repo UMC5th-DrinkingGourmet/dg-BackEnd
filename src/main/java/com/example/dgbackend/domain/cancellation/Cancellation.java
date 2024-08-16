@@ -26,8 +26,8 @@ public class Cancellation extends BaseTimeEntity {
 
     public static Cancellation toEntity(LocalDateTime time, Member member) {
         return Cancellation.builder()
-                .cancelledAt(time)
-                .member(member)
-                .build();
+            .cancelledAt(time)
+            .member(member)
+            .build();
     }
 }

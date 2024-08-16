@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface CancellationRepository extends JpaRepository<Cancellation, Long>  {
+public interface CancellationRepository extends JpaRepository<Cancellation, Long> {
 
-    Boolean existsByMember (Member member);
+    Boolean existsByMember(Member member);
 
-    Boolean existsByMemberId (Long memberId);
+    Boolean existsByMemberId(Long memberId);
 
-    Optional<Cancellation> findByMemberId (Long memberId);
+    Optional<Cancellation> findByMemberId(Long memberId);
 
     List<Cancellation> findAllByCancelledAtBefore(LocalDateTime now);
 
-    Optional<Cancellation> findById (Long id);
+    Optional<Cancellation> findById(Long id);
 }

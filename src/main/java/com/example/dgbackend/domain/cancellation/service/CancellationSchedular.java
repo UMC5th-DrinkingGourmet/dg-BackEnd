@@ -85,7 +85,7 @@ public class CancellationSchedular {
         // 차단 기록 삭제
         memberBlockService.deleteBlock(cancelMember);
         // 신고 기록 삭제
-        reportService.deleteReport(memberId);
+        reportService.deleteReport(cancelMember);
 
         // 탈퇴 테이블에서 해당 엔티티 삭제
         cancellationRepository.delete(cancellation);

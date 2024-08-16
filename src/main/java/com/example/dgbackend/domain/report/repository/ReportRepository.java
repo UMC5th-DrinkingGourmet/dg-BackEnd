@@ -12,7 +12,5 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Report findTopByResourceIdAndReportTargetAndMember(Long resourceId, ReportTarget reportTarget,
         Member member);
 
-    List<Report> findAllByMemberId(Long memberId);
-
-    void deleteAllById(Long reportId);
+    void deleteAllByMember(Member member);
 }

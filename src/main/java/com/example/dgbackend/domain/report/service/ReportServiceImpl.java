@@ -496,12 +496,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void deleteReport(Long memberId) {
+    public void deleteReport(Member member) {
 
-        List<Report> reports = reportRepository.findAllByMemberId(memberId);
-
-        for (Report report : reports){
-            reportRepository.deleteAllById(report.getId());
-        }
+        reportRepository.deleteAllByMember(member);
     }
 }

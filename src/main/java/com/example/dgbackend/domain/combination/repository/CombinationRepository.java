@@ -62,8 +62,4 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     @Query("SELECT c FROM Combination c WHERE c.member NOT IN (SELECT mb.blockedMember FROM MemberBlock mb WHERE mb.member.id = :memberId) AND c.id = :id AND c.state = true")
     Optional<Combination> findCombinationByIdAndStateIsTrue(Long id, Long memberId);
-
-    @Modifying
-    @Query(value = "DELETE FROM combination WHERE member_id = :id", nativeQuery = true)
-    void deleteByMemberIdWithNativeQuery(Long id);
 }

@@ -204,7 +204,9 @@ public class RecipeServiceImpl implements RecipeService {
             () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
 
-        recipeRepository.deleteByMemberIdWithNativeQuery(member.getId());
-
+        List<Recipe> recipeList = recipeRepository.findAllByMember(member);
+        for (Recipe recipe : recipeList) {
+            deleteRecipe(recipe.getId(), member);
+        }
     }
 }

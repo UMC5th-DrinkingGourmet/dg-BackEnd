@@ -23,6 +23,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -494,4 +495,13 @@ public class ReportServiceImpl implements ReportService {
         redisUtil.deleteData(id);
     }
 
+    @Override
+    public void deleteReport(Long memberId) {
+
+        List<Report> reports = reportRepository.findAllByMemberId(memberId);
+
+        for (Report report : reports){
+            reportRepository.deleteAllById(report.getId());
+        }
+    }
 }

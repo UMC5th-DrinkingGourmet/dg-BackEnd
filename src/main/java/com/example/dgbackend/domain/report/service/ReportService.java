@@ -9,4 +9,6 @@ public interface ReportService {
 
     String report(ReportReq reportReq, Member member) throws MessagingException;
 
+    void deleteReport(Long memberId);
+
 }

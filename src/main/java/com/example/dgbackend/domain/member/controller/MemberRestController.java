@@ -73,7 +73,7 @@ public class MemberRestController {
 
     @Operation(summary = "회원 탈퇴", description = "회원 계정을 삭제합니다.")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공"),
     })
     @PostMapping("/cancellations")
     public ApiResponse<Boolean> cancelMember(@MemberObject Member member) {

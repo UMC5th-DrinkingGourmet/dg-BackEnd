@@ -7,6 +7,7 @@ import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.s3.S3Service;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final CancellationCommandService cancellationCommandService;
 
     @Override
-    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member, MemberRequest.RecommendInfoDTO requestInfoDTO) {
+    public MemberResponse.RecommendInfoDTO patchRecommendInfo(Member member,
+        MemberRequest.RecommendInfoDTO requestInfoDTO) {
         member.setPreferredAlcoholType(requestInfoDTO.getPreferredAlcoholType());
         member.setPreferredAlcoholDegree(requestInfoDTO.getPreferredAlcoholDegree());
         member.setDrinkingTimes(requestInfoDTO.getDrinkingTimes());
@@ -38,7 +40,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     // 회원 정보 수정
     @Override
-    public MemberResponse.GetMember patchMember(Member member, MemberRequest.PatchMember patchMember) {
+    public MemberResponse.GetMember patchMember(Member member,
+        MemberRequest.PatchMember patchMember) {
         member.setName(patchMember.getName());
         member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());
@@ -75,7 +78,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public Boolean deleteMember(Member member) { return cancellationCommandService.postCancellation(member); }
+    public Boolean deleteMember(Member member) {
+        return cancellationCommandService.postCancellation(member);
+    }
 
     @Override
     public void finalDeleteMember(Long memberId) {

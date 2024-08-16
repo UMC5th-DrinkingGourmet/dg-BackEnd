@@ -14,11 +14,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -238,9 +236,9 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         List<Recommend> recommends = recommendRepository.findAllByMemberId(memberId);
 
         List<String> imageUrls = recommends.stream()
-                .map(Recommend::getImageUrl)
-                .filter(Objects::nonNull)
-                .toList();
+            .map(Recommend::getImageUrl)
+            .filter(Objects::nonNull)
+            .toList();
 
         imageUrls.forEach(s3Service::deleteFile);
 
@@ -303,5 +301,4 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
 
         return userInfo;
     }
-
 }

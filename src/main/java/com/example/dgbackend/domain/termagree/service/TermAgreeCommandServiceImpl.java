@@ -10,6 +10,7 @@ import com.example.dgbackend.domain.termagree.dto.TermRequestDTO.TermDisagreeReq
 import com.example.dgbackend.domain.termagree.dto.TermResponseDTO.TermAgreeResponseDTO;
 import com.example.dgbackend.domain.termagree.dto.TermResponseDTO.TermDisagreeResponseDTO;
 import com.example.dgbackend.domain.termagree.repository.TermAgreeRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -42,17 +43,11 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
             }
 
             savedList.add(term.getTermType());
-            termAgreeRepository.save(termAgreeRepository.save(
-                TermAgree.builder()
-                    .term(term)
-                    .member(member)
-                    .build()));
+            termAgreeRepository.save(
+                termAgreeRepository.save(TermAgree.builder().term(term).member(member).build()));
         }
 
-        return TermAgreeResponseDTO.builder()
-            .memberID(member.getId())
-            .termList(savedList)
-            .build();
+        return TermAgreeResponseDTO.builder().memberID(member.getId()).termList(savedList).build();
     }
 
     @Override
@@ -64,10 +59,8 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
         List<TermAgree> alreadyAgreedTermList = termAgreeRepository.findAllByMemberId(
             member.getId());
         if (alreadyAgreedTermList == null) {
-            return TermDisagreeResponseDTO.builder()
-                .memberID(member.getId())
-                .termList(new ArrayList<>())
-                .build();
+            return TermDisagreeResponseDTO.builder().memberID(member.getId())
+                .termList(new ArrayList<>()).build();
         }
 
         List<TermType> savedList = new ArrayList<>();
@@ -80,9 +73,7 @@ public class TermAgreeCommandServiceImpl implements TermAgreeCommandService {
             termAgreeRepository.delete(termAgree);
         }
 
-        return TermDisagreeResponseDTO.builder()
-            .memberID(member.getId())
-            .termList(savedList)
+        return TermDisagreeResponseDTO.builder().memberID(member.getId()).termList(savedList)
             .build();
     }
 

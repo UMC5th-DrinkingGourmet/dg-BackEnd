@@ -6,8 +6,8 @@ import static com.example.dgbackend.domain.enums.State.REPORTED;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.enums.State;
 import com.example.dgbackend.domain.member.Member;
-import com.example.dgbackend.domain.recipecomment.RecipeComment;
 import com.example.dgbackend.global.common.BaseTimeEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,7 +45,6 @@ public class CombinationComment extends BaseTimeEntity {
     @JoinColumn(name = "parent_id")
     private CombinationComment parentComment; //댓글 : 0, 대 댓글 : 자신의 부모 댓글 id
 
-
     @Enumerated(EnumType.STRING)
     private State state; //true : 존재, false : 삭제, reported: 신고
 
@@ -69,7 +68,6 @@ public class CombinationComment extends BaseTimeEntity {
         this.state = FALSE;
         this.combination.deleteCombinationComment();
     }
-
 
     public void updateComment(String content) {
         this.content = content;

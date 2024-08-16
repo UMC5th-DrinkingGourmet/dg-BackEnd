@@ -46,5 +46,4 @@ public class RecipeLike extends BaseTimeEntity {
 
         return this;
     }
-
 }

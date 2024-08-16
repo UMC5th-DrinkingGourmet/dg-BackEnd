@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.termagree;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.term.Term;
 import com.example.dgbackend.global.common.BaseTimeEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,5 +35,5 @@ public class TermAgree extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "term_id")
     private Term term;
-
+    
 }

@@ -3,7 +3,6 @@ package com.example.dgbackend.domain.recipe.service;
 import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMyPageList;
 import static com.example.dgbackend.global.common.MemberValidator.isMatch;
 
-import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.domain.recipe.Recipe;
@@ -17,6 +16,7 @@ import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
+
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -201,7 +201,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void deleteAllRecipe(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
+            () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
         List<Recipe> recipeList = recipeRepository.findAllByMember(member);
         for (Recipe recipe : recipeList) {

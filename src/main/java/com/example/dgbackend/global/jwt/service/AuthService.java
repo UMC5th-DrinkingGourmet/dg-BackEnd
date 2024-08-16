@@ -12,6 +12,7 @@ import com.example.dgbackend.global.jwt.JwtProvider;
 import com.example.dgbackend.global.jwt.dto.AuthRequest;
 import com.example.dgbackend.global.jwt.dto.AuthResponse;
 import com.example.dgbackend.global.util.RedisUtil;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,7 +40,8 @@ public class AuthService {
     /**
      * 회원가입 및 로그인 진행
      */
-    public AuthResponse.AuthResult loginOrJoin(HttpServletResponse response, AuthRequest.AuthDTO authRequest)
+    public AuthResponse.AuthResult loginOrJoin(HttpServletResponse response,
+        AuthRequest.AuthDTO authRequest)
         throws IOException {
 
         String id = authRequest.getProvider() + "_" + authRequest.getProviderId();
@@ -66,7 +68,9 @@ public class AuthService {
 
             // 해당 멤버가 탈퇴 신청을 했는지 확인
             Boolean isCancelled = cancellationCommandService.checkCancellation(memberId);
-            if (isCancelled) cancellationCommandService.deleteCancellation(memberId);
+            if (isCancelled) {
+                cancellationCommandService.deleteCancellation(memberId);
+            }
 
             isNewMember = false;
 
@@ -82,7 +86,8 @@ public class AuthService {
         registerHeaderToken(response, id, "Authorization");
         registerHeaderToken(response, id, "RefreshToken");
 
-        return AuthResponse.toAuthResult(authRequest.getProvider(), authRequest.getNickName(),isNewMember,
+        return AuthResponse.toAuthResult(authRequest.getProvider(), authRequest.getNickName(),
+            isNewMember,
             memberId);
 
     }
@@ -113,7 +118,7 @@ public class AuthService {
         String refreshToken = request.getHeader("RefreshToken");
 
         // Access Token 만료
-        Date accessTokenExpirationDate= jwtProvider.getAccessTokenExpiration(accessToken);
+        Date accessTokenExpirationDate = jwtProvider.getAccessTokenExpiration(accessToken);
 
         // Access Token에서 provider 추출
         String id = jwtProvider.getMemberIdFromToken(refreshToken);
@@ -134,7 +139,7 @@ public class AuthService {
         long milliseconds = accessTokenExpirationDate.getTime() - currentDate.getTime();
 
         // Access Token 블랙리스트 추가
-        redisUtil.setDataExpire( accessToken,"logout", milliseconds);
+        redisUtil.setDataExpire(accessToken, "logout", milliseconds);
 
         return "로그아웃 하였습니다";
     }
@@ -152,7 +157,6 @@ public class AuthService {
 
         String id = jwtProvider.getMemberIdFromToken(refreshToken);
         String data = redisUtil.getData(id);
-
 
         // Redis에 refresh token이 만료되어 사라진 경우
         if (data.equals("false")) {
@@ -181,7 +185,8 @@ public class AuthService {
         Boolean isSigned = false;
 
         //Member Repository에서 있는지 검사
-        isSigned = memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(), authRequest.getProviderId());
+        isSigned = memberQueryService.existsByProviderAndProviderId(authRequest.getProvider(),
+            authRequest.getProviderId());
 
         return AuthResponse.toIsSignedUpResult(isSigned);
     }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
@@ -15,5 +17,7 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
     List<Recommend> findAllByMemberId(Long memberId);
 
-    void deleteAllByMemberId(Long memberId);
+    @Modifying
+    @Query(value = "DELETE FROM recommend WHERE member_id = :memberId", nativeQuery = true)
+    void deleteAllByMemberIdWithNativeQuery(Long memberId);
 }

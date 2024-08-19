@@ -8,7 +8,6 @@ import com.example.dgbackend.domain.combination.dto.CombinationResponse;
 import com.example.dgbackend.domain.combination.repository.CombinationRepository;
 import com.example.dgbackend.domain.combinationcomment.service.CombinationCommentCommandService;
 import com.example.dgbackend.domain.combinationimage.service.CombinationImageCommandService;
-import com.example.dgbackend.domain.combinationimage.service.CombinationImageQueryService;
 import com.example.dgbackend.domain.combinationlike.service.CombinationLikeCommandService;
 import com.example.dgbackend.domain.hashtag.service.HashTagCommandService;
 import com.example.dgbackend.domain.hashtagoption.service.HashTagOptionCommandService;
@@ -114,9 +113,11 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
 
     @Override
     public void deleteAllCombination(Long memberId) {
+
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
         List<Combination> combinationList = combinationRepository.findAllByMember(member);
+
         for (Combination combination : combinationList) {
             deleteCombination(combination.getId());
         }

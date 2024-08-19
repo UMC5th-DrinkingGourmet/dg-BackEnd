@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
@@ -41,4 +42,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Optional<Recipe> findByIdAndMemberAndStateIsTrue(Long id, Long memberId);
 
     List<Recipe> findAllByMember(Member member);
+
+    @Modifying
+    @Query(value = "DELETE FROM recipe WHERE member_id = :id", nativeQuery = true)
+    void deleteByMemberIdWithNativeQuery(Long id);
 }

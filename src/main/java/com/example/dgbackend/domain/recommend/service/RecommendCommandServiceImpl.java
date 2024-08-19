@@ -242,7 +242,7 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
 
         imageUrls.forEach(s3Service::deleteFile);
 
-        recommendRepository.deleteAllByMemberId(memberId);
+        recommendRepository.deleteAllByMemberIdWithNativeQuery(memberId);
     }
 
     /*

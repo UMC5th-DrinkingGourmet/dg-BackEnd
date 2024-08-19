@@ -7,6 +7,7 @@ import com.example.dgbackend.domain.member.service.MemberCommandService;
 import com.example.dgbackend.domain.member.service.MemberQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/users")
 public class MemberRestController {
 
-    private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
     @Operation(summary = "회원 추천 정보 저장", description = "회원 추천 정보를 저장합니다.")

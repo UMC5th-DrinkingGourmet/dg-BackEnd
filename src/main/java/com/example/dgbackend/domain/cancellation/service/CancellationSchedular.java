@@ -12,6 +12,7 @@ import com.example.dgbackend.domain.recipe.service.RecipeService;
 import com.example.dgbackend.domain.recipecomment.service.RecipeCommentService;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.domain.recommend.service.RecommendCommandService;
+import com.example.dgbackend.domain.report.service.ReportService;
 import com.example.dgbackend.domain.termagree.service.TermAgreeCommandService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
@@ -41,10 +42,12 @@ public class CancellationSchedular {
     private final TermAgreeCommandService termAgreeCommandService;
     private final MemberCommandService memberCommandService;
     private final MemberBlockService memberBlockService;
+    private final ReportService reportService;
 
     @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
     @Transactional
     public void processCancellations() {
+
         LocalDateTime now = LocalDateTime.now();
         List<Cancellation> expiredCancellations = cancellationRepository.findAllByCancelledAtBefore(
             now);
@@ -81,6 +84,8 @@ public class CancellationSchedular {
         termAgreeCommandService.deleteCancellation(cancelMember);
         // 차단 기록 삭제
         memberBlockService.deleteBlock(cancelMember);
+        // 신고 기록 삭제
+        reportService.deleteReport(cancelMember);
 
         // 탈퇴 테이블에서 해당 엔티티 삭제
         cancellationRepository.delete(cancellation);

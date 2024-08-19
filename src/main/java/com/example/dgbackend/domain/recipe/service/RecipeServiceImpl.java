@@ -203,6 +203,7 @@ public class RecipeServiceImpl implements RecipeService {
         Member member = memberRepository.findById(memberId).orElseThrow(
             () -> new ApiException(ErrorStatus._EMPTY_MEMBER)
         );
+
         List<Recipe> recipeList = recipeRepository.findAllByMember(member);
         for (Recipe recipe : recipeList) {
             deleteRecipe(recipe.getId(), member);

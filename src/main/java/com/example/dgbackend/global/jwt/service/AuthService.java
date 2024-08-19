@@ -68,6 +68,7 @@ public class AuthService {
 
             // 해당 멤버가 탈퇴 신청을 했는지 확인
             Boolean isCancelled = cancellationCommandService.checkCancellation(memberId);
+
             if (isCancelled) {
                 cancellationCommandService.deleteCancellation(memberId);
             }

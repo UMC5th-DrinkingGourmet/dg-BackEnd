@@ -5,6 +5,8 @@ import com.example.dgbackend.domain.combinationcomment.dto.CombinationCommentRes
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.hashtagoption.HashTagOption;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -223,6 +225,7 @@ public class CombinationResponse {
         CombinationResult combinationResult,
         MemberResponse.MemberResult memberResult,
         CombinationCommentResponse.CommentPreViewResult combinationCommentResult) {
+
         return CombinationDetailResult.builder()
             .combinationResult(combinationResult)
             .memberResult(memberResult)
@@ -234,6 +237,7 @@ public class CombinationResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    @JsonInclude(Include.NON_NULL) // null 값이 아닐 때만 반환
     public static class CombinationResult {
 
         Long combinationId;
@@ -242,6 +246,7 @@ public class CombinationResponse {
         List<String> hashTagList;
         List<String> combinationImageList;
         Boolean isCombinationLike;
+        Long recommendId;
     }
 
     public static CombinationResult toCombinationResult(Combination combination,
@@ -262,8 +267,10 @@ public class CombinationResponse {
             .hashTagList(hashTagList)
             .combinationImageList(imageList)
             .isCombinationLike(isCombinationLike)
+            .recommendId(combination.getRecommend() != null ? combination.getRecommend().getId() : null)
             .build();
     }
+
 
     /**
      * 오늘의 조합 수정 정보 조회

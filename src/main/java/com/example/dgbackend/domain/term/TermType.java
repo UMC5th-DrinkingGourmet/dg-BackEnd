@@ -3,15 +3,14 @@ package com.example.dgbackend.domain.term;
 /*
  * 이용약관 종류
  * [필수 약관]
- * PRIVACY: 사용자 데이터 및 개인정보 보호 정책
- * CONTENT: 사용자 콘텐츠 정책
- * AGE: 연령 제한 정책
- * COPYRIGHT: 저작권 및 상표 정책
- * SERVICE_CHANGE: 서비스 변경 및 중단 정책
+ * TERMS_OF_SERVICE: 서비스 이용 약관
+ * ELECTRONIC_FINANCIAL_TRANSACTION: 전자 금융거래 이용 약관
+ * PERSONAL_INFORMATION_COLLECT: 개인정보 수집
  *
  * [선택 약관]
+ * PERSONAL_INFORMATION_THIRD_PARTY: 개인정보 제3자 제공
  * MARKETING: 마케팅 동의 정책
  */
 public enum TermType {
-    PRIVACY, CONTENT, AGE, COPYRIGHT, SERVICE_CHANGE, MARKETING
+    TERMS_OF_SERVICE, ELECTRONIC_FINANCIAL_TRANSACTION, PERSONAL_INFORMATION_COLLECT, PERSONAL_INFORMATION_THIRD_PARTY, MARKETING
 }

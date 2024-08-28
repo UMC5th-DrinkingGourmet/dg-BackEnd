@@ -3,6 +3,7 @@ package com.example.dgbackend.domain.combination.dto;
 import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.combinationimage.CombinationImage;
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.recommend.Recommend;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,13 @@ public class CombinationRequest {
         List<String> combinationImageList;
     }
 
-    public static Combination createCombination(Member member, String title, String content,
+    public static Combination createCombination(Member member, String title, String content, Recommend recommend,
         String... imageUrls) {
         Combination combination = Combination.builder()
             .member(member)
             .title(title)
             .content(content)
+            .recommend(recommend)
             .combinationImages(new ArrayList<>())
             .build();
 

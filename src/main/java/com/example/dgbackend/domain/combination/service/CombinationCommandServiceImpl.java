@@ -50,17 +50,17 @@ public class CombinationCommandServiceImpl implements CombinationCommandService 
         // Combination & CombinationImage
         Combination newCombination;
         List<String> combinationImageList = request.getCombinationImageList();
+        Recommend recommend = recommendQueryService.getRecommend(request.getRecommendId());
 
         // 업로드 이미지가 없는 경우, GPT가 추천해준 이미지 사용
         if (combinationImageList == null || combinationImageList.isEmpty()) {
-            Recommend recommend = recommendQueryService.getRecommend(request.getRecommendId());
             String recommendImageUrl = recommend.getImageUrl();
 
             newCombination = createCombination(loginMember, request.getTitle(),
-                request.getContent(), recommendImageUrl);
+                request.getContent(), recommend, recommendImageUrl);
         } else {
             newCombination = createCombination(loginMember, request.getTitle(),
-                request.getContent(), combinationImageList.toArray(String[]::new));
+                request.getContent(), recommend, combinationImageList.toArray(String[]::new));
         }
         Combination saveCombination = combinationRepository.save(newCombination);
         hashTagCommandService.uploadHashTag(saveCombination, request.getHashTagNameList());

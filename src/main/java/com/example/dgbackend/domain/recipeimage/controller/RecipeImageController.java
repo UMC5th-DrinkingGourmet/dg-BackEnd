@@ -1,7 +1,6 @@
 package com.example.dgbackend.domain.recipeimage.controller;
 
 import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
-import com.example.dgbackend.domain.recipeimage.dto.RecipeImageVO;
 import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,38 +35,20 @@ public class RecipeImageController {
         return ApiResponse.onSuccess(recipeImageService.getRecipeImages(recipeId));
     }
 
-    @Operation(summary = "레시피 이미지 생성", description = "레시피 이미지 생성")
-    @Parameter(name = "file", description = "파일", required = true)
-    @Parameter(name = "recipeId", description = "레시피 id", required = true)
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<RecipeImageResponse> createRecipeImage(
-        @RequestPart("file") List<MultipartFile> file, @RequestParam("recipeId") Long recipeId) {
-
-        //파일과 레시피 id로 RecipeImageVO.FileRecipe 생성
-        RecipeImageVO.FileVO recipeImageRequestVO = RecipeImageVO.FileVO.of(file, recipeId, null);
-        return ApiResponse.onSuccess(recipeImageService.createRecipeImage(recipeImageRequestVO));
-    }
-
-    @Operation(summary = "레시피 이미지 수정", description = "레시피 이미지 수정")
-    @Parameter(name = "recipeId", description = "레시피 id", required = true)
-    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<RecipeImageResponse> updateRecipeImage(
-        @RequestPart(value = "file", required = false) @Parameter(name = "file", description = "파일", required = false) List<MultipartFile> file,
-        @RequestPart(value = "deleteList", required = false) @Parameter(name = "deleteList", description = "삭제할 파일 url 리스트", required = false) List<String> deleteFileUrlStringList,
-        @RequestParam("recipeId") Long recipeId) {
-
-        //파일과 레시피 id, 삭제할 파일 url 리스트로 RecipeImageVO.FileRecipe 생성
-        RecipeImageVO.FileVO recipeImageRequestVO = RecipeImageVO.FileVO.of(file, recipeId,
-            deleteFileUrlStringList);
-        return ApiResponse.onSuccess(recipeImageService.updateRecipeImage(recipeImageRequestVO));
-    }
-
     @Operation
     @Parameter(name = "recipeId", description = "레시피 id", required = true)
     @DeleteMapping
     public ApiResponse<String> deleteRecipeImage(@RequestParam("recipeId") Long recipeId) {
         recipeImageService.deleteAllRecipeImage(recipeId);
         return ApiResponse.onSuccess("삭제 성공");
+    }
+
+    @Operation(summary = "레시피 이미지 업로드", description = "레시피 이미지 업로드")
+    @Parameter(name = "file", description = "파일", required = true)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<RecipeImageResponse.RecipeImageResult> uploadRecipeImage(
+        @RequestPart(name = "imageUrls", required = false) List<MultipartFile> multipartFiles) {
+        return ApiResponse.onSuccess(recipeImageService.uploadRecipeImage(multipartFiles));
     }
 
 }

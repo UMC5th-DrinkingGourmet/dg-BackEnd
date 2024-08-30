@@ -4,7 +4,6 @@ import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe_hashtag.dto.RecipeHashTagResponse;
 import com.example.dgbackend.domain.recipeimage.RecipeImage;
-import com.example.dgbackend.domain.recipeimage.dto.RecipeImageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -99,6 +98,11 @@ public class RecipeResponse {
     }
 
     public static RecipeResponse toResponse(Recipe recipe, boolean isLike) {
+
+        List<String> iamgeList = recipe.getRecipeImageList().stream()
+            .map(RecipeImage::getImageUrl)
+            .toList();
+
         return RecipeResponse.builder()
             .id(recipe.getId())
             .title(recipe.getTitle())
@@ -111,7 +115,7 @@ public class RecipeResponse {
             .recommendCombination(recipe.getRecommendCombination())
             .state(recipe.isState())
             .member(MemberResponse.toMemberResult(recipe.getMember()))
-            .recipeImageList(RecipeImageResponse.toStringResponse(recipe.getRecipeImageList()))
+            .recipeImageList(iamgeList)
             .hashTagNameList(RecipeHashTagResponse.toStringResponse(recipe.getRecipeHashTagList()))
             .isLike(isLike)
             .build();

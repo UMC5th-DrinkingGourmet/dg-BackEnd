@@ -5,6 +5,8 @@ import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> {
 
@@ -15,4 +17,9 @@ public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> 
     Optional<RecipeImage> findByImageUrl(String imageUrl);
 
     void deleteAllByRecipe(Recipe recipe);
+
+    @Modifying
+    @Query("DELETE from RecipeImage ri where ri.imageUrl = :imageUrl")
+    void deleteByImageUrl(String imageUrl);
+
 }

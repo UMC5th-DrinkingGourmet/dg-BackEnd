@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.dto;
 
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recipe.Recipe;
+import com.example.dgbackend.domain.recipeimage.RecipeImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -42,8 +43,11 @@ public class RecipeRequest {
     @Schema(description = "해시태그 리스트", example = "[\"김치찌개\", \"참이슬\"]")
     private List<String> hashTagNameList;
 
+    @Schema(description = "레시피 이미지 url 리스트", example = "[\"https://d3h9ln6psucegz.cloudfront.net/images/recipe/recipe_1/recipe_1_1.jpg\"]")
+    private List<String> recipeImageList;
+
     public static Recipe toEntity(RecipeRequest recipeRequest, Member member) {
-        return Recipe.builder()
+        Recipe recipe = Recipe.builder()
             .title(recipeRequest.getTitle())
             .cookingTime(recipeRequest.getCookingTime())
             .calorie(recipeRequest.getCalorie())
@@ -54,6 +58,15 @@ public class RecipeRequest {
             .recommendCombination(recipeRequest.getRecommendCombination())
             .member(member)
             .build();
+
+        for (String imageUrl : recipeRequest.getRecipeImageList()) {
+            RecipeImage recipeImage = RecipeImage.builder()
+                .imageUrl(imageUrl)
+                .build();
+            recipe.addRecipeImage(recipeImage);
+        }
+        return recipe;
     }
+
 
 }

@@ -16,7 +16,6 @@ import com.example.dgbackend.domain.recipeimage.service.RecipeImageService;
 import com.example.dgbackend.domain.recipelike.service.RecipeLikeService;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
-
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +96,7 @@ public class RecipeServiceImpl implements RecipeService {
             List<RecipeHashTag> hashTags = recipeHashTagService.uploadRecipeHashTag(recipe,
                 recipeRequest.getHashTagNameList());
             recipe.setHashTagList(hashTags);
+            recipeImageService.updateRecipeImage(recipe, recipeRequest.getRecipeImageList());
             return getRecipeDetailResponse(recipe.update(recipeRequest), recipe.getMember());
         } else {
             throw new ApiException(ErrorStatus._INVALID_MEMBER);

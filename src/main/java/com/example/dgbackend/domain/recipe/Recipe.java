@@ -113,4 +113,9 @@ public class Recipe extends BaseTimeEntity {
         this.recipeHashTagList = new HashSet<>(recipeHashTagList);
     }
 
+    public void addRecipeImage(RecipeImage recipeImage) {
+        recipeImageList.add(recipeImage);
+        recipeImage.setRecipe(this);
+    }
+
 }

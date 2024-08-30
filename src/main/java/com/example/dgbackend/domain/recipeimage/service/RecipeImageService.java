@@ -48,7 +48,6 @@ public class RecipeImageService {
             .ifPresentOrElse(recipeImageEntity -> {
                     s3Service.deleteFile(recipeImageEntity.getImageUrl());
                     recipeImageRepository.delete(recipeImageEntity);
-                    ;
                 },
                 () -> {
                     throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);

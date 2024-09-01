@@ -20,4 +20,7 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
     @Modifying
     @Query(value = "DELETE FROM recommend WHERE member_id = :memberId", nativeQuery = true)
     void deleteAllByMemberIdWithNativeQuery(Long memberId);
+    
+    @Query("SELECT r.imageUrl FROM Recommend r WHERE r.foodName = :foodName AND r.drinkName = :drinkName AND FUNCTION('DATEDIFF', CURRENT_DATE, r.createdAt) < :n AND r.imageUrl NOT IN (SELECT DISTINCT r2.imageUrl FROM Recommend r2 WHERE r2.member.id = :memberId) GROUP BY r.imageUrl")
+    List<String> findImageUrlForCaching(Long memberId, String foodName,String drinkName,int n);
 }

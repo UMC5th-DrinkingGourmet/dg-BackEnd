@@ -101,8 +101,19 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         String drinkType = gptResult.get("Alcohol");
         String reason = gptResult.get("Reason");
 
-        //추천 결과 이미지 생성
-        String imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
+        //캐싱 적용 위치
+        List<String> cachedImages = recommendRepository.findImageUrlForCaching(member.getId(),
+            recommendRequestDTO.getFoodName(), drinkType, 7);
+
+        String imageUrl = "";
+        if (cachedImages.isEmpty()) {
+            imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
+        }
+        else {
+            // 랜덤 혹은 뭐 어떻게든 바꿔야함
+            imageUrl = cachedImages.get(0);
+        }
+
         //추천 결과 DB에 저장
         Recommend recommend = recommendQueryService.addRecommend(member, recommendRequestDTO,
             drinkType, reason, imageUrl);

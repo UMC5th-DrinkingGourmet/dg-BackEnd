@@ -247,6 +247,7 @@ public class CombinationResponse {
         List<String> combinationImageList;
         Boolean isCombinationLike;
         Long recommendId;
+        String recommend;
     }
 
     public static CombinationResult toCombinationResult(Combination combination,
@@ -268,6 +269,7 @@ public class CombinationResponse {
             .combinationImageList(imageList)
             .isCombinationLike(isCombinationLike)
             .recommendId(combination.getRecommend() != null ? combination.getRecommend().getId() : null)
+            .recommend(combination.getRecommend().getFoodName() + " & " +combination.getRecommend().getDrinkName())
             .build();
     }
 

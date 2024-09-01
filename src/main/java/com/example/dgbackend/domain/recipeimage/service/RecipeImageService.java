@@ -111,5 +111,64 @@ public class RecipeImageService {
         recipeImages.forEach(recipe::addRecipeImage);
     }
 
+    public RecipeImageResponse.RecipeImageResult uploadRecipeImage(
+        List<MultipartFile> requestFiles) {
+
+        List<MultipartFile> multipartFiles = validFileList(requestFiles);
+
+        // S3에 이미지 업로드
+        List<String> imageUrls = s3Service.uploadFile(multipartFiles)
+            .stream()
+            .map(S3Result::getImgUrl)
+            .toList();
+
+        return RecipeImageResponse.toRecipeImageResult(imageUrls);
+
+    }
+
+    public void updateRecipeImage(Recipe recipe, List<String> recipeImageList) {
+
+        // 1. 기존의 이미지 파일 조회
+        List<String> existRecipeImageUrls = recipeImageRepository.findAllByRecipeId(recipe.getId())
+            .stream()
+            .map(RecipeImage::getImageUrl)
+            .toList();
+
+        // 2. 수정하면서 없어진 이미지를 S3에서 삭제하기
+        removeCancelledRecipeImage(recipeImageList, existRecipeImageUrls);
+
+        // 3. 새로 추가된 이미지 RecipeImage에 저장하기 (S3에 저장하기)
+        addNewRecipeImage(recipe, recipeImageList, existRecipeImageUrls);
+
+    }
+
+    public void removeCancelledRecipeImage(List<String> recipeImageList,
+        List<String> existRecipeImageUrls) {
+
+        List<String> delImageUrls = existRecipeImageUrls.stream()
+            .filter(existImage -> !recipeImageList.contains(existImage))
+            .toList();
+
+        delImageUrls.forEach(recipeImageRepository::deleteByImageUrl);
+        delImageUrls.forEach(s3Service::deleteFile);
+
+    }
+
+    public void addNewRecipeImage(Recipe recipe, List<String> recipeImageList,
+        List<String> existRecipeImageUrls) {
+
+        List<String> addImageUrls = recipeImageList.stream()
+            .filter(request -> !existRecipeImageUrls.contains(request))
+            .toList();
+
+        List<RecipeImage> recipeImages = addImageUrls.stream()
+            .map(image -> RecipeImage.builder()
+                .recipe(recipe)
+                .imageUrl(image)
+                .build())
+            .toList();
+        recipeImages.forEach(recipe::addRecipeImage);
+    }
+
 
 }

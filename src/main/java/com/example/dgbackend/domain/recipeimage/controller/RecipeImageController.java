@@ -26,6 +26,7 @@ public class RecipeImageController {
 
 
     @Operation(summary = "레시피 이미지 업로드", description = "레시피 이미지 업로드")
+    @Parameter(name = "file", description = "파일", required = true)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<RecipeImageResponse.RecipeImageResult> uploadRecipeImage(
         @RequestPart(name = "imageUrls", required = false) List<MultipartFile> multipartFiles) {

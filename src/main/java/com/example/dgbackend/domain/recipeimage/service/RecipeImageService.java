@@ -25,12 +25,6 @@ public class RecipeImageService {
 
     private final S3Service s3Service;
 
-    public List<String> getRecipeImages(Long recipeId) {
-        return recipeImageRepository.findAllByRecipeId(recipeId).stream()
-            .map(RecipeImage::getImageUrl)
-            .toList();
-    }
-
     //파일 없을 시 예외처리
     private List<MultipartFile> validFileList(List<MultipartFile> request) {
 
@@ -41,24 +35,6 @@ public class RecipeImageService {
         return request;
     }
 
-    //recipeImageRepository에서 imageUrl로 조회해서 있으면 삭제하고 s3에서도 삭제
-    //없다면 예외처리
-    public void deleteRecipeImage(String imageUrl) {
-        recipeImageRepository.findByImageUrl(imageUrl)
-            .ifPresentOrElse(recipeImageEntity -> {
-                    s3Service.deleteFile(recipeImageEntity.getImageUrl());
-                    recipeImageRepository.delete(recipeImageEntity);
-                },
-                () -> {
-                    throw new ApiException(ErrorStatus._EMPTY_RECIPE_IMAGE);
-                });
-    }
-
-    public void deleteAllRecipeImage(Long recipeId) {
-        recipeImageRepository.findAllByRecipeId(recipeId).forEach(recipeImageEntity -> {
-            deleteRecipeImage(recipeImageEntity.getImageUrl());
-        });
-    }
 
     public void deleteRecipeImage(Recipe recipe) {
         List<RecipeImage> recipeImages = loadImage(recipe.getId());

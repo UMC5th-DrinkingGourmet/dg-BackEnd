@@ -6,6 +6,8 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.member.dto.MemberRequest;
 import com.example.dgbackend.domain.member.dto.MemberResponse;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
+import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
+import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public MemberResponse.GetMember patchMember(Member member,
         MemberRequest.PatchMember patchMember) {
+
+        if (memberRepository.existsByNickName(patchMember.getNickName())) {
+            throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
+        }
+
         member.setName(patchMember.getName());
         member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());

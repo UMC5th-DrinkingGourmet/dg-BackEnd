@@ -20,4 +20,6 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
     @Modifying
     @Query(value = "DELETE FROM recommend WHERE member_id = :memberId", nativeQuery = true)
     void deleteAllByMemberIdWithNativeQuery(Long memberId);
+
+    List<Recommend> findAllByFoodNameAndDrinkNameAndMemberId(String foodName, String drinkName, Long memberId);
 }

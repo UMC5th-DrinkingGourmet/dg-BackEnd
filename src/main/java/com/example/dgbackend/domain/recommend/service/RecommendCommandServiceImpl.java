@@ -1,5 +1,7 @@
 package com.example.dgbackend.domain.recommend.service;
 
+import com.example.dgbackend.domain.cachedRecommendImage.service.CachedRecommendImageCommandService;
+import com.example.dgbackend.domain.cachedRecommendImage.service.CachedRecommendImageQueryService;
 import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.recommend.Recommend;
 import com.example.dgbackend.domain.recommend.dto.RecommendRequest;
@@ -34,6 +36,8 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
 
     private final RecommendRepository recommendRepository;
     private final RecommendQueryService recommendQueryService;
+    private final CachedRecommendImageQueryService cachedRecommendImageQueryService;
+    private final CachedRecommendImageCommandService cachedRecommendImageCommandService;
     private final S3Service s3Service;
 
     //GPT 관련 변수
@@ -64,9 +68,6 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         if (recommendRequestDTO.getFoodName() == null) {
             throw new ApiException(ErrorStatus._NULL_FOOD_NAME);
         }
-
-        // 사용자 선호 정보 추출을 위한 Member 객체 생성
-//        Member member = memberRepository.findById(memberID).orElseThrow(() -> new ApiException(ErrorStatus._EMPTY_MEMBER));
 
         //GPT API 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -101,8 +102,29 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         String drinkType = gptResult.get("Alcohol");
         String reason = gptResult.get("Reason");
 
-        //추천 결과 이미지 생성
-        String imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
+        List<String> cachedImages = cachedRecommendImageQueryService
+            .getCachedImageUrl(recommendRequestDTO.getFoodName(), drinkType);
+
+        String imageUrl = "";
+        if (!cachedImages.isEmpty()) {
+            List<String> duplicatedImageList = recommendRepository.findAllByFoodNameAndDrinkNameAndMemberId(
+                    recommendRequestDTO.getFoodName(), drinkType, member.getId()).stream()
+                .map(Recommend::getImageUrl)
+                .toList();
+
+            for (String cachedImage : cachedImages) {
+                if (!duplicatedImageList.contains(cachedImage)) {
+                    imageUrl = cachedImage;
+                    break;
+                }
+            }
+        }
+        if (imageUrl.isEmpty()) {
+            imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
+            cachedRecommendImageCommandService.saveCachedRecommendImage(
+                recommendRequestDTO.getFoodName(), drinkType, imageUrl);
+        }
+
         //추천 결과 DB에 저장
         Recommend recommend = recommendQueryService.addRecommend(member, recommendRequestDTO,
             drinkType, reason, imageUrl);

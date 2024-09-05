@@ -7,8 +7,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CachedRecommendImageRepository extends JpaRepository<CachedRecommendImage, Long> {
-    Optional<List<CachedRecommendImage>> findAllByFoodNameAndDrinkName(String foodName, String drinkName);
+
+    Optional<List<CachedRecommendImage>> findAllByFoodNameAndDrinkName(String foodName,
+        String drinkName);
+
     Optional<CachedRecommendImage> findByImageUrl(String imageUrl);
+
     void deleteAllByCreatedAtBefore(LocalDateTime dateTime);
 
 }

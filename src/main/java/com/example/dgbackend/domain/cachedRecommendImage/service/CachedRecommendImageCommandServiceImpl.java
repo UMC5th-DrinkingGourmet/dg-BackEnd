@@ -10,13 +10,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CachedRecommendImageCommandServiceImpl implements CachedRecommendImageCommandService{
+public class CachedRecommendImageCommandServiceImpl implements CachedRecommendImageCommandService {
+
     private final CachedRecommendImageRepository cachedRecommendImageRepository;
 
     @Override
     public void saveCachedRecommendImage(String foodName, String drinkName, String imageUrl) {
-        if(cachedRecommendImageRepository.findByImageUrl(imageUrl).isPresent())
+        if (cachedRecommendImageRepository.findByImageUrl(imageUrl).isPresent()) {
             return;
+        }
 
         cachedRecommendImageRepository.save(CachedRecommendImage.builder()
             .foodName(foodName)

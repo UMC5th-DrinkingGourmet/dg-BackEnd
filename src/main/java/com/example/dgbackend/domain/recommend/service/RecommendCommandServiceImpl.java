@@ -108,7 +108,8 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
         String imageUrl = "";
         if (!cachedImages.isEmpty()) {
             List<String> duplicatedImageList = recommendRepository.findAllByFoodNameAndDrinkNameAndMemberId(
-                recommendRequestDTO.getFoodName(), drinkType, member.getId()).stream().map(Recommend::getImageUrl)
+                    recommendRequestDTO.getFoodName(), drinkType, member.getId()).stream()
+                .map(Recommend::getImageUrl)
                 .toList();
 
             for (String cachedImage : cachedImages) {
@@ -118,9 +119,10 @@ public class RecommendCommandServiceImpl implements RecommendCommandService {
                 }
             }
         }
-        if(imageUrl.isEmpty()){
+        if (imageUrl.isEmpty()) {
             imageUrl = makeCombinationImage(member, drinkType, recommendRequestDTO);
-            cachedRecommendImageCommandService.saveCachedRecommendImage(recommendRequestDTO.getFoodName(), drinkType, imageUrl);
+            cachedRecommendImageCommandService.saveCachedRecommendImage(
+                recommendRequestDTO.getFoodName(), drinkType, imageUrl);
         }
 
         //추천 결과 DB에 저장

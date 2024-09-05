@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CachedRecommendImageScheduler {
+
     private final CachedRecommendImageCommandService cachedRecommendImageCommandService;
 
-    @Scheduled(cron = "0 53 16 * * *")
+    @Scheduled(cron = "1 0 0 * * *")
     public void deleteExpiredCachedRecommendImage() {
         cachedRecommendImageCommandService.deleteAllByTTL(LocalDateTime.now().minusDays(7));
     }

@@ -1,6 +1,7 @@
 package com.example.dgbackend.domain.member.service;
 
 import com.example.dgbackend.domain.member.Member;
+import com.example.dgbackend.domain.member.dto.MemberResponse.RecommendInfoDTO;
 import com.example.dgbackend.domain.member.repository.MemberRepository;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,15 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     @Override
     public Optional<Member> findByProviderAndProviderId(String provider, String providerId) {
         return memberRepository.findByProviderAndProviderId(provider, providerId);
+    }
+
+    @Override
+    public RecommendInfoDTO getRecommendInfo(Member member) {
+        return RecommendInfoDTO.builder()
+            .drinkingLimit(member.getDrinkingLimit())
+            .preferredAlcoholType(member.getPreferredAlcoholType())
+            .preferredAlcoholDegree(member.getPreferredAlcoholDegree())
+            .drinkingTimes(member.getDrinkingTimes())
+            .build();
     }
 }

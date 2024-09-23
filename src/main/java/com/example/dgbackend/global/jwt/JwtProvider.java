@@ -65,11 +65,13 @@ public class JwtProvider {
     public String generateRefreshToken(final String id) {
         Claims claims = createClaims(id);
         Date now = new Date();
+        long expiredDate = calculateExpirationDateRefreshToken(now);
         SecretKey secretKey = generateKey();
 
         String refreshToken = Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
+            .setExpiration(new Date(expiredDate))
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact();
 
@@ -88,6 +90,10 @@ public class JwtProvider {
     // JWT 만료 시간 계산
     private long calculateExpirationDate(Date now) {
         return now.getTime() + ACCESS_TOKEN_VALID_TIME;
+    }
+
+    private long calculateExpirationDateRefreshToken(Date now) {
+        return now.getTime() + REFRESH_TOKEN_VALID_TIME;
     }
 
     //TODO: 여기 Exception 넘겨버리기

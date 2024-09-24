@@ -50,6 +50,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
             }
             member.setNickName(patchMember.getNickName());
+
         }
 
         member.setName(patchMember.getName());

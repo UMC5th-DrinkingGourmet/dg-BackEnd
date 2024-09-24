@@ -45,12 +45,15 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public MemberResponse.GetMember patchMember(Member member,
         MemberRequest.PatchMember patchMember) {
 
-        if (memberRepository.existsByNickName(patchMember.getNickName())) {
-            throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
+        if (!member.getNickName().equals(patchMember.getNickName())) {
+            if (memberRepository.existsByNickName(patchMember.getNickName())) {
+                throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
+            }
+            member.setNickName(patchMember.getNickName());
+
         }
 
         member.setName(patchMember.getName());
-        member.setNickName(patchMember.getNickName());
         member.setBirthDate(patchMember.getBirthDate());
         member.setPhoneNumber(patchMember.getPhoneNumber());
         member.setGender(patchMember.getGender());

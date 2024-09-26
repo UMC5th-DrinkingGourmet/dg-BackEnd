@@ -5,6 +5,7 @@ import com.example.dgbackend.domain.memberblock.dto.MemberBlockRequest.MemberBlo
 import com.example.dgbackend.domain.memberblock.dto.MemberBlockResponse;
 import com.example.dgbackend.domain.memberblock.service.MemberBlockServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.config.log.LogExecutionTime;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,6 +22,7 @@ public class MemberBlockController {
 
     private final MemberBlockServiceImpl memberBlockService;
 
+    @LogExecutionTime
     @Operation(summary = "차단하기", description = "특정 멤버를 차단합니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "차단 성공")})

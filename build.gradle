@@ -60,6 +60,8 @@ dependencies {
 
     // logging
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

@@ -7,15 +7,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ApiException extends RuntimeException {
 
-    private final String errorCode;
-    private String errorMessage;
     private final ErrorStatus errorStatus;
 
     public ApiException(ErrorStatus errorStatus) {
         super(errorStatus.getMessage());
-        errorCode = errorStatus.getCode();
-        errorMessage = errorStatus.getMessage();
-        log.error("In ApiException errorCode: {}, errorMessage: {}, Status: {}", errorCode,
+        String errorCode = errorStatus.getCode();
+        String errorMessage = errorStatus.getMessage();
+        log.error("In ApiException ErrorCode: {}, ErrorMessage: {}, Status: {}", errorCode,
             errorMessage, errorStatus);
         this.errorStatus = errorStatus;
     }

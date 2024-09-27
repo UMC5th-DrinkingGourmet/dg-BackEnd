@@ -6,7 +6,7 @@
     <Property name="logErrorFileName">daily-error-log</Property><!-- 생성될 에러로그파일 이름-->
     <Property name="BASE_DIR">/root/logs</Property><!-- 로그파일이 생성될 경로-->
 
-    <Property name="consoleLayout">%style{%d{ISO8601}}{black} %highlight{%-5level}[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property><!-- 콘솔에 생성될 로그 레이아웃-->
+    <Property name="consoleLayout">%style{%d{ISO8601}}{bright,white} %highlight{%-5level}[%style{%t}{bright,magenta}] %style{%C{1.}}{bright,blue}: %msg%n%throwable</Property><!-- 콘솔에 생성될 로그 레이아웃-->
     <Property name="fileLayout">%d [%t] %-5level %c(%M:%L) - %m%n</Property><!-- 파일에 생성될 로그 레이아웃-->
   </Properties>
 

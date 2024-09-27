@@ -17,7 +17,7 @@ public class LogAspect {
     public Object printLog(ProceedingJoinPoint joinPoint) throws Throwable {
         String name = joinPoint.getSignature().getDeclaringTypeName();
         String type =
-            StringUtils.contains(name, "Controller") ? "Controller ===>" :
+            StringUtils.contains(name, "Controller") ? "Controller ===> " :
                 StringUtils.contains(name, "Service") ? "Service ===> " :
                     "";
         log.info(type + name + "." + joinPoint.getSignature().getName() + "()");

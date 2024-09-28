@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberRestController {
 
     private final MemberCommandService memberCommandService;
+    private final MemberQueryService memberQueryService;
 
     @Operation(summary = "회원 추천 정보 저장", description = "회원 추천 정보를 저장합니다.")
     @ApiResponses(value = {
@@ -38,6 +39,16 @@ public class MemberRestController {
         @MemberObject Member member, @RequestBody MemberRequest.RecommendInfoDTO recommendInfoDTO) {
         return ApiResponse.onSuccess(
             memberCommandService.patchRecommendInfo(member, recommendInfoDTO));
+    }
+
+    @Operation(summary = "회원 추천 정보 조회", description = "회원 추천 정보를 조회합니다.")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 추천 정보 조회 성공"),
+    })
+    @GetMapping("/recommend-info")
+    public ApiResponse<MemberResponse.RecommendInfoDTO> getRecommendInfo(
+        @MemberObject Member member) {
+        return ApiResponse.onSuccess(memberQueryService.getRecommendInfo(member));
     }
 
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")

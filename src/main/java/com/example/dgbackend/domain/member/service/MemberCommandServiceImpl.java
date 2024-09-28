@@ -11,6 +11,7 @@ import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Autowired
@@ -66,10 +68,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         String originUrl = member.getProfileImageUrl();
 
         if (originUrl != null) {
+            log.info("--------------------------lgogogo");
             s3Service.deleteFile(originUrl);
         }
-        String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
-        member.updateProfileImageUrl(profileImageUrl);
+
+        if (multipartFile !=  null) {
+            log.info("-----------------------------------보냄");
+            String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
+            member.updateProfileImageUrl(profileImageUrl);
+        } else {
+            member.updateProfileImageUrl(null);
+        }
 
         return MemberResponse.toGetMember(member);
     }

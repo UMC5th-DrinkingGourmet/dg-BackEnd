@@ -15,6 +15,9 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 }
 
 repositories {
@@ -54,6 +57,11 @@ dependencies {
 
     // Json Object
     implementation 'com.googlecode.json-simple:json-simple:1.1'
+
+    // logging
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

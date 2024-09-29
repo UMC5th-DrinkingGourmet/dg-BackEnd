@@ -67,7 +67,7 @@ public class MemberRestController {
     })
     @PostMapping("/profile-image")
     public ApiResponse<MemberResponse.GetMember> patchProfileImage(@MemberObject Member member,
-        @RequestParam(name = "profileImage") MultipartFile patchProfileImage) {
+        @RequestParam(name = "profileImage", required = false) MultipartFile patchProfileImage) {
 
         return ApiResponse.onSuccess(
             memberCommandService.patchProfileImage(member, patchProfileImage));

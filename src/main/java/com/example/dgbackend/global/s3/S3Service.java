@@ -93,9 +93,11 @@ public class S3Service {
     }
 
     public void deleteFile(String fileName) {
-        String s3File = extractKeyFromUrl(fileName);
-        if (s3File != null) {
+        try {
+            String s3File = extractKeyFromUrl(fileName);
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, s3File));
+        } catch (AmazonServiceException e) {
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
         }
     }
 
@@ -104,8 +106,7 @@ public class S3Service {
         if (imageUrl.startsWith(bucketPrefix)) {
             return imageUrl.substring(bucketPrefix.length());
         } else {
-            //throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
-            return null;
+            throw new ApiException(ErrorStatus._S3_IMAGE_NOT_FOUND);
         }
     }
 }

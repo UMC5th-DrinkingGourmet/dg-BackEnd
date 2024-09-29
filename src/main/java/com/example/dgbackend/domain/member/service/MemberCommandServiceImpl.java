@@ -67,13 +67,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public MemberResponse.GetMember patchProfileImage(Member member, MultipartFile multipartFile) {
         String originUrl = member.getProfileImageUrl();
 
-        if (originUrl != null) {
-            log.info("--------------------------lgogogo");
+        if (originUrl != null && !originUrl.equals("")) {
             s3Service.deleteFile(originUrl);
         }
 
         if (multipartFile !=  null) {
-            log.info("-----------------------------------보냄");
             String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
             member.updateProfileImageUrl(profileImageUrl);
         } else {

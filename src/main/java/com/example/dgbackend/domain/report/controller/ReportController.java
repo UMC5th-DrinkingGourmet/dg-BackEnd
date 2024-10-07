@@ -5,6 +5,7 @@ import com.example.dgbackend.domain.member.Member;
 import com.example.dgbackend.domain.report.dto.ReportRequest.ReportReq;
 import com.example.dgbackend.domain.report.service.ReportServiceImpl;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.config.log.LogExecutionTime;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.mail.MessagingException;
@@ -19,6 +20,7 @@ public class ReportController {
 
     private final ReportServiceImpl reportService;
 
+    @LogExecutionTime
     @Operation(summary = "신고하기", description = "신고 가능한 항목들과 제재 조치(reportReason):\n" +
         "- ABUSIVE_LANGUAGE: 욕설, 비속어, 혐오 발언 등 타인에게 불쾌감을 주는 내용 (1일 정지)\n" +
         "- DEFAMATION: 타인을 모욕하거나 명예를 훼손하는 내용 (7일 정지)\n" +

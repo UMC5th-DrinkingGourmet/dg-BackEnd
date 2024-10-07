@@ -6,6 +6,7 @@ import com.example.dgbackend.domain.recommend.dto.RecommendResponse;
 import com.example.dgbackend.domain.recommend.service.RecommendCommandService;
 import com.example.dgbackend.domain.recommend.service.RecommendQueryService;
 import com.example.dgbackend.global.common.response.ApiResponse;
+import com.example.dgbackend.global.config.log.LogExecutionTime;
 import com.example.dgbackend.global.jwt.annotation.MemberObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,6 +31,7 @@ public class RecommendController {
     private final RecommendCommandService recommendCommandService;
     private final RecommendQueryService recommendQueryService;
 
+    @LogExecutionTime
     @Operation(summary = "주류 추천 요청", description = "GPT API에 추류 추천 요청을 보내고 응답을 받아옵니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "주류 추천 성공"),

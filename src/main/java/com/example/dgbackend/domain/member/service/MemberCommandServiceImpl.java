@@ -52,7 +52,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 throw new ApiException(ErrorStatus._DUPLICATE_NICKNAME);
             }
             member.setNickName(patchMember.getNickName());
-
         }
 
         member.setName(patchMember.getName());
@@ -76,7 +75,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
             member.updateProfileImageUrl(profileImageUrl);
         } else {
-            member.updateProfileImageUrl(null);
+            member.updateProfileImageUrl("");
         }
 
         return MemberResponse.toGetMember(member);

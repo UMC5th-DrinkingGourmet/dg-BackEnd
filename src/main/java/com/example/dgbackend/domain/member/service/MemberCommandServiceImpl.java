@@ -75,7 +75,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
             member.updateProfileImageUrl(profileImageUrl);
         } else {
-            member.updateProfileImageUrl(null);
+            member.updateProfileImageUrl("");
         }
 
         return MemberResponse.toGetMember(member);

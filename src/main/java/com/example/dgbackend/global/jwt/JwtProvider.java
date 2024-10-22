@@ -105,19 +105,19 @@ public class JwtProvider {
     /**
      * Token 유효성 검사
      */
-    public boolean isValidToken(final String token) {
+    public int isValidToken(final String token) {
         try {
             SecretKey secretKey = generateKey();
             Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token);
-            return true;
+            return 1;
         } catch (ExpiredJwtException e) {
-            return false;
+            return 0;
             //throw new ApiException(ErrorStatus._INVALID_JWT);
         } catch (Exception e) {
-            return false;
+            return -1;
             //throw new ApiException(ErrorStatus._INVALID_JWT);
         }
     }

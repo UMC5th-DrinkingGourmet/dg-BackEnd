@@ -48,7 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwtToken = authorizationHeader.substring(7);
 
             // token 유효성 검증
-            if (!jwtProvider.isValidToken(jwtToken)) {
+            if (jwtProvider.isValidToken(jwtToken) == 0) {
+                request.setAttribute("exception", ErrorStatus._EXPIRED_TOKEN);
+            } else if(jwtProvider.isValidToken(jwtToken) == -1) {
                 request.setAttribute("exception", ErrorStatus._INVALID_JWT);
             }
 

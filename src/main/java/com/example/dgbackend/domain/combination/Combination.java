@@ -101,6 +101,10 @@ public class Combination extends BaseTimeEntity {
         this.state = false;
     }
 
+    public boolean isState() {
+        return state;
+    }
+
     /**
      * CombinationLike 관련 메서드
      */

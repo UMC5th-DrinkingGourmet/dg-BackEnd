@@ -123,6 +123,18 @@ public class CombinationScheduler {
     public CombinationResponse.CombinationMainPreviewList getMainTodayCombinationList() {
         List<Combination> combinations = this.getMainCombination();
 
+        boolean needsUpdate = combinations.stream().anyMatch(combination -> {
+            Combination latestCombination = combinationRepository.findById(combination.getId()).orElse(null);
+            return latestCombination == null || !latestCombination.isState();
+        });
+
+        if (needsUpdate) {
+            log.info("소프트 삭제된 조합이 발견되어 리스트를 갱신합니다.");
+            updateRandomTopLikes();
+            // 리스트 갱신 후 다시 가져오기
+            combinations = this.getMainCombination();
+        }
+
         // 이미지와 해시태그 옵션 리스트 가져오기
         List<CombinationImage> combinationImages = combinations.stream()
             .map(combination -> combinationImageRepository.findAllByCombination(combination)

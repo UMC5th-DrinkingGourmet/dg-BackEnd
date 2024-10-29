@@ -89,6 +89,10 @@ public class Recipe extends BaseTimeEntity {
         return this;
     }
 
+    public boolean isState() {
+        return this.state;
+    }
+
     public void changeLikeCount(boolean isIncrease) {
 
         if (isIncrease) {

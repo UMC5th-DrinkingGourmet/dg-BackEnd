@@ -2,6 +2,7 @@ package com.example.dgbackend.domain.recipe.service;
 
 import static com.example.dgbackend.domain.recipe.dto.RecipeResponse.toRecipeMainList;
 
+import com.example.dgbackend.domain.combination.Combination;
 import com.example.dgbackend.domain.recipe.Recipe;
 import com.example.dgbackend.domain.recipe.dto.RecipeResponse;
 import com.example.dgbackend.domain.recipe.repository.RecipeRepository;
@@ -78,6 +79,17 @@ public class RecipeScheduler {
     public RecipeResponse.RecipeMainList getMainTodayRecipeList() {
         List<Recipe> recipes = this.getMainRecipes();
 
+        boolean needsUpdate = recipes.stream().anyMatch(recipe -> {
+            Recipe latestRecipe = recipeRepository.findById(recipe.getId()).orElse(null);
+            return latestRecipe == null || !latestRecipe.isState();
+        });
+
+        if (needsUpdate) {
+            log.info("소프트 삭제된 조합이 발견되어 리스트를 갱신합니다.");
+            updateRandomTopLikes();
+            // 리스트 갱신 후 다시 가져오기
+            recipes = this.getMainRecipes();
+        }
         // 이미지와 해시태그 옵션 리스트 가져오기
         List<RecipeImage> recipeImages = recipes.stream()
             .map(recipe -> recipeImageRepository.findAllByRecipe(recipe)

@@ -91,8 +91,6 @@ public class CombinationScheduler {
         // 선택된 3개의 항목을 저장하기
         updateCombinations(topLikes);
 
-        log.info("실행됨!!!!!!1");
-
         // 주간 베스트 조합 랜덤 5개 가져오기
         List<Combination> topWeeklyLikes = getWeeklyCombinations();
         updateWeeklyCombinations(topWeeklyLikes);

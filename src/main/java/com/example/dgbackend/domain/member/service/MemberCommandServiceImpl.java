@@ -9,7 +9,6 @@ import com.example.dgbackend.domain.member.repository.MemberRepository;
 import com.example.dgbackend.global.common.response.code.status.ErrorStatus;
 import com.example.dgbackend.global.exception.ApiException;
 import com.example.dgbackend.global.s3.S3Service;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +70,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             s3Service.deleteFile(originUrl);
         }
 
-        if (multipartFile !=  null) {
+        if (multipartFile != null) {
             String profileImageUrl = (s3Service.uploadOneFile(multipartFile).getImgUrl());
             member.updateProfileImageUrl(profileImageUrl);
         } else {
